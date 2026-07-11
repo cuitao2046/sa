@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智算解决方案售前专业知识体系</title>
+<style>
+/* ==================== 全局样式 ==================== */
+:root {
+    --primary: #1a5276;
+    --primary-light: #2980b9;
+    --accent: #e67e22;
+    --bg: #f8f9fa;
+    --card-bg: #ffffff;
+    --text: #2c3e50;
+    --text-light: #5d6d7e;
+    --border: #d5dbdb;
+    --code-bg: #f4f6f7;
+    --tip-bg: #eafaf1;
+    --tip-border: #27ae60;
+    --warn-bg: #fef9e7;
+    --warn-border: #f39c12;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+/* ==================== 页面容器 ==================== */
+.page-wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+}
+@media (min-width: 1400px) {
+    .page-wrapper { max-width: 1280px; }
+}
+
+/* ==================== 封面 ==================== */
+.cover {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 60px 40px;
+    border-radius: 16px;
+    margin-bottom: 40px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(26,82,118,0.25);
+}
+.cover h1 {
+    font-size: 32px;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+}
+.cover .subtitle {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 8px;
+}
+.cover .tagline {
+    font-size: 14px;
+    opacity: 0.75;
+    padding: 8px 20px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    display: inline-block;
+}
+
+/* ==================== 目录 ==================== */
+.toc {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 30px 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border-left: 5px solid var(--accent);
+}
+.toc h2 {
+    color: var(--primary);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+.toc ul { list-style: none; }
+.toc li {
+    padding: 6px 0;
+    color: var(--text-light);
+    font-size: 15px;
+}
+.toc li::before {
+    content: "▸ ";
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/* ==================== 内容卡片 ==================== */
+.content-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 40px 50px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+/* ==================== 标题样式 ==================== */
+h1 {
+    font-size: 26px;
+    color: var(--primary);
+    margin: 30px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--primary-light);
+    padding-left: 12px;
+    border-left: 5px solid var(--accent);
+}
+h1:first-child { margin-top: 0; }
+h1.title {
+    font-size: 28px;
+    text-align: center;
+    border: none;
+    padding: 0;
+    margin-bottom: 10px;
+}
+h2 {
+    font-size: 21px;
+    color: var(--primary-light);
+    margin: 28px 0 15px;
+    padding-left: 12px;
+    border-left: 4px solid var(--primary-light);
+}
+h3 {
+    font-size: 18px;
+    color: #34495e;
+    margin: 22px 0 12px;
+}
+h4 {
+    font-size: 16px;
+    color: var(--text);
+    margin: 18px 0 10px;
+}
+
+/* ==================== 段落 ==================== */
+p {
+    margin-bottom: 14px;
+    text-align: justify;
+}
+p.highlight {
+    font-weight: bold;
+    color: var(--primary);
+    background: var(--code-bg);
+    padding: 8px 16px;
+    border-radius: 6px;
+    border-left: 4px solid var(--primary-light);
+}
+
+/* ==================== 列表 ==================== */
+.custom-list {
+    margin: 12px 0 18px 0;
+    padding-left: 8px;
+    list-style: none;
+}
+.custom-list li.bullet {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 8px;
+}
+.custom-list li.bullet::before {
+    content: "●";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent);
+    font-size: 10px;
+    line-height: 28px;
+}
+.custom-list { counter-reset: num; }
+.custom-list li.number {
+    counter-increment: num;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 8px;
+}
+.custom-list li.number::before {
+    content: counter(num);
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-light);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* ==================== 提示框 ==================== */
+.tip-box {
+    background: var(--tip-bg);
+    border-left: 5px solid var(--tip-border);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+}
+.warn-box {
+    background: var(--warn-bg);
+    border-left: 5px solid var(--warn-border);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+}
+
+/* ==================== 表格 ==================== */
+.data-table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0 24px;
+    font-size: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    table-layout: auto;
+    word-break: break-word;
+}
+.data-table .header-row {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    font-weight: bold;
+}
+.data-table .header-row td {
+    padding: 12px 14px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+.data-table td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.6;
+}
+.data-table .alt-row {
+    background: #f8f9fa;
+}
+.data-table tr:hover td {
+    background: #ebf5fb;
+    transition: background 0.2s;
+}
+
+/* ==================== 页脚 ==================== */
+.footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-light);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+}
+
+/* ==================== 浮动导航目录 ==================== */
+/* 拓扑图样式 */
+.topo-figure {
+    margin: 24px 0;
+    text-align: center;
+}
+.topo-figure img {
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+.topo-figure figcaption {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text-light);
+}
+.topo-figure figcaption strong {
+    color: var(--primary);
+}
+.topo-figure img {
+    cursor: zoom-in;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.topo-figure img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+}
+
+/* 图片弹窗（Lightbox） */
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: zoom-out;
+}
+.lightbox-overlay.show {
+    display: flex;
+    animation: lb-fade-in 0.2s ease;
+}
+@keyframes lb-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+.lightbox-overlay img {
+    max-width: 92vw;
+    max-height: 82vh;
+    border-radius: 6px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    cursor: default;
+    transition: transform 0.15s ease;
+    transform-origin: center center;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.lightbox-overlay img.zoomed {
+    cursor: grab;
+    transition: none;
+}
+.lightbox-overlay img.zoomed:active {
+    cursor: grabbing;
+}
+.lightbox-caption {
+    margin-top: 16px;
+    color: #ddd;
+    font-size: 14px;
+    text-align: center;
+    max-width: 80vw;
+    line-height: 1.6;
+}
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 28px;
+    color: #fff;
+    font-size: 36px;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+}
+.lightbox-close:hover { color: #ff6b35; }
+.lightbox-hint {
+    position: absolute;
+    bottom: 20px;
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+}
+.toc-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 264px;
+    height: 100vh;
+    overflow-y: auto;
+    background: #fff;
+    border-right: 1px solid var(--border);
+    box-shadow: 2px 0 16px rgba(0,0,0,0.08);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    padding: 0 0 24px 0;
+}
+.toc-sidebar::-webkit-scrollbar { width: 6px; }
+.toc-sidebar::-webkit-scrollbar-track { background: #f4f6f7; }
+.toc-sidebar::-webkit-scrollbar-thumb { background: #c4ced4; border-radius: 3px; }
+.toc-sidebar::-webkit-scrollbar-thumb:hover { background: var(--primary-light); }
+
+/* 目录头部 */
+.toc-sidebar .toc-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    padding: 22px 24px 20px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    letter-spacing: 1.5px;
+    position: relative;
+}
+.toc-sidebar .toc-title::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 3px;
+    background: var(--accent);
+}
+
+/* 一级目录 */
+.toc-sidebar .toc-nav { list-style: none; padding: 0 12px; }
+.toc-sidebar .toc-nav > li { margin: 0; }
+.toc-sidebar .toc-nav > li > a {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    margin-top: 2px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 8px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+    line-height: 1.45;
+}
+.toc-sidebar .toc-nav > li > a:hover {
+    color: var(--primary);
+    background: #eef4fa;
+    border-left-color: var(--primary-light);
+}
+.toc-sidebar .toc-nav > li > a.active {
+    color: #fff;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-left-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(26,82,118,0.25);
+}
+
+/* 章节序号徽章 */
+.toc-sidebar .ch-badge {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin-right: 8px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: bold;
+    font-style: normal;
+}
+.toc-sidebar .toc-nav > li > a.active .ch-badge {
+    background: rgba(255,255,255,0.28);
+}
+
+/* 子目录（树形） */
+.toc-sidebar .toc-sub {
+    list-style: none;
+    margin: 2px 0 6px 0;
+    padding: 0 0 0 13px;
+    border-left: 2px dashed #e2e8ec;
+}
+.toc-sidebar .toc-sub li a {
+    display: block;
+    padding: 6px 10px 6px 14px;
+    font-size: 12.5px;
+    font-weight: normal;
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    line-height: 1.4;
+    position: relative;
+}
+.toc-sidebar .toc-sub li a::before {
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: 50%;
+    width: 10px;
+    height: 1px;
+    background: #d5dbdb;
+}
+.toc-sidebar .toc-sub li a:hover {
+    color: var(--primary-light);
+    background: #f4f8fb;
+}
+.toc-sidebar .toc-sub li a.active {
+    color: var(--accent);
+    font-weight: 600;
+    background: #fdf2e9;
+}
+
+/* 折叠/展开按钮 */
+.toc-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1100;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(26,82,118,0.3);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+.toc-toggle:hover { transform: scale(1.06); }
+
+/* 遮罩层 */
+.toc-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 999;
+    backdrop-filter: blur(2px);
+}
+
+/* 主体内容偏移（桌面端留出侧栏空间） */
+.page-wrapper { transition: margin-left 0.3s ease; }
+@media (min-width: 769px) {
+    .page-wrapper.with-sidebar { margin-left: 264px; }
+    .toc-sidebar.collapsed { transform: translateX(-100%); }
+    /* 桌面端始终显示切换按钮：侧栏展开时按钮贴在侧栏右边缘，收起时回到左上角 */
+    .toc-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        left: 264px;
+    }
+    .toc-toggle.desktop-show {
+        left: 16px;
+    }
+}
+
+/* ==================== 响应式：平板端（769~1024px） ==================== */
+@media (max-width: 1024px) {
+    .page-wrapper.with-sidebar { margin-left: 0; }
+    .toc-sidebar { transform: translateX(-100%); z-index: 1100; }
+    .toc-sidebar.open { transform: translateX(0); }
+    .toc-toggle { display: flex; align-items: center; justify-content: center; }
+    .toc-overlay.show { display: block; }
+    .content-card { padding: 30px 24px; }
+    .data-table { font-size: 13px; }
+    .data-table td { padding: 8px 10px; }
+}
+
+/* ==================== 响应式：宽表格水平滚动 ==================== */
+@media (max-width: 1024px) {
+    .data-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        min-width: 600px;
+    }
+}
+@media (max-width: 768px) {
+    .data-table { min-width: 500px; }
+}
+@media (max-width: 480px) {
+    .data-table { min-width: 400px; }
+}
+
+/* ==================== 响应式：手机端（≤768px） ==================== */
+@media (max-width: 768px) {
+    .page-wrapper { padding: 16px 8px; }
+    .content-card { padding: 20px 14px; }
+    .cover { padding: 36px 18px; }
+    .cover h1 { font-size: 22px; }
+    .cover .subtitle { font-size: 15px; }
+    .cover .tagline { font-size: 12px; }
+    h1 { font-size: 20px; padding-left: 8px; }
+    h2 { font-size: 17px; padding-left: 8px; }
+    h3 { font-size: 16px; }
+    h4 { font-size: 15px; }
+    p { font-size: 14px; }
+    .data-table { font-size: 12px; min-width: 500px; }
+    .data-table td { padding: 6px 8px; line-height: 1.5; }
+    .data-table .header-row td { padding: 8px 6px; }
+    .tip-box, .warn-box { padding: 12px 14px; font-size: 13px; }
+    .toc { padding: 20px 18px; }
+    .footer { padding: 20px 10px; font-size: 12px; }
+}
+
+/* ==================== 响应式：超小屏（≤480px） ==================== */
+@media (max-width: 480px) {
+    .page-wrapper { padding: 10px 4px; }
+    .content-card { padding: 16px 10px; }
+    .cover { padding: 28px 14px; border-radius: 10px; }
+    .cover h1 { font-size: 19px; letter-spacing: 1px; }
+    h1 { font-size: 18px; }
+    h2 { font-size: 16px; }
+    .data-table { font-size: 11px; min-width: 400px; }
+    .data-table td { padding: 5px 6px; }
+    .tip-box, .warn-box { padding: 10px 12px; font-size: 12px; }
+    p.highlight { padding: 6px 10px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+<!-- 浮动导航目录 -->
+<button class="toc-toggle" id="tocToggle" title="目录导航">&#9776;</button>
+<div class="toc-overlay" id="tocOverlay"></div>
+<nav class="toc-sidebar" id="tocSidebar">
+    <div class="toc-title">📑 目录导航</div>
+    <ul class="toc-nav">
+        <li>
+            <a href="#ch1" data-target="ch1"><span class="ch-badge">★</span>智算解决方案售前专业知识体系</a>
+            <ul class="toc-sub">
+                <li><a href="#ch1-s1" data-target="ch1-s1">目录</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#ch2" data-target="ch2"><span class="ch-badge">≡</span>目录</a>
+        </li>
+        <li>
+            <a href="#ch3" data-target="ch3"><span class="ch-badge">1</span>核心认知：训练与推理的本质差异</a>
+            <ul class="toc-sub">
+                <li><a href="#ch3-s1" data-target="ch3-s1">1.1　训练（Training）的核心特征</a></li>
+                <li><a href="#ch3-s2" data-target="ch3-s2">1.2　推理（Inference）的核心特征</a></li>
+                <li><a href="#ch3-s3" data-target="ch3-s3">1.3　显存需求快速估算方法</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#ch4" data-target="ch4"><span class="ch-badge">2</span>英伟达 GPU 硬件详解</a>
+            <ul class="toc-sub">
+                <li><a href="#ch4-s1" data-target="ch4-s1">2.1　A100（Ampere 架构 / 7nm）</a></li>
+                <li><a href="#ch4-s2" data-target="ch4-s2">2.2　H100（Hopper 架构 / 4nm）</a></li>
+                <li><a href="#ch4-s3" data-target="ch4-s3">2.3　H200——大显存旗舰</a></li>
+                <li><a href="#ch4-s4" data-target="ch4-s4">2.4　B200（Blackwell 架构）</a></li>
+                <li><a href="#ch4-s5" data-target="ch4-s5">2.5　GB200 超芯片</a></li>
+                <li><a href="#ch4-s6" data-target="ch4-s6">2.6　GB300 推理旗舰超芯片</a></li>
+                <li><a href="#ch4-s7" data-target="ch4-s7">2.7　面向中国市场的合规版本对比</a></li>
+                <li><a href="#ch4-s8" data-target="ch4-s8">2.8　GPU 服务器 CPU 配置规格（Intel / AMD）</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#ch5" data-target="ch5"><span class="ch-badge">3</span>国产 AI 芯片硬件详解</a>
+            <ul class="toc-sub">
+                <li><a href="#ch5-s1" data-target="ch5-s1">3.1　华为昇腾系列——国产领军</a></li>
+                <li><a href="#ch5-s2" data-target="ch5-s2">3.2　华为 CloudMatrix 384 超节点</a></li>
+                <li><a href="#ch5-s3" data-target="ch5-s3">3.3　其他主流国产芯片</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#ch6" data-target="ch6"><span class="ch-badge">4</span>服务器形态与超节点架构对比</a>
+            <ul class="toc-sub">
+                <li><a href="#ch6-s1" data-target="ch6-s1">4.1　标准 8 卡 AI 服务器（HGX/DGX）</a></li>
+                <li><a href="#ch6-s2" data-target="ch6-s2">4.2　超节点（SuperPod）</a></li>
+                <li><a href="#ch6-s3" data-target="ch6-s3">4.3　大规模 AI 集群（千卡~十万卡）</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#ch7" data-target="ch7"><span class="ch-badge">5</span>组网方案全景</a>
+            <ul class="toc-sub">
+                <li><a href="#ch7-s1" data-target="ch7-s1">5.1　四张网络平面规划</a></li>
+                <li><a href="#ch7-s2" data-target="ch7-s2">5.2　Scale-Up 与 Scale-Out</a></li>
+                <li><a href="#ch7-s3" data-target="ch7-s3">5.3　InfiniBand vs RoCEv2 选型</a></li>
+                <li><a href="#ch7-s4" data-target="ch7-s4">5.4　组网拓扑结构详解</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#ch8" data-target="ch8"><span class="ch-badge">6</span>成本分析与全周期 TCO 决策框架</a>
+            <ul class="toc-sub">
+                <li><a href="#ch8-s1" data-target="ch8-s1">6.1　硬件采购成本参考</a></li>
+                <li><a href="#ch8-s2" data-target="ch8-s2">6.2　算力租赁市场价格走势</a></li>
+                <li><a href="#ch8-s3" data-target="ch8-s3">6.3　全周期 TCO 要素分解</a></li>
+                <li><a href="#ch8-s4" data-target="ch8-s4">6.4　电费估算公式</a></li>
+                <li><a href="#ch8-s5" data-target="ch8-s5">6.5　自建 IDC vs 算力租赁</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#ch9" data-target="ch9"><span class="ch-badge">A</span>附录：售前五步闭环方法论</a>
+        </li>
+        <li>
+            <a href="#ch10" data-target="ch10"><span class="ch-badge">B</span>附录：14 个售前核心记忆点</a>
+        </li>
+    </ul>
+</nav>
+<div class="page-wrapper with-sidebar" id="pageWrapper">
+
+<!-- 封面 -->
+<div class="cover">
+    <h1 id="ch1">智算解决方案售前专业知识体系</h1>
+    <p class="subtitle">详细文字说明稿</p>
+    <p class="tagline">2025–2026 版 ｜ 包含硬件配置·组网方案·成本分析·售前实战</p>
+</div>
+
+<!-- 目录 -->
+<div class="toc">
+    <h2 id="ch1-s1">目　录</h2>
+    <ul>
+        <li>第一章　核心认知：训练与推理的本质差异</li>
+        <li>第二章　英伟达 GPU 硬件详解（A100 / H100 / H200 / B200 / GB200 / GB300）</li>
+        <li>第三章　国产 AI 芯片硬件详解（昇腾系列与其他主流国产卡）</li>
+        <li>第四章　服务器形态与超节点架构对比</li>
+        <li>第五章　组网方案全景（四平面·IB/RoCE·拓扑设计）</li>
+        <li>第六章　成本分析与全周期 TCO 决策框架</li>
+        <li>附录　售前五步闭环方法论 & 14个核心记忆点</li>
+    </ul>
+</div>
+
+<!-- 正文 -->
+<div class="content-card">
+<p>智算解决方案售前专业知识体系</p>
+<p>详细文字说明稿</p>
+<p>配套 PPT《智算解决方案售前专业知识体系》深度展开版<br>2025–2026 版  |  包含硬件配置·组网方案·成本分析·售前实战</p>
+
+<h1 id="ch2">目  录</h1>
+<p>第一章　核心认知：训练与推理的本质差异</p>
+<p>第二章　英伟达 GPU 硬件详解（A100 / H100 / H200 / B200 / GB200 / GB300）</p>
+<p>第三章　国产 AI 芯片硬件详解（昇腾系列与其他主流国产卡）</p>
+<p>第四章　服务器形态与超节点架构对比</p>
+<p>第五章　组网方案全景（四平面·IB/RoCE·拓扑设计）</p>
+<p>第六章　成本分析与全周期 TCO 决策框架</p>
+<p>附录　售前五步闭环方法论 &amp; 14个核心记忆点</p>
+
+<h1 id="ch3">第一章　核心认知：训练与推理的本质差异</h1>
+<p>智算售前工作中最常见的误区，是在没有厘清客户场景之前就开口推荐硬件。训练（Training）和推理（Inference）对算力、显存、互联带宽的需求截然不同，是两条几乎平行的需求曲线。任何一套&quot;通用最强方案&quot;，在两类场景下往往都不是最优解。掌握这条基本逻辑，是所有选型和报价的第一步。</p>
+<h2 id="ch3-s1">1.1  训练（Training）的核心特征</h2>
+<p>训练是指通过大量数据样本迭代更新模型权重的过程。从硬件视角看，训练的本质是一个计算密集 + 通信密集 + 长时间稳定运行的计算任务，对硬件的要求可以从以下六个维度理解：</p>
+<ul class="custom-list">
+<li class="bullet">算力需求极高：大模型预训练通常要求 FP16/BF16/FP8 精度下的高算力（TFLOPS/PFLOPS级），百亿到千亿参数模型需要千卡~万卡 GPU 并行协作。</li>
+<li class="bullet">显存需求庞大：训练过程中 GPU 显存需要同时存放模型权重（FP16/BF16）、梯度（与权重同等大小）、FP32 权重副本（master weights，混合精度训练用于精度更新的全精度备份）、优化器状态（AdamW 一阶/二阶动量各占4字节×参数量）以及前向激活值。一个 70B 参数模型用 AdamW 优化器的混合精度训练，理论总显存约 70B×16字节 = 1120 GB。</li>
+<li class="bullet">卡间通信带宽是瓶颈：反向传播过程中需要将梯度在所有参与训练的 GPU 上进行 All-Reduce 同步，这要求机内 GPU 之间（NVLink/UB）和跨机 GPU 之间（IB/RoCE）都具备超高带宽和低延迟，否则 GPU 会因等待通信而大量闲置，导致&quot;加速比&quot;远低于 1。</li>
+<li class="bullet">网络要求无损且大规模：梯度同步是突发式大流量通信，网络丢包会导致 RDMA 重传，严重降低集群效率。因此训练集群参数面网络要求零丢包，采用 InfiniBand 原生无损机制，或 RoCEv2 加 PFC/ECN/DCQCN 拥塞控制机制实现无损以太。</li>
+<li class="bullet">长时间连续稳定运行：一次大模型预训练通常需要数周到数月，对集群可靠性和故障自愈能力提出极高要求。Meta 在训练 Llama3-405B 的 54 天内统计了 419 次故障，其中光模块故障和网络故障是主因。</li>
+<li class="bullet">核心 KPI 是 MFU（Model FLOPs Utilization）：理想情况下 MFU = 100%，意味着 GPU 的理论算力被充分利用。实际上 30~50% 已属良好，原因在于通信、数据加载、内存访问都会造成算力空闲。</li>
+</ul>
+<h2 id="ch3-s2">1.2  推理（Inference）的核心特征</h2>
+<p>推理是指将训练好的模型部署上线，对外提供实时预测/问答服务的过程。推理与训练的最大区别在于：推理不需要存储梯度和优化器状态，显存压力大幅降低；但对单位成本（每 Token 成本）、响应延迟（TTFT首 Token 时延）和高并发吞吐（TPS/QPS）更加敏感。</p>
+<ul class="custom-list">
+<li class="bullet">显存带宽决定速度上限：生成式推理（自回归解码）每生成一个 Token，都需要把整个模型权重从显存读入一次，因此推理速度几乎直接受显存带宽约束。</li>
+</ul>
+<p>每秒生成 Token 数（TPS）≈ 显存带宽（TB/s）÷ [参数量（B）× 精度字节（2/1/0.5）]</p>
+<ul class="custom-list">
+<li class="bullet">显存容量决定能不能跑：如果模型权重放不进单卡显存，必须多卡并行，而多卡通信开销会抵消带宽优势。因此&quot;能不能在给定卡上运行&quot;是推理选型的第一关口。</li>
+<li class="bullet">KV Cache 是长上下文的核心成本：KV Cache 的大小 = 2 × 层数(L) × 头数(H) × 头维度(D) × batch大小(B) × 序列长度(seq) × 精度字节。支持 128K 长上下文时，KV Cache 可消耗数 GB 至数十 GB 的额外显存，这是 H200（141GB）和 B200（192GB）相比 H100（80GB）更受推理青睐的根本原因。</li>
+<li class="bullet">批处理（Batching）是提升吞吐的关键：多个请求共享一次模型权重读取，可以把显存带宽收益分摊到更多 Token，提升整体吞吐。Continuous Batching 技术让在途请求动态进入批次，是当前主流推理框架（vLLM/TGI）的核心优化。</li>
+<li class="bullet">能效比（TFLOPS/W）是推理侧的核心采购维度：同等算力下功耗更低的硬件，在大规模推理集群中能显著降低电费和制冷成本。国产昇腾 910B 约 400W 对比英伟达 H100 700W，能效比优势在推理场景尤为突出。</li>
+</ul>
+<h2 id="ch3-s3">1.3  显存需求快速估算方法</h2>
+<p>这是售前现场选型的第一个计算动作。掌握以下估算逻辑，可以在 30 秒内给出&quot;能跑/不能跑/需要几张卡&quot;的初步判断。</p>
+<h3>1.3.1  推理显存估算</h3>
+<p>推理显存（GB）≈ 参数量（B）× 精度字节 × 1.2（安全系数）</p>
+<p>精度字节：FP32 = 4B，FP16/BF16 = 2B，INT8 = 1B，INT4 = 0.5B。安全系数 1.2 覆盖框架开销。</p>
+<table class="data-table"><tr class="header-row"><td>模型规模</td><td>FP16 推理</td><td>INT8 量化</td><td>INT4 量化</td><td>推荐选型（推理）</td></tr><tr class=""><td>7B</td><td>~16.8 GB</td><td>~8.4 GB</td><td>~4.2 GB</td><td>RTX 4090 / L20（单卡）</td></tr><tr class="alt-row"><td>13B</td><td>~31.2 GB</td><td>~15.6 GB</td><td>~7.8 GB</td><td>A100-80G / H100 单卡</td></tr><tr class=""><td>30B</td><td>~72 GB</td><td>~36 GB</td><td>~18 GB</td><td>H100×1 / H20×1（单卡）</td></tr><tr class="alt-row"><td>70B</td><td>~168 GB</td><td>~84 GB</td><td>~42 GB</td><td>H100×3 / H200×2</td></tr><tr class=""><td>671B MoE</td><td>需多机多卡</td><td>—</td><td>—</td><td>超节点集群专用</td></tr></table>
+
+<h3>1.3.2  训练显存估算（以 AdamW 优化器为例）</h3>
+<p>训练显存（GB）≈ 参数量（B）×（2+2+4+4+4）字节 + 激活值</p>
+<p>分项说明：①模型权重 FP16/BF16 = 参数量×2字节；②梯度 FP16/BF16 = 参数量×2字节；③FP32 权重副本（master weights）= 参数量×4字节；④ AdamW 一阶动量 = 参数量×4字节；⑤ AdamW 二阶动量 = 参数量×4字节。合计约 16字节/参数（2+2+4+4+4=16，不含激活值）。70B 参数模型训练最小显存约 70×16 = 1120 GB，需要 H100×14张（或 H200×8张）。</p>
+<div class="tip-box">💡  实战提示：客户现场说&quot;我要训练 70B 的模型&quot;，标准回答是：FP16 混合精度下最少需要 14 张 H100（1120GB），建议用 2节点×8卡 H100，再叠加 KV Cache、框架开销后保守起见上 16 卡起步。</div>
+
+
+<h1 id="ch4">第二章　英伟达 GPU 硬件详解</h1>
+<p>英伟达在全球 AI 芯片市场中占据约 70% 份额（IDC 2025.5），其 GPU 产品线是智算售前最核心的硬件知识。本章按照产品代际顺序，详细介绍 A100（基准参考）、H100（当前主力）、H200（大显存旗舰）、B200（2025 旗舰）、GB200（Grace Blackwell 超芯片）、GB300（Grace Blackwell Ultra 推理旗舰）六款主流训练/推理卡及超芯片的技术规格与选型要点，以及面向中国市场的合规版本。</p>
+<h2 id="ch4-s1">2.1  A100（Ampere 架构 / 7nm）——训练通用底座</h2>
+<p>A100 是 2020 年发布的 Ampere 架构产品，尽管已不是最新代，但其装机量仍是目前全球最大，是理解后续架构演进的基准参考点。</p>
+<table class="data-table"><tr class="header-row"><td>规格项</td><td>参数值</td></tr><tr class=""><td>显存容量</td><td>40GB / 80GB HBM2e（主流用80GB版本）</td></tr><tr class="alt-row"><td>显存带宽</td><td>1.55 TB/s（40GB）/ 2.0 TB/s（80GB）</td></tr><tr class=""><td>FP32 算力</td><td>19.5 TFLOPS</td></tr><tr class="alt-row"><td>FP16/BF16 算力（Tensor Core）</td><td>312 TFLOPS（稠密）/ 624 TFLOPS（稀疏）</td></tr><tr class=""><td>INT8 算力（Tensor Core）</td><td>624 TOPS（稠密）/ 1248 TOPS（稀疏）</td></tr><tr class="alt-row"><td>NVLink 版本</td><td>NVLink v3，单卡总带宽 600 GB/s</td></tr><tr class=""><td>PCIe / SXM 接口</td><td>SXM4 / PCIe Gen4</td></tr><tr class="alt-row"><td>TDP 功耗</td><td>400W（SXM4）/ 300W（PCIe）</td></tr><tr class=""><td>制造工艺</td><td>TSMC 7nm</td></tr><tr class="alt-row"><td>主要场景</td><td>模型训练（通用）、中等规模推理</td></tr></table>
+
+<div class="tip-box">💡  A100 在中国受出口限制，推出了 A800（互联带宽从 600GB/s 削减至 400GB/s 的版本）。A800 目前仍有大量存量，租赁价格下降明显。</div>
+<h2 id="ch4-s2">2.2  H100（Hopper 架构 / 4nm）——当前训练标杆</h2>
+<p>H100 是 2022 年发布、2023 年大规模交付的 Hopper 架构旗舰，是全球 AI 大模型训练的主力机型，也是所有售前方案中最常出现的核心硬件。相比 A100，H100 引入了若干重大突破：</p>
+<ul class="custom-list">
+<li class="bullet">全新第四代 Tensor Core：首次原生支持 FP8 精度，FP8 算力约 2 PFLOPS（稠密），相比 A100 FP16 提升约 6.4×，在推理侧可大幅降低显存占用和计算成本。</li>
+<li class="bullet">HBM3 显存升级：80GB HBM3，带宽提升至 3.35 TB/s，相比 A100 HBM2e 的 2.0 TB/s 提升约 67%，推理 Token 速度相应提升。</li>
+<li class="bullet">NVLink v4 互联提升至 900 GB/s：机内 8 卡全互联带宽从 600GB/s 提升至 900GB/s，对张量并行（TP）的效率提升显著。</li>
+<li class="bullet">引入 Transformer Engine：根据层的数据分布动态选择 FP8/FP16 混合精度，在保证精度的前提下最大化利用 FP8 算力优势，是 H100 在大模型训练上相比 A100 有代际领先的核心原因。</li>
+</ul>
+<table class="data-table"><tr class="header-row"><td>规格项</td><td>H100 SXM（推荐版本）</td></tr><tr class=""><td>显存容量</td><td>80 GB HBM3</td></tr><tr class="alt-row"><td>显存带宽</td><td>3.35 TB/s</td></tr><tr class=""><td>FP16/BF16 算力（Tensor Core）</td><td>~990 TFLOPS（约 1 PFLOPS）</td></tr><tr class="alt-row"><td>FP8 算力（稠密）</td><td>~2 PFLOPS</td></tr><tr class=""><td>INT8 算力</td><td>~2000 TOPS</td></tr><tr class="alt-row"><td>NVLink 带宽（单卡双向）</td><td>900 GB/s（v4）</td></tr><tr class=""><td>PCIe Gen5 带宽</td><td>128 GB/s（SXM 不含PCIe）</td></tr><tr class="alt-row"><td>TDP 功耗</td><td>700W</td></tr><tr class=""><td>制造工艺</td><td>TSMC 4N（定制 4nm）</td></tr><tr class="alt-row"><td>国内参考采购价</td><td>约 ¥20–30 万/卡（2025 年）</td></tr></table>
+
+<div class="warn-box">⚠  H100 在中国出口受限，推出了 H800（NVLink 带宽从 900GB/s 削减至 400GB/s）。注意不同版本的互联能力差异，直接影响多卡训练线性加速比。</div>
+<h2 id="ch4-s3">2.3  H200——大显存旗舰，专为大模型和长上下文设计</h2>
+<p>H200 是在 H100 芯片基础上升级了 HBM 内存子系统的强化版本，于 2023 年发布、2024 年批量交付。核心改变只有一处，但影响深远：HBM3e 容量从 80GB 翻至 141GB，带宽从 3.35TB/s 提升至 4.8TB/s。</p>
+<p>这一升级对三类场景意义重大：①能装下更大的单卡模型（减少分片通信开销）；②KV Cache 容量翻近两倍，支持更长的上下文窗口（如 128K Token）；③推理吞吐（TPS）相比 H100 提升约 60%（显存带宽直接提升了 TPS 上限）。</p>
+<table class="data-table"><tr class="header-row"><td>对比项</td><td>H100 SXM</td><td>H200 SXM</td><td>提升幅度</td></tr><tr class=""><td>显存容量</td><td>80 GB HBM3</td><td>141 GB HBM3e</td><td>+76%</td></tr><tr class="alt-row"><td>显存带宽</td><td>3.35 TB/s</td><td>4.8 TB/s</td><td>+43%</td></tr><tr class=""><td>FP8 算力（稠密）</td><td>~2 PFLOPS</td><td>~2 PFLOPS</td><td>持平（芯片相同）</td></tr><tr class="alt-row"><td>推理吞吐估算</td><td>基准</td><td>约 +60%</td><td>带宽提升带动</td></tr><tr class=""><td>TDP 功耗</td><td>700W</td><td>700W</td><td>持平</td></tr><tr class="alt-row"><td>采购价参考</td><td>¥20–30万/卡</td><td>¥28–38万/卡</td><td>+15–20%溢价</td></tr></table>
+
+<div class="tip-box">💡  选型建议：如果客户场景是 100B 以上参数模型、128K+ 上下文、或批量推理吞吐敏感，H200 的 TCO 往往比用更多张 H100 更优。</div>
+<h2 id="ch4-s4">2.4  B200（Blackwell 架构）——2025 旗舰</h2>
+<p>B200 是 NVIDIA 2024 年发布、2025 年逐步量产交付的全新 Blackwell 架构旗舰 GPU，采用双 die 封装，单卡集成两个 GPU die，在算力、显存、互联三条轴同步大幅升级。</p>
+<ul class="custom-list">
+<li class="bullet">192GB HBM3e 显存（8.0 TB/s 带宽）：相比 H100 提升 2.4×，相比 H200 提升 1.7×，单卡可装下更大模型，推理 TPS 的上限大幅抬高。</li>
+<li class="bullet">FP4 精度支持：Blackwell 引入第五代 Tensor Core，首次支持 FP4 精度，FP4 推理算力约 9 PFLOPS（是 FP8 的 2×），在可接受精度损失的推理场景下计算效率极高。</li>
+<li class="bullet">NVLink v5（1.8 TB/s）：机内卡间互联带宽从 v4 的 900GB/s 翻倍至 1.8TB/s，对 MoE 等需要高频卡间通信的模型架构提升显著。</li>
+<li class="bullet">GB200 = Grace CPU + B200×2：NVIDIA 推出了 Grace-Blackwell 超芯片 GB200，把一颗 Grace ARM CPU 和两颗 B200 GPU 通过 NVLink-C2C（900GB/s）集成在一个封装上，实现 864GB 统一内存空间，是 NVL72 机柜方案的基础单元（详见 2.5 节）。</li>
+</ul>
+<table class="data-table"><tr class="header-row"><td>规格项</td><td>B200（Blackwell GPU）</td><td>GB200（Grace+2×B200 超芯片）</td></tr><tr class=""><td>显存容量</td><td>192 GB HBM3e</td><td>192 GB（与B200相同）</td></tr><tr class="alt-row"><td>显存带宽</td><td>8.0 TB/s</td><td>8.0 TB/s</td></tr><tr class=""><td>FP8 算力（稠密）</td><td>~4.5 PFLOPS</td><td>~4.5 PFLOPS</td></tr><tr class="alt-row"><td>FP4 算力</td><td>~9 PFLOPS</td><td>~9 PFLOPS</td></tr><tr class=""><td>训练相比H100</td><td>约 +4×（实际2.5×）</td><td>同</td></tr><tr class="alt-row"><td>NVLink 版本</td><td>v5，1.8 TB/s（双向）</td><td>v5，1.8 TB/s</td></tr><tr class=""><td>TDP 功耗</td><td>~1000W（单GPU）</td><td>~2700W（GB200全系统）</td></tr><tr class="alt-row"><td>2025年采购价参考</td><td>¥45万+/卡</td><td>系统报价，面议</td></tr></table>
+
+<div class="warn-box">⚠  B200 价格高、供应量有限，早期优先分配给大型云厂和战略客户。中小客户在采购 B200 时需评估交付周期（2025年已普遍排队）。</div>
+<h2 id="ch4-s5">2.5  GB200（Grace Blackwell 超芯片）——机柜级超节点基础单元</h2>
+<p>GB200 是 NVIDIA 2024 年发布的 Grace Blackwell 超芯片（Superchip），将 1 颗 Grace ARM CPU（72 核 Neoverse V2）与 2 颗 B200 GPU 通过 NVLink-C2C（900 GB/s）互联封装在一起。GB200 不是独立 GPU 卡，而是超节点机柜的基础构建模块——36 颗 GB200 组成一个 NVL72 机柜。其核心价值在于 CPU-GPU 内存一致性架构，消除传统 PCIe 瓶颈，实现 864GB 统一寻址空间（384GB HBM3e + 480GB LPDDR5X），让 GPU 可以直接访问 CPU 侧大容量内存，无需数据拷贝。</p>
+<ul class="custom-list">
+<li class="bullet">超芯片架构：1 颗 Grace CPU（72 核 Arm Neoverse V2）+ 2 颗 B200 GPU，通过 NVLink-C2C（900 GB/s）实现 CPU-GPU 内存一致性</li>
+<li class="bullet">单模块 GPU 显存：2× 192GB HBM3e = 384GB（单模块），每颗 B200 带宽 8.0 TB/s</li>
+<li class="bullet">统一寻址空间：864GB（384GB HBM3e + 480GB LPDDR5X），CPU 与 GPU 共享统一内存地址空间，消除 PCIe 瓶颈</li>
+<li class="bullet">NVLink v5：1.8 TB/s（GPU 间），与 B200 相同；36 颗 GB200 通过 NVLink Switch 构建 72-GPU 全互联域</li>
+<li class="bullet">功耗：约 2700W（GB200 模块整体），必须采用液冷散热</li>
+</ul>
+<div class="tip-box">💡  GB200 的核心价值不在于单模块性能，而在于通过 NVLink Switch 构建 72-GPU 全互联域（NVL72）。售前应将 GB200 放在超节点语境下讲解，而非孤立对比单卡。</div>
+
+<h2 id="ch4-s6">2.6  GB300（Grace Blackwell Ultra）——2025 推理旗舰超芯片</h2>
+<p>GB300 是 NVIDIA 2025 年 GTC 大会发布的 Grace Blackwell Ultra 超芯片，是 GB200 的升级版。GPU 从 B200 升级为 B300（Blackwell Ultra），单卡显存从 192GB 提升至 288GB（+50%），FP4 稠密算力提升 1.5×，注意力层（Attention）性能提升 2×。GB300 专为 AI 推理（尤其是测试时计算 / test-time scaling）场景设计，处理 DeepSeek-R1 等推理模型时响应时间从 1.5 分钟缩短至约 10 秒，是 2025—2026 年 AI 推理工厂的旗舰硬件。</p>
+<ul class="custom-list">
+<li class="bullet">Blackwell Ultra GPU（B300）：单卡 288GB HBM3e，相比 B200 的 192GB 提升 50%，单卡可装下更大模型，减少多卡分片通信开销</li>
+<li class="bullet">FP4 稠密算力：约 15 PFLOPS/卡（B200 约 9 PFLOPS），提升 1.5×；NVL72 整机 FP4 稠密算力 1,080 PFLOPS</li>
+<li class="bullet">注意力层加速：相比 GB200 提升 2×，对推理（尤其长序列和 KV Cache 密集场景）性能提升显著</li>
+<li class="bullet">NVL72 整机显存：20 TB（72× 288GB），相比 GB200 NVL72 的 13.5TB 提升 48%；总快速内存 37TB（含 CPU 侧 LPDDR5X）</li>
+<li class="bullet">网络升级：ConnectX-8 SuperNIC（800 Gb/s），相比 GB200 的 ConnectX-7（400 Gb/s）翻倍，集群扩展能力更强</li>
+<li class="bullet">功耗与交付：约 1400W/卡（B300），相比 B200 的 1000W 增长 40%，必须全液冷部署，2025 年下半年开始出货</li>
+</ul>
+<table class="data-table"><tr class="header-row"><td>对比项</td><td>GB200（Grace Blackwell）</td><td>GB300（Grace Blackwell Ultra）</td><td>提升幅度</td></tr><tr class=""><td>GPU 芯片</td><td>B200（Blackwell）</td><td>B300（Blackwell Ultra）</td><td>架构升级</td></tr><tr class="alt-row"><td>单 GPU 显存</td><td>192 GB HBM3e</td><td>288 GB HBM3e</td><td>+50%</td></tr><tr class=""><td>显存带宽</td><td>8.0 TB/s</td><td>8.0 TB/s</td><td>持平</td></tr><tr class="alt-row"><td>NVL72 总显存</td><td>13.5 TB</td><td>20 TB</td><td>+48%</td></tr><tr class=""><td>FP4 算力（稠密/卡）</td><td>~9 PFLOPS</td><td>~15 PFLOPS</td><td>+67%（1.5×）</td></tr><tr class="alt-row"><td>注意力层性能</td><td>基准</td><td>2× 提升</td><td>+100%</td></tr><tr class=""><td>NVLink</td><td>v5，1.8 TB/s</td><td>v5，1.8 TB/s</td><td>持平</td></tr><tr class="alt-row"><td>SuperNIC</td><td>ConnectX-7（400G）</td><td>ConnectX-8（800G）</td><td>2×</td></tr><tr class=""><td>单 GPU 功耗</td><td>~1000W</td><td>~1400W</td><td>+40%</td></tr><tr class="alt-row"><td>核心定位</td><td>万亿参数训练+推理</td><td>AI 推理（test-time scaling）</td><td>推理优化</td></tr></table>
+
+<div class="warn-box">⚠  GB300 功耗达 1400W/卡，必须采用全液冷方案，传统风冷机房无法部署。售前需提前确认客户机房的液冷基础设施和供电能力。GB300 早期产能有限，优先供应头部云厂，中小客户需评估交付周期。</div>
+
+<h2 id="ch4-s7">2.7  面向中国市场的合规版本对比</h2>
+<p>由于美国对华 AI 芯片出口管制政策持续收紧，英伟达为中国市场推出了一系列阉割版本：</p>
+<table class="data-table"><tr class="header-row"><td>型号</td><td>对标原版</td><td>主要阉割项</td><td>适用场景</td><td>备注</td></tr><tr class=""><td>A800</td><td>A100</td><td>NVLink带宽：600→400GB/s</td><td>训练（有降级）</td><td>存量大</td></tr><tr class="alt-row"><td>H800</td><td>H100</td><td>NVLink带宽：900→400GB/s</td><td>训练（有降级）</td><td>供货减少</td></tr><tr class=""><td>H20</td><td>H100</td><td>算力降低，但96GB大显存</td><td>推理主力</td><td>2025年被禁，影响大</td></tr><tr class="alt-row"><td>L20</td><td>L40S</td><td>PCIe卡，48GB，推理优化</td><td>推理性价比</td><td>仍可供货</td></tr></table>
+
+<div class="warn-box">⚠  2025年4月，美国无限期禁止英伟达 H20 对华出口，对中国推理市场造成重大影响，国产昇腾推理适配需求因此加速。售前需实时跟踪出口管制动态，这直接影响方案可行性。</div>
+
+<h2 id="ch4-s8">2.8  GPU 服务器 CPU 配置规格（Intel / AMD）</h2>
+<p>在智算售前方案中，客户常把全部注意力放在 GPU 选型上，而忽视了 CPU 的搭配。实际上，GPU 服务器中 CPU 虽然不直接参与大模型的核心矩阵运算，但承担着数据加载与预处理、推理请求调度、KV Cache 管理、框架运行时调度、以及 PCIe 数据搬运等关键任务。CPU 核心数不足或内存带宽不够，会导致 GPU 在等待数据时出现"数据饥饿"，实际 MFU 大幅下降。因此，针对不同代际的英伟达专业卡，选配正确的 CPU 平台是售前方案的必要环节。</p>
+
+<h3>2.8.1  CPU 在 GPU 服务器中的核心职责</h3>
+<ul class="custom-list">
+<li class="bullet">数据加载与预处理：训练阶段从存储读取数据样本（图像解码、文本分词、数据增强），CPU 核心数直接决定 DataLoader 的并行能力。经验法则——每个 GPU 至少分配 4~8 个 CPU 物理核用于数据加载，否则 GPU 利用率受限。</li>
+<li class="bullet">推理请求调度与批处理：推理服务（如 vLLM、TGI）的请求队列管理、动态 Batching、Token 分发均由 CPU 完成。高并发场景下 CPU 核心不足会成为吞吐瓶颈。</li>
+<li class="bullet">PCIe 数据搬运：PCIe 形态的 GPU（如 L40S、L20、RTX 系列）通过 PCIe 与 CPU 通信，CPU 的 PCIe 通道数和带宽直接影响数据传输效率。SXM 形态的 GPU 通过 NVSwitch 互联，CPU 主要负责控制平面。</li>
+<li class="bullet">内存容量管理：CPU 侧 DDR 内存用于存放操作系统、框架、数据缓存。训练场景下建议 CPU 内存 ≥ GPU 总显存的 1.5~2 倍；推理场景下建议 CPU 内存 ≥ GPU 总显存的 1~1.5 倍。</li>
+</ul>
+
+<h3>2.8.2  各代际 GPU 服务器的标准 CPU 配置</h3>
+<p>下表汇总了英伟达各代际专业卡在主流 OEM 服务器（DGX/HGX 参考设计及浪潮、联想、新华三等国产 OEM）中的标准 CPU 配置，涵盖 Intel 和 AMD 两大平台，并补充 CPU 基础频率与整机参考报价（2025 年国内市场价，含税）：</p>
+<table class="data-table"><tr class="header-row"><td>GPU 型号</td><td>服务器形态</td><td>标准 CPU 配置</td><td>CPU 平台</td><td>核心数×路数</td><td>基础频率</td><td>典型内存配置</td><td>整机参考报价</td></tr><tr class=""><td>A100（SXM4）</td><td>DGX/HGX A100 8卡</td><td>Intel Xeon Platinum 8358 / 8380</td><td>Intel Ice Lake (ICX)</td><td>32C~40C ×2</td><td>2.6 GHz / 2.3 GHz</td><td>1~2TB DDR4-3200</td><td>¥90~130万/台</td></tr><tr class="alt-row"><td>A100（SXM4）</td><td>DGX A100 原厂</td><td>AMD EPYC 7742 / 7V13</td><td>AMD Rome (Zen 2)</td><td>64C ×2</td><td>2.25 GHz / 2.2 GHz</td><td>1~2TB DDR4-3200</td><td>¥100~140万/台</td></tr><tr class=""><td>A100（PCIe）</td><td>PCIe 4.0 服务器</td><td>Intel Xeon Gold 6338 / Platinum 8352V</td><td>Intel Ice Lake (ICX)</td><td>24C~32C ×2</td><td>2.0 GHz / 2.1 GHz</td><td>512GB~1TB DDR4</td><td>¥50~80万/台</td></tr><tr class="alt-row"><td>H100（SXM5）</td><td>DGX/HGX H100 8卡</td><td>Intel Xeon Platinum 8480C / 8480+</td><td>Intel Sapphire Rapids (SPR)</td><td>48C~56C ×2</td><td>2.0 GHz / 2.1 GHz</td><td>2TB DDR5-4800</td><td>¥220~280万/台</td></tr><tr class=""><td>H100（SXM5）</td><td>HGX H100（AMD 版）</td><td>AMD EPYC 9654 / 9474F</td><td>AMD Genoa (Zen 4)</td><td>48C~96C ×2</td><td>2.4 GHz / 3.65 GHz</td><td>2TB DDR5-4800</td><td>¥230~290万/台</td></tr><tr class="alt-row"><td>H100（PCIe）</td><td>PCIe 5.0 服务器</td><td>Intel Xeon Gold 6448Y / Platinum 8454H</td><td>Intel Sapphire Rapids (SPR)</td><td>24C~32C ×2</td><td>2.1 GHz / 2.9 GHz</td><td>1~2TB DDR5</td><td>¥80~150万/台</td></tr><tr class=""><td>H200（SXM5）</td><td>HGX H200 8卡</td><td>Intel Xeon Platinum 8480C / 8568Y+</td><td>Intel SPR / Emerald Rapids</td><td>48C~56C ×2</td><td>2.0 GHz / 2.7 GHz</td><td>2~4TB DDR5-5600</td><td>¥280~360万/台</td></tr><tr class="alt-row"><td>H200（SXM5）</td><td>HGX H200（AMD 版）</td><td>AMD EPYC 9684X / 9754</td><td>AMD Genoa-X / Bergamo</td><td>64C~96C ×2</td><td>2.55 GHz / 2.25 GHz</td><td>2~4TB DDR5-4800</td><td>¥290~370万/台</td></tr><tr class=""><td>B200（SXM7）</td><td>HGX B200 8卡</td><td>Intel Xeon Platinum 8570 / 8580</td><td>Intel Emerald Rapids (EMR)</td><td>56C~64C ×2</td><td>2.1 GHz / 2.3 GHz</td><td>4~6TB DDR5-5600</td><td>¥480~600万/台</td></tr><tr class="alt-row"><td>B200（SXM7）</td><td>HGX B200（AMD 版）</td><td>AMD EPYC 9755 / 9754S</td><td>AMD Turin (Zen 5)</td><td>64C~128C ×2</td><td>2.1 GHz / 2.4 GHz</td><td>4~6TB DDR5-6400</td><td>¥490~620万/台</td></tr><tr class=""><td>GB200</td><td>NVL72 机柜</td><td>NVIDIA Grace CPU（72核 ARM）</td><td>ARM Neoverse V2</td><td>72C ×36（每模块1颗）</td><td>~3.0 GHz（ARM）</td><td>480GB LPDDR5X（每模块）</td><td>¥2500~3500万/柜</td></tr><tr class="alt-row"><td>L40S</td><td>PCIe 5.0 推理服务器</td><td>Intel Xeon Gold 6448Y / Platinum 8458C</td><td>Intel Sapphire Rapids (SPR)</td><td>24C~40C ×1~2</td><td>2.1 GHz / 2.8 GHz</td><td>512GB~1TB DDR5</td><td>¥30~60万/台</td></tr><tr class=""><td>L20</td><td>PCIe 5.0 推理服务器</td><td>Intel Xeon Gold 6448Y / Platinum 8458C</td><td>Intel Sapphire Rapids (SPR)</td><td>24C~32C ×1~2</td><td>2.1 GHz / 2.8 GHz</td><td>512GB~1TB DDR5</td><td>¥25~50万/台</td></tr><tr class="alt-row"><td>RTX 4090 / 6000 Ada</td><td>PCIe 4.0/5.0 工作站</td><td>Intel Xeon W-2400/3400 或 Core i9</td><td>Intel Sapphire Rapids-WS</td><td>12C~24C ×1~2</td><td>2.2~3.2 GHz</td><td>128~512GB DDR5</td><td>¥6~15万/台</td></tr></table>
+
+<h3>2.8.3  Intel 与 AMD 平台对比与选型</h3>
+<p>GPU 服务器中 Intel 和 AMD 两大 CPU 平台各有优势，选型时需结合客户已有 IT 资产、软件兼容性、性价比综合判断：</p>
+<table class="data-table"><tr class="header-row"><td>对比维度</td><td>Intel Xeon（Sapphire Rapids / Emerald Rapids）</td><td>AMD EPYC（Genoa / Turin）</td></tr><tr class=""><td>核心数上限</td><td>最多 64C（Emerald Rapids）</td><td>最多 128C（Turin / Bergamo），核心数领先</td></tr><tr class="alt-row"><td>单核性能</td><td>较强，指令集丰富（AVX-512 等）</td><td>稍弱于同代 Intel，但多核总吞吐领先</td></tr><tr class=""><td>内存通道</td><td>8 通道 DDR5-5600（SPR/EMR）</td><td>12 通道 DDR5-4800/6400（Genoa/Turin），内存带宽优势明显</td></tr><tr class="alt-row"><td>PCIe 通道</td><td>80 条 PCIe 5.0（SPR/EMR）</td><td>128 条 PCIe 5.0（Genoa/Turin），多卡 PCIe 服务器优势大</td></tr><tr class=""><td>软件生态兼容性</td><td>最佳，AI 框架与库默认适配 Intel</td><td>兼容性良好，极少数库需重新编译验证</td></tr><tr class="alt-row"><td>GPU 互联影响</td><td>SXM 形态下 CPU 仅控制平面，对 GPU 训练性能无实质影响</td><td>同左，SXM 形态下 Intel/AMD 差异可忽略</td></tr><tr class=""><td>PCIe 形态影响</td><td>PCIe 通道数较少，4 卡以上可能需 PLX 桥接</td><td>PCIe 通道充足，更适合多卡 PCIe 服务器</td></tr><tr class="alt-row"><td>功耗（双路 TDP）</td><td>约 700W（2×350W）</td><td>约 720W~800W（2×360~400W），略高</td></tr><tr class=""><td>采购成本</td><td>偏高，品牌溢价</td><td>同核心数下性价比更优，约低 15~25%</td></tr><tr class="alt-row"><td>推荐场景</td><td>客户已有 Intel 生态、对兼容性要求高</td><td>多卡 PCIe 服务器、追求核心数和内存带宽性价比</td></tr></table>
+
+<div class="tip-box">💡  实战提示：在 SXM 形态的 8 卡训练服务器中（如 HGX H100/H200/B200），GPU 之间通过 NVLink/NVSwitch 全互联，CPU 选 Intel 还是 AMD 对训练性能影响极小，可按客户偏好和成本决定。但在 PCIe 形态的多卡推理服务器中（如 4~8 张 L40S/L20），AMD EPYC 凭借 128 条 PCIe 5.0 通道的优势，可以提供更充足的 GPU-CPU 直连带宽，避免 PLX 桥接带来的带宽分摊，是更优选择。</div>
+
+<h3>2.8.4  Intel 至强 CPU 型号详解（符合智算服务器规格的选型推荐）</h3>
+<p>售前方案中，客户常对 CPU 选型提出明确的硬性指标——如双路配置、第 4 代或更先进架构、单颗核心数 ≥ 48 核、基频 ≥ 2.1 GHz。以下涵盖第4代（Sapphire Rapids）和第5代（Emerald Rapids）符合上述要求的型号，是当前主流智算服务器（HGX H100/H200/B200 等）的标准 CPU 选型：</p>
+<table class="data-table"><tr class="header-row"><td>处理器系列</td><td>具体型号</td><td>核心/线程数</td><td>基础频率</td><td>最大睿频</td><td>L3 缓存</td><td>TDP 功耗</td><td>架构代际</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8480C</td><td>48C / 96T</td><td>2.0 GHz</td><td>3.8 GHz</td><td>105 MB</td><td>350W</td><td>第4代 Sapphire Rapids</td></tr><tr class="alt-row"><td>至强铂金 Platinum</td><td>Xeon 8480+</td><td>56C / 112T</td><td>2.0 GHz</td><td>3.8 GHz</td><td>105 MB</td><td>350W</td><td>第4代 Sapphire Rapids</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8470</td><td>52C / 104T</td><td>2.1 GHz</td><td>3.6 GHz</td><td>105 MB</td><td>350W</td><td>第4代 Sapphire Rapids</td></tr><tr class="alt-row"><td>至强金牌 Gold</td><td>Xeon 6448Y</td><td>32C / 64T</td><td>2.1 GHz</td><td>3.7 GHz</td><td>60 MB</td><td>270W</td><td>第4代 Sapphire Rapids</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8580</td><td>60C / 120T</td><td>2.0 GHz *</td><td>4.0 GHz</td><td>300 MB</td><td>350W</td><td>第5代 Emerald Rapids</td></tr><tr class="alt-row"><td>至强铂金 Platinum</td><td>Xeon 8570</td><td>56C / 112T</td><td>2.1 GHz</td><td>4.0 GHz</td><td>262.5 MB</td><td>350W</td><td>第5代 Emerald Rapids</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8568Y+</td><td>48C / 96T</td><td>2.3 GHz</td><td>4.0 GHz</td><td>300 MB</td><td>330W</td><td>第5代 Emerald Rapids</td></tr><tr class="alt-row"><td>至强金牌 Gold</td><td>Xeon 6548Y+</td><td>48C / 96T</td><td>2.5 GHz</td><td>4.1 GHz</td><td>60 MB</td><td>330W</td><td>第5代 Emerald Rapids</td></tr></table>
+<p>* 注：Xeon 8480C/8480+/8580 基频为 2.0 GHz，略低于 2.1 GHz 要求，但在实际智算方案中常作为高性能备选。若严格执行 2.1 GHz 标准，第4代应选 8470（52C/2.1GHz），第5代应选 8570 或 8568Y+。</p>
+
+<h4>（1）第4代至强可扩展处理器（Sapphire Rapids）</h4>
+<p>第4代至强（Sapphire Rapids，2023 年量产）是 HGX H100 服务器的原厂标配 CPU，也是当前存量最大的智算服务器 CPU。支持 8 通道 DDR5-4800 内存和 80 条 PCIe 5.0 通道，引入了 AMX（高级矩阵扩展）指令集，可加速 CPU 侧的推理计算。相比第5代，主要差距在 L3 缓存（105MB vs 300MB）和内存速率（DDR5-4800 vs DDR5-5600）。</p>
+<ul class="custom-list">
+<li class="bullet">8480C（48C/2.0GHz）：HGX H100 8卡服务器最常见标配，核心数与 H100 数量匹配，性价比高。虽基频略低 0.1GHz，但在 SXM 形态下 CPU 仅承担控制平面，影响可忽略。</li>
+<li class="bullet">8480+（56C/2.0GHz）：8480C 的 56 核版本，适合数据加载密集型训练场景，是部分 OEM 的高配选型。</li>
+<li class="bullet">8470（52C/2.1GHz）：基频刚好满足 2.1GHz 要求的型号，是第4代中唯一严格符合指标的铂金型号。</li>
+<li class="bullet">6448Y（32C/2.1GHz）：金牌系列，核心数偏少（仅 32C），适合 PCIe 形态的推理服务器（如 L40S 单卡/双卡），不建议用于 8 卡训练服务器。</li>
+</ul>
+
+<h4>（2）第5代至强可扩展处理器（Emerald Rapids）</h4>
+<p>第5代至强（2024 年量产）是目前智算服务器（如 HGX H200/B200）的主力配机 CPU。相比第4代，它显著增大了三级缓存（L3 Cache 从 105MB 提升至最高 300MB，约 2.9×），这对大模型推理中的 KV Cache 管理和数据调度非常有益。内存速率也从 DDR5-4800 升级到 DDR5-5600（带宽提升约 17%）。</p>
+<ul class="custom-list">
+<li class="bullet">铂金 8500 系列：针对多路服务器优化，支持最高 64 核。其中 8570（56C/2.1GHz）和 8568Y+（48C/2.3GHz）是最符合要求的型号，平衡了核心数与高主频。</li>
+<li class="bullet">金牌 6500 系列：6548Y+（48C/2.5GHz）是性价比极高的选择，虽然缓存少于铂金系列，但其 2.5 GHz 的高基频在数据预处理任务时表现强劲。</li>
+</ul>
+
+<h4>（3）第6代至强处理器（Granite Rapids，2025/2026 趋势）</h4>
+<p>Intel Xeon 6 系列（架构代号 Granite Rapids）已发布并进入成熟期，采用全新命名规则：</p>
+<ul class="custom-list">
+<li class="bullet">Xeon 6P（Performance-cores）：如 Xeon 6900P 系列，核心数可突破 72 核甚至 128 核，基频普遍维持在 2.0~2.8 GHz 之间。</li>
+<li class="bullet">若项目追求"更先进架构"，应咨询供应商关于 Xeon 6972P 或类似 6 系列高性能型号的供货情况。</li>
+</ul>
+
+<h4>（4）第4代 vs 第5代选型建议</h4>
+<ul class="custom-list">
+<li class="bullet">H100 服务器：第4代 8480C 是原厂标配，存量最大、供货稳定、价格已回落，是当前性价比最高的 H100 配机方案。若客户追求更高缓存和内存带宽，可升级到第5代 8568Y+（L3 缓存 2.9×，DDR5-5600）。</li>
+<li class="bullet">H200/B200 服务器：建议直接采用第5代 8568Y+ 或 8570。大缓存对 H200（141GB 大显存）和 B200（192GB 大显存）的 KV Cache 管理收益明显，第4代 105MB 缓存相对偏小。</li>
+<li class="bullet">内存带宽匹配：第4代支持 DDR5-4800，第5代支持 DDR5-5600，建议配齐 8 通道或 16 通道（双路），确保 CPU 侧数据吞吐能跟上 GPU 计算节奏。</li>
+<li class="bullet">功耗预留：高性能 CPU 的 TDP 普遍在 330W~350W，双路配置需预留至少 700W 的散热和供电冗余。第4代与第5代 TDP 基本持平，散热设计无需额外调整。</li>
+<li class="bullet">选型优先级：核心数优先选 8570（56C）或 8480+（56C），主频优先选 8568Y+（2.3GHz），预算有限选 8480C（第4代性价比）或 6548Y+（第5代性价比）。</li>
+</ul>
+
+<h3>2.8.5  AMD EPYC CPU 型号详解（对标 Intel 的选型推荐）</h3>
+<p>针对同样的硬性指标（双路配置、当代先进架构、单颗核心数 ≥ 48 核、基频 ≥ 2.1 GHz），AMD EPYC 9004/9005 系列有更丰富的型号可选，且在核心数、内存通道、PCIe 通道数上具备结构性优势：</p>
+<table class="data-table"><tr class="header-row"><td>处理器系列</td><td>具体型号</td><td>核心/线程数</td><td>基础频率</td><td>最大加速频率</td><td>L3 缓存</td><td>TDP 功耗</td><td>架构代际</td></tr><tr class=""><td>EPYC 9004X（Genoa-X）</td><td>EPYC 9684X</td><td>96C / 192T</td><td>2.55 GHz</td><td>3.7 GHz</td><td>1152 MB（3D V-Cache）</td><td>400W</td><td>第4代 Zen 4</td></tr><tr class="alt-row"><td>EPYC 9004（Genoa）</td><td>EPYC 9654</td><td>96C / 192T</td><td>2.4 GHz</td><td>3.7 GHz</td><td>384 MB</td><td>360W</td><td>第4代 Zen 4</td></tr><tr class=""><td>EPYC 9004F（Genoa-F）</td><td>EPYC 9474F</td><td>48C / 96T</td><td>3.65 GHz</td><td>4.8 GHz</td><td>192 MB</td><td>400W</td><td>第4代 Zen 4</td></tr><tr class="alt-row"><td>EPYC 9005（Turin）</td><td>EPYC 9755</td><td>128C / 256T</td><td>2.1 GHz</td><td>3.7 GHz</td><td>512 MB</td><td>400W</td><td>第5代 Zen 5</td></tr><tr class=""><td>EPYC 9005（Turin）</td><td>EPYC 9754</td><td>128C / 256T</td><td>2.25 GHz</td><td>3.1 GHz</td><td>512 MB</td><td>400W</td><td>第5代 Zen 5</td></tr><tr class="alt-row"><td>EPYC 9005（Turin）</td><td>EPYC 9575F</td><td>64C / 128T</td><td>3.3 GHz</td><td>5.0 GHz</td><td>256 MB</td><td>400W</td><td>第5代 Zen 5</td></tr></table>
+
+<h4>（1）AMD EPYC 9004 系列（Genoa / Genoa-X / Bergamo）</h4>
+<p>第4代 EPYC（Zen 4 架构）是当前主流智算服务器中与 Intel 第5代至强直接对标的 AMD 平台，支持 12 通道 DDR5-4800 内存和 128 条 PCIe 5.0 通道：</p>
+<ul class="custom-list">
+<li class="bullet">9654（96C/2.4GHz）：标准版 Genoa，核心数是 Intel 8570（56C）的 1.7×，适合数据加载密集型训练场景，是 HGX H100 AMD 版的主力选型。</li>
+<li class="bullet">9684X（96C/2.55GHz）：Genoa-X 版本，搭载 3D V-Cache 技术，L3 缓存高达 1152MB（是 Intel 8580 的 3.8×），对大模型推理中的 KV Cache 缓存和数据调度极为有利。</li>
+<li class="bullet">9474F（48C/3.65GHz）：Genoa-F 高频版，基频 3.65GHz 远超 Intel 同核心数型号（6548Y+ 的 2.5GHz），适合对单核性能敏感的推理调度场景，是 AMD 对标 Intel 8568Y+ 的高频替代方案。</li>
+</ul>
+
+<h4>（2）AMD EPYC 9005 系列（Turin，Zen 5，2025/2026 趋势）</h4>
+<p>第5代 EPYC（Zen 5 架构，代号 Turin）已发布并逐步进入商用，是对标 Intel Xeon 6（Granite Rapids）的下一代产品，核心数上限提升至 128~192 核：</p>
+<ul class="custom-list">
+<li class="bullet">9755（128C/2.1GHz）：Zen 5 旗舰，核心数是 Intel 8580（60C）的 2.1×，基频 2.1GHz 刚好满足要求，支持 DDR5-6400（Intel EMR 为 DDR5-5600），内存带宽领先约 14%。</li>
+<li class="bullet">9754（128C/2.25GHz）：与 9755 核心数相同但基频略高，适合对主频稍敏感的场景。</li>
+<li class="bullet">9575F（64C/3.3GHz）：Turin 高频版，最大加速频率达 5.0GHz（业界最高），单核性能已追平甚至反超同代 Intel，适合推理调度主频敏感场景。</li>
+</ul>
+
+<h4>（3）AMD 售前选型建议</h4>
+<ul class="custom-list">
+<li class="bullet">核心数优先：选 9654（96C）或 9755（128C），在数据加载密集的训练场景中，多核并行能力远超 Intel 同代产品。</li>
+<li class="bullet">主频优先：选 9474F（3.65GHz）或 9575F（3.3GHz/加速 5.0GHz），基频远超 Intel 对标型号，适合推理调度主频敏感场景。</li>
+<li class="bullet">缓存优先：选 9684X（1152MB L3），3D V-Cache 对大模型 KV Cache 管理有结构性优势，是 Intel 平台无法提供的差异化能力。</li>
+<li class="bullet">PCIe 通道优势：AMD EPYC 全系 128 条 PCIe 5.0（Intel 为 80 条），在 PCIe 形态多卡推理服务器中可提供更充足的 GPU 直连带宽，避免 PLX 桥接。</li>
+<li class="bullet">功耗预留：AMD 高性能型号 TDP 普遍为 400W（Intel 为 330~350W），双路配置需预留约 800W 散热和供电冗余，略高于 Intel。</li>
+</ul>
+
+<div class="tip-box">💡  实战对比：Intel Xeon 8568Y+ vs AMD EPYC 9474F——两者均为 48 核、面向推理主频敏感场景。Intel 基频 2.3GHz、L3 缓存 300MB、TDP 330W；AMD 基频 3.65GHz、L3 缓存 192MB、TDP 400W。AMD 基频领先 59% 但功耗高 21%、缓存少 36%。选型取决于客户更看重主频（选 AMD）还是缓存和功耗（选 Intel）。若客户已有 Intel 生态且兼容性要求高，优先 Intel；若追求极致主频和 PCIe 通道数，优先 AMD。</div>
+
+<h3>2.8.6  Intel 与 AMD CPU 价格范围对比</h3>
+<p>CPU 采购成本是智算服务器整机报价的重要组成部分（双路 CPU 通常占整机成本的 8%~15%）。以下为 2025 年国内市场主流 Intel 至强与 AMD EPYC 型号的散件价格范围对比，便于售前快速估算 BOM 成本：</p>
+<table class="data-table"><tr class="header-row"><td>厂商</td><td>系列</td><td>代表型号</td><td>核心数</td><td>基础频率</td><td>散件参考价（单颗）</td><td>双路成本</td><td>性价比定位</td></tr><tr class=""><td>Intel</td><td>至强金牌 Gold 6400（第4代）</td><td>6448Y</td><td>32C</td><td>2.1 GHz</td><td>¥1.5~2.2万</td><td>¥3.0~4.4万</td><td>第4代入门，推理服务器可用</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8400（第4代）</td><td>8470</td><td>52C</td><td>2.1 GHz</td><td>¥3.8~4.8万</td><td>¥7.6~9.6万</td><td>第4代基频达标，H100 高配</td></tr><tr class=""><td>Intel</td><td>至强铂金 Platinum 8400（第4代）</td><td>8480C</td><td>48C</td><td>2.0 GHz</td><td>¥4.0~5.0万</td><td>¥8.0~10.0万</td><td>第4代主力，H100 原厂标配，存量最大</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8400（第4代）</td><td>8480+</td><td>56C</td><td>2.0 GHz</td><td>¥4.5~5.8万</td><td>¥9.0~11.6万</td><td>第4代高核心数，数据加载密集型</td></tr><tr class=""><td>Intel</td><td>至强金牌 Gold 6500（第5代）</td><td>6548Y+</td><td>48C</td><td>2.5 GHz</td><td>¥2.8~3.5万</td><td>¥5.6~7.0万</td><td>第5代性价比首选，主频高缓存少</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8500（第5代）</td><td>8568Y+</td><td>48C</td><td>2.3 GHz</td><td>¥4.5~5.5万</td><td>¥9.0~11.0万</td><td>第5代主频与缓存均衡，H200/B200 主力</td></tr><tr class=""><td>Intel</td><td>至强铂金 Platinum 8500（第5代）</td><td>8570</td><td>56C</td><td>2.1 GHz</td><td>¥5.5~7.0万</td><td>¥11.0~14.0万</td><td>第5代核心数优先，大缓存</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8500（第5代）</td><td>8580</td><td>60C</td><td>2.0 GHz</td><td>¥7.0~9.0万</td><td>¥14.0~18.0万</td><td>第5代旗舰，核心数最大</td></tr><tr class=""><td>Intel</td><td>至强6（Granite Rapids）</td><td>6972P（72C）</td><td>72C</td><td>~2.4 GHz</td><td>¥8.0~12.0万</td><td>¥16.0~24.0万</td><td>下一代，价格偏高供应有限</td></tr><tr class="alt-row"><td>AMD</td><td>EPYC 9004F（Genoa-F）</td><td>9474F</td><td>48C</td><td>3.65 GHz</td><td>¥3.8~4.8万</td><td>¥7.6~9.6万</td><td>高频版，对标 Intel 8568Y+，主频领先</td></tr><tr class=""><td>AMD</td><td>EPYC 9004（Genoa）</td><td>9654</td><td>96C</td><td>2.4 GHz</td><td>¥5.0~6.5万</td><td>¥10.0~13.0万</td><td>核心数翻倍，训练数据加载优势</td></tr><tr class="alt-row"><td>AMD</td><td>EPYC 9004X（Genoa-X）</td><td>9684X</td><td>96C</td><td>2.55 GHz</td><td>¥7.5~9.5万</td><td>¥15.0~19.0万</td><td>3D V-Cache 1152MB，推理缓存优势</td></tr><tr class=""><td>AMD</td><td>EPYC 9005（Turin）</td><td>9755</td><td>128C</td><td>2.1 GHz</td><td>¥6.5~8.5万</td><td>¥13.0~17.0万</td><td>Zen 5 旗舰，核心数最大</td></tr><tr class="alt-row"><td>AMD</td><td>EPYC 9005（Turin）</td><td>9575F</td><td>64C</td><td>3.3 GHz</td><td>¥4.5~6.0万</td><td>¥9.0~12.0万</td><td>Turin 高频版，加速 5.0GHz 业界最高</td></tr></table>
+
+<h4>价格规律与选型经济性分析</h4>
+<ul class="custom-list">
+<li class="bullet">同核心数对比（48C）：Intel 8480C（第4代，¥4.0~5.0万）存量最大、供货稳定；Intel 6548Y+（第5代，¥2.8~3.5万）最便宜但缓存仅 60MB；Intel 8568Y+（第5代，¥4.5~5.5万）缓存 300MB；AMD 9474F（¥3.8~4.8万）主频 3.65GHz 领先。预算优先选 6548Y+，存量/稳定优先选 8480C，主频优先选 9474F，均衡选 8568Y+。</li>
+<li class="bullet">第4代 vs 第5代价格梯度：同 48 核下，第4代 8480C（¥4.0~5.0万）vs 第5代 8568Y+（¥4.5~5.5万），第5代仅贵约 10~12%，但 L3 缓存提升 2.9×（105MB→300MB）、内存速率提升 17%（DDR5-4800→5600），升级性价比明显。</li>
+<li class="bullet">核心数性价比：AMD 9654（96C/¥5.0~6.5万）每核成本约 ¥520~680，Intel 8580（60C/¥7.0~9.0万）每核成本约 ¥1160~1500，AMD 在多核性价比上领先约 50~60%。</li>
+<li class="bullet">缓存溢价：AMD 9684X 的 3D V-Cache 版本相比同核心数 9654 溢价约 50%，但 L3 缓存从 384MB 增至 1152MB（3×），对大模型推理 KV Cache 管理有结构性收益。Intel 第4代与第5代的缓存差距（105MB→300MB）也是代际升级的核心溢价点。</li>
+<li class="bullet">代际溢价：第6代 Intel Xeon 6（6972P）相比第5代 8580 溢价约 15~35%，AMD Turin（9755）相比 Genoa（9654）核心数翻倍但价格仅高 30%，AMD 代际升级性价比更优。</li>
+<li class="bullet">整机成本占比：双路高性能 CPU 占整机成本的 8%~15%。以 HGX H100 8卡整机（¥220~280万）为例，双路第4代 8480C（¥8~10万）约占 3.5%；双路第5代 8568Y+（¥9~11万）约占 4%；双路 AMD 9654（¥10~13万）约占 5%，差异对整机报价影响较小。</li>
+</ul>
+
+<div class="warn-box">⚠  以上价格为 2025 年国内散件参考价（含税），实际采购价受配额、交期、渠道、批量折扣影响波动较大。OEM 整机（如浪潮、联想）的 CPU 成本通常低于散件价 10~20%。售前报价时应以供应商最新正式报价为准，此处仅用于快速估算和方案对比。</div>
+
+<h3>2.8.7  GB200 的特殊架构：Grace CPU 替代 x86</h3>
+<p>与 A100/H100/H200/B200 服务器采用 Intel 或 AMD x86 CPU 不同，GB200 超芯片集成了 NVIDIA 自研的 Grace CPU（72 核 ARM Neoverse V2），不再使用 x86 平台。Grace CPU 通过 NVLink-C2C（900 GB/s）与 B200 GPU 实现内存一致性互联，CPU 与 GPU 共享统一地址空间，数据传输无需经过 PCIe，从根本上消除了传统 x86 架构中 CPU-GPU 间的 PCIe 瓶颈。</p>
+<p>Grace CPU 的关键规格：72 核 ARM Neoverse V2、480GB LPDDR5X（带宽 512 GB/s）、与 2×B200 共享 864GB 统一寻址空间。这一架构使 GB200 在大模型推理（尤其需要 CPU 参与调度的多并发场景）中相比传统 x86 + GPU 方案有结构性优势，但也意味着软件生态需要适配 ARM 架构。</p>
+
+<h3>2.8.8  CPU 配置快速估算口诀</h3>
+<p>售前现场快速估算 GPU 服务器的 CPU 核心数需求，可使用以下公式：</p>
+<p class="highlight">训练服务器：CPU 总核心数 ≥ GPU 数 × 6~8（每个 GPU 分配 6~8 核用于数据加载与预处理）<br>推理服务器：CPU 总核心数 ≥ GPU 数 × 4~6（推理请求调度和 Token 分发开销较低）<br>CPU 内存 ≥ GPU 总显存 × 1.5（训练）或 × 1.0~1.5（推理）</p>
+<div class="warn-box">⚠  注意：以上为经验估算值，实际需求与框架（PyTorch/vLLM/TensorRT-LLM）、数据格式、并发模型强相关。大模型推理（如 70B+ 参数）在多并发下 CPU 消耗会显著上升，建议留 30% 余量。</div>
+
+<h1 id="ch5">第三章　国产 AI 芯片硬件详解</h1>
+<p>2025 年中国 AI 芯片市场格局：英伟达 70%，华为昇腾 23%，寒武纪/海光/沐曦等合计约 7%。在出口管制持续升级的背景下，国产芯片在政务、金融、信创等强合规场景的落地明显加速，售前必须能够流利讲解国产芯片的实力、差距、和适用边界。</p>
+<h2 id="ch5-s1">3.1  华为昇腾系列——国产领军</h2>
+<h3>3.1.1  昇腾910B——国产训练/推理主力</h3>
+<p>昇腾 910B 是华为基于自研达芬奇（Da Vinci）架构设计、采用 7nm 制程（SMIC/台积电代工）的 AI 处理器，是目前国产训练市场的主力机型，也是 Atlas 800T A2 训练服务器的核心。</p>
+<table class="data-table"><tr class="header-row"><td>规格项</td><td>参数值</td><td>说明</td></tr><tr class=""><td>架构</td><td>达芬奇架构</td><td>华为自研，矩阵计算专用 Cube 单元</td></tr><tr class="alt-row"><td>制造工艺</td><td>7nm（SMIC）</td><td>相比 H100 的 4nm 落后约 1~1.5 代</td></tr><tr class=""><td>显存容量</td><td>64 GB HBM2e</td><td>H200 141GB 的 45%，是主要容量短板</td></tr><tr class="alt-row"><td>显存带宽</td><td>约 1.2–3.2 TB/s</td><td>不同文献存在差异，约为 H100 的 40–95%</td></tr><tr class=""><td>FP16 算力</td><td>约 320 TFLOPS</td><td>为 H100（990T）的约 32%（单卡对比）</td></tr><tr class="alt-row"><td>INT8 算力</td><td>约 280–640 TOPS</td><td>推理场景能效比较好</td></tr><tr class=""><td>节点互联</td><td>8×100G 或 8×200G RoCEv2</td><td>跨机互联，需搭配 RoCE 交换机</td></tr><tr class="alt-row"><td>机内互联</td><td>HCCS（华为缓存一致性总线）</td><td>8卡机内全互联，带宽低于 NVLink v4</td></tr><tr class=""><td>整机功耗</td><td>约 400W（单卡）</td><td>约为 H100（700W）的 57%，能效比优势明显</td></tr><tr class="alt-row"><td>软件生态</td><td>CANN / MindSpore / 昇思</td><td>兼容 PyTorch（昇腾版），迁移有一定成本</td></tr></table>
+
+<div class="tip-box">💡  910B 在推理侧的单位 Token 成本（考虑能效比和国产价格）在很多政务/金融场景比 H100 更具竞争力。</div>
+<h3>3.1.2  昇腾910C——超节点核心</h3>
+<p>昇腾 910C 是 910B 的性能大幅提升版，采用 Chiplet（小芯片）封装技术，HBM 容量扩展至约 128GB，FP16 算力约 750–800 TFLOPS（讯飞等企业实测约为 H100 的 80%），是华为 CloudMatrix 384 超节点的核心计算单元。</p>
+<ul class="custom-list">
+<li class="bullet">单卡 HBM 约 128GB（8×16GB HBM2e颗粒），相比 910B 翻倍，长上下文推理能力大幅改善。</li>
+<li class="bullet">支持 UB（Universal Bus，华为超节点总线）互联，单 NPU Scale-Up 带宽可达 2.8 Tbps，支持 384 颗 NPU 的超节点共享内存地址空间。</li>
+<li class="bullet">910C 不支持 FP8/FP4 低精度格式，这是相比 H100/B200 的技术差距之一，影响推理侧的极致效率。</li>
+<li class="bullet">910C 功耗约 250W，相比 H100 的 700W 仍有显著的每卡功耗优势（但 CloudMatrix 384 系统整体功耗约 600kW，是 NVL72 的 4.1 倍）。</li>
+</ul>
+<h2 id="ch5-s2">3.2  华为 CloudMatrix 384 超节点</h2>
+<p>CloudMatrix 384（CM384）是华为 2025 年发布的 Atlas 900 A3 SuperPoD 解决方案，也是目前业界最大规模的商用超节点。其核心理念是&quot;全对等（Peer-to-Peer）架构&quot;——彻底抛弃传统以 CPU 为中心的冯诺依曼架构，用高速 UB 总线把 384 颗 NPU + 192 颗鲲鹏 CPU 点对点互联，消除传统中转环节。</p>
+<table class="data-table"><tr class="header-row"><td>参数</td><td>CloudMatrix 384</td><td>NVIDIA NVL72</td><td>对比倍数</td></tr><tr class=""><td>NPU/GPU 数量</td><td>384 颗昇腾 910C</td><td>72 颗 GB200</td><td>CM384 芯片数量 5.3×</td></tr><tr class="alt-row"><td>物理规模</td><td>16 机柜（12计算+4网络）</td><td>2 标准机柜</td><td>CM384 占地约 8×</td></tr><tr class=""><td>BF16 算力</td><td>300 PFLOPS</td><td>180 PFLOPS</td><td>CM384 算力 1.7×</td></tr><tr class="alt-row"><td>HBM 总容量</td><td>49.2 TB</td><td>13.8 TB</td><td>CM384 容量 3.6×</td></tr><tr class=""><td>HBM 总带宽</td><td>1229 TB/s</td><td>576 TB/s</td><td>CM384 带宽 2.1×</td></tr><tr class="alt-row"><td>Scale-Up 每NPU带宽</td><td>2.8 Tbps（光互联）</td><td>7.2 Tbps（铜缆）</td><td>NVL72 单卡带宽更高</td></tr><tr class=""><td>系统总功耗</td><td>~600 kW</td><td>~145 kW</td><td>CM384 功耗 4.1×</td></tr><tr class="alt-row"><td>每TFLOP功耗</td><td>~2.0 W/T</td><td>~0.81 W/T</td><td>NVL72 能效约2.5×优</td></tr><tr class=""><td>互联介质</td><td>光纤（6912个400G光模块）</td><td>铜缆直连（NVLink）</td><td>各有优劣</td></tr><tr class="alt-row"><td>制造工艺</td><td>7nm（SMIC）</td><td>4nm（台积电）</td><td>NVL72 制程领先2代</td></tr><tr class=""><td>▼ GB300 NVL72 对比（2025 新增）</td><td></td><td></td><td></td></tr><tr class="alt-row"><td>NVL72 版本</td><td>GB200 NVL72</td><td>GB300 NVL72</td><td>提升幅度</td></tr><tr class=""><td>GPU 显存（单卡）</td><td>192 GB HBM3e</td><td>288 GB HBM3e</td><td>+50%</td></tr><tr class="alt-row"><td>NVL72 总显存</td><td>13.5 TB</td><td>20 TB</td><td>+48%</td></tr><tr class=""><td>FP4 算力（稠密）</td><td>~720 PFLOPS</td><td>~1,080 PFLOPS</td><td>+50%（1.5×）</td></tr><tr class="alt-row"><td>注意力层性能</td><td>基准</td><td>2× 提升</td><td>+100%</td></tr><tr class=""><td>SuperNIC</td><td>ConnectX-7（400G）</td><td>ConnectX-8（800G）</td><td>2×</td></tr><tr class="alt-row"><td>单 GPU 功耗</td><td>~1000W</td><td>~1400W</td><td>+40%</td></tr></table>
+
+<div class="tip-box">💡  选型建议：商业公司追求 ROI 和能效，优先选 NVL72；信创/政务/金融对自主可控要求强且国内电价低的场景，CM384 是目前唯一能做到全国产超节点的可选方案。</div>
+<h2 id="ch5-s3">3.3  其他主流国产芯片</h2>
+<table class="data-table"><tr class="header-row"><td>芯片/厂商</td><td>关键规格</td><td>定位</td><td>主要特点</td></tr><tr class=""><td>海光 DCU K100<br>（海光信息）</td><td>64GB显存，896GB/s带宽<br>FP16 128 TFLOPS</td><td>国产算力<br>HPC/推理</td><td>类CUDA兼容生态（类ROCm架构），迁移成本较低，市场份额约3%</td></tr><tr class="alt-row"><td>寒武纪 MLU590<br>（寒武纪）</td><td>96GB显存，2.0TB/s带宽<br>FP16 256 TFLOPS</td><td>云端AI计算<br>推理为主</td><td>能效比较优（思元370能效超A100的85%），云端和边缘均有布局</td></tr><tr class=""><td>沐曦 C500<br>（沐曦）</td><td>Chiplet封装，自研架构<br>支持MetaXLink超节点</td><td>云端智算<br>推理+训练</td><td>完整国产供应链，支持超节点扩展，WAIC 2025展出</td></tr><tr class="alt-row"><td>天数智芯 bi150<br>（天数）</td><td>32GB GDDR6，144TFLOPs<br>FP16精度</td><td>云端AI推理</td><td>类CUDA生态适配，部分场景替代</td></tr></table>
+
+<p>GB300 NVL72 是 GB200 NVL72 的升级版，采用 72 颗 Blackwell Ultra GPU（B300）+ 36 颗 Grace CPU。相比 GB200 NVL72，GPU 显存从 13.5TB 提升至 20TB（+48%），FP4 稠密算力提升 1.5×，注意力层性能提升 2×，整机推理吞吐显著提升。GB300 NVL72 面向 AI 推理时代，特别适合 DeepSeek-R1 等推理模型和测试时计算（test-time scaling）场景，处理 DeepSeek-R1 模型响应时间从约 1.5 分钟缩短至约 10 秒。网络方面升级为 ConnectX-8 SuperNIC（800 Gb/s），是 GB200 NVL72 的 2 倍。NVL72 整机 FP4 稠密算力 1,080 PFLOPS，总快速内存 37TB，是目前单一系统最高推理算力密度的商用方案。</p>
+<p>整体来看，国内 AI 芯片大模型集群训练性能大多数仍不到英伟达 A100/A800 的 50%（北京智源等机构研究）。但推理侧的差距已明显缩小，且国产芯片在政策推动下将持续快速迭代。</p>
+
+
+<h1 id="ch6">第四章　服务器形态与超节点架构对比</h1>
+<p>单卡性能之上，服务器形态是决定客户实际采购单元和部署体验的关键。2025 年，AI 服务器形态已从传统 8 卡服务器演进到超节点（SuperPod），技术路线之争同样激烈。</p>
+<h2 id="ch6-s1">4.1  标准 8 卡 AI 服务器（HGX/DGX 形态）</h2>
+<p>这是目前装机量最大的 AI 服务器形态，是大多数训练和推理集群的基本积木单元。以 8×H100 HGX 服务器为例，典型配置如下：</p>
+<ul class="custom-list">
+<li class="bullet">GPU：8× NVIDIA H100 80GB SXM（机内通过 4 颗 NVSwitch 实现全互联 full-mesh）</li>
+<li class="bullet">CPU：双路高性能 CPU（如 Intel Xeon Sapphire Rapids 或 AMD EPYC Genoa），提供 PCIe Gen5 接口</li>
+<li class="bullet">内存：1TB~2TB DDR5 DRAM（主机内存，CPU 侧）</li>
+<li class="bullet">计算网卡（多轨接入）：8× ConnectX-7 400G IB/RoCE 网卡，每张 GPU 对应一张网卡，上连到 8 台不同的 Leaf 交换机（多轨架构）</li>
+<li class="bullet">存储网卡：1~2 张独立存储网卡（BlueField-3 DPU 或独立 RoCE 网卡），连接高性能并行文件系统</li>
+<li class="bullet">本地存储：8× NVMe SSD，用于临时数据缓存和 Checkpoint 快速存储</li>
+<li class="bullet">整机功耗：约 8–12 kW（GPU 占大头，约 5.6 kW，CPU+内存+网卡+冷却约 3–5 kW）</li>
+<li class="bullet">采购参考价：约 ¥210 万/台（H100 版），H800 约 ¥250 万/台（2023 高峰期，2025 年已下降约 10–20%）</li>
+</ul>
+<h2 id="ch6-s2">4.2  超节点（SuperPod）——2025 最重要的形态变革</h2>
+<p>超节点（SuperPod / 超级节点）的出现，是为了解决一个核心矛盾：随着大模型参数规模突破万亿，张量并行（TP）、专家并行（MoE/EP）对机内通信带宽的要求极高，而传统 8 卡服务器内的 NVLink带宽和 PCIe 带宽已成为明显瓶颈。超节点的核心思路是把高速互联总线从机内扩展到机柜级乃至多柜级，构建一个&quot;逻辑上的超大单机&quot;。</p>
+<p>超节点的关键优势在于：①更大的共享高带宽域（HBD），张量并行不必跨越延迟更高的网络层；②统一的大容量 HBM 地址空间，MoE 专家路由可以在超节点范围内低延迟访问任意专家参数；③比传统多机多卡方案更低的通信延迟，是训练万亿参数 MoE 大模型的必要基础设施。</p>
+<h3>4.2.1  NVIDIA GB200 NVL72</h3>
+<p>NVL72 是英伟达 GB200 NVLink 72-GPU 方案，由 36 颗 GB200 超芯片（每颗含 1 Grace CPU + 2 B200 GPU）组成，通过铜缆直连和 NVSwitch 实现 72 颗 GPU 的全互联。物理形态约 2 个标准 19&quot; 机柜，功耗约 145kW，需要液冷系统。整体系统 BF16 算力约 180 PFLOPS，HBM 容量 13.8TB，是目前单一系统最高算力密度的商用方案。</p>
+<h3>4.2.2  华为 CloudMatrix 384（CM384）</h3>
+<p>CM384 由 12 个计算机柜（每柜 4 台 8×910C 服务器）+ 4 个网络机柜（CloudEngine 16800 交换机）构成，共 384 颗昇腾 910C NPU + 192 颗鲲鹏 920 CPU。通过 6912 个 400G 光模块实现全对等光互联，系统 BF16 算力 300 PFLOPS（1.7× NVL72），HBM 容量 49.2TB（3.6× NVL72）。代价是系统总功耗约 600kW（4.1× NVL72），维护复杂度高，且光模块故障率需要&quot;昇腾云脑&quot;实时监控（1分钟感知-3分钟定位-10分钟恢复）。</p>
+<h2 id="ch6-s3">4.3  大规模 AI 集群（千卡~十万卡）</h2>
+<p>当训练任务超出单一超节点的规模时，需要把数百甚至数万台服务器/超节点通过高性能网络互联，构成大规模集群。典型代表包括：百度文心大模型集群（约 1.6 万卡 A100）、字节跳动豆包模型集群（已有报道的万卡级 H800 集群）、阿里通义千问集群（HPN 双平面架构，支持超过 24 万 GPU）、腾讯星脉集群（胖树三层，最高 52 万 GPU 理论规模）。</p>
+<div class="tip-box">💡  大规模集群的成本已不再由 GPU 价格单独决定，网络（IB 交换机+光模块）、高性能存储、机房建设、电力容量往往各占 10–25% 的总建设成本。</div>
+
+
+<h1 id="ch7">第五章　组网方案全景</h1>
+<p>组网是智算售前中最能体现技术深度的环节，也是客户技术团队最愿意深入探讨的议题。核心认知：AI 集群算力不随 GPU 数量线性增长，存在&quot;加速比&quot;瓶颈（通常 &lt;1），而降低这个瓶颈的核心技术就是 RDMA + 高性能无损网络。理解了这一点，再去推荐 IB 或 RoCEv2，就有了充分的技术底气。</p>
+<h2 id="ch7-s1">5.1  四张网络平面规划</h2>
+<p>一个完整的智算中心通常需要规划四张逻辑网络，它们各自承载不同的流量，对性能的要求也截然不同：</p>
+<table class="data-table"><tr class="header-row"><td>网络平面</td><td>承载流量</td><td>性能要求</td><td>推荐技术</td><td>优先级</td></tr><tr class=""><td>参数面（AI计算网）</td><td>GPU间梯度/参数同步<br>All-Reduce / All-to-All</td><td>大带宽·零丢包·低延迟<br>万卡1:1无收敛</td><td>InfiniBand NDR<br>或 RoCEv2</td><td>最高</td></tr><tr class="alt-row"><td>样本面（数据/存储网）</td><td>读取训练样本<br>写入/读取 Checkpoint</td><td>高带宽·无损<br>高并发读写</td><td>RoCEv2<br>或 IB</td><td>高</td></tr><tr class=""><td>业务面（对外服务网）</td><td>AI推理 API 请求<br>负载均衡</td><td>普通以太带宽<br>低延迟出口</td><td>10/25/100G 以太网</td><td>中</td></tr><tr class="alt-row"><td>管理面（带外管理）</td><td>SSH运维·IPMI/BMC<br>监控·告警</td><td>低带宽·安全隔离</td><td>普通千兆以太网</td><td>低</td></tr></table>
+
+<div class="topo-figure">
+<img src="topology_images/four_planes.png" alt="智算中心四网平面架构总览">
+<figcaption><strong>图5-1</strong> 智算中心四网平面架构总览——参数面、存储面、业务面、管理面物理隔离，各有侧重</figcaption>
+</div>
+
+<h2 id="ch7-s2">5.2  Scale-Up 与 Scale-Out：两种扩展维度</h2>
+<h3>5.2.1  Scale-Up（纵向扩展）</h3>
+<p>Scale-Up 指在单节点或超节点内部，通过高速总线把多个 GPU/NPU 紧密耦合，使其协同表现如一台超大单机。承载张量并行（TP）、序列并行（SP）、专家并行（MoE EP）等对通信延迟极为敏感的计算任务。</p>
+<ul class="custom-list">
+<li class="bullet">时延要求：纳秒级（&lt;200ns），通信开销不可被计算时间掩盖（否则 GPU 空转等待）</li>
+<li class="bullet">带宽要求：TB/s 级超高带宽，英伟达 NVLink v4 单卡 900GB/s、v5 达 1.8TB/s；华为 UB 总线 2.8Tbps/NPU</li>
+<li class="bullet">技术实现：NVLink/NVSwitch（英伟达），UB/HCCS（华为），Infinity Fabric（AMD），UALink（英特尔等联盟）</li>
+<li class="bullet">典型规模：NVL72（72 GPU）、CM384（384 NPU），未来将出现更大规模超节点</li>
+</ul>
+<h3>5.2.2  Scale-Out（横向扩展）</h3>
+<p>Scale-Out 指通过网络把多台服务器/超节点连接成大规模集群，承载流水线并行（PP）、数据并行（DP）等可以被计算时间部分掩盖的通信任务。</p>
+<ul class="custom-list">
+<li class="bullet">时延要求：微秒级（~2–5μs），可被计算部分掩盖，但仍需足够低以保证集群效率</li>
+<li class="bullet">带宽要求：单 GPU 接入带宽 100–400Gbps，全集群需 P 级（千 TB/s）交换能力，1:1 无收敛</li>
+<li class="bullet">技术实现：InfiniBand（NDR 400G）、RoCEv2（PFC+ECN+DCQCN）、全调度以太网 GSE（中国移动主导）</li>
+<li class="bullet">典型规模：千卡（RoCEv2 优化）到十万卡以上（IB 或多平面以太网）</li>
+</ul>
+<h2 id="ch7-s3">5.3  InfiniBand vs RoCEv2：详细选型指南</h2>
+<p>这是项目方案中几乎每次都会被问到的技术选择，需要能从多个维度精准回答。</p>
+<table class="data-table"><tr class="header-row"><td>对比维度</td><td>InfiniBand（IB）</td><td>RoCEv2</td><td>推荐场景</td></tr><tr class=""><td>端到端时延</td><td>~2μs（更低）</td><td>~5μs</td><td>IB：超大规模/极致延迟</td></tr><tr class="alt-row"><td>无损传输机制</td><td>Credit信令原生无损</td><td>PFC+ECN+DCQCN</td><td>IB：无需调参，可靠</td></tr><tr class=""><td>负载均衡</td><td>逐包自适应路由（AR）</td><td>ECMP五元组哈希</td><td>IB：大象流均衡效果好</td></tr><tr class="alt-row"><td>单集群规模</td><td>万卡级，性能不衰减</td><td>千卡稳定/万卡需调优</td><td>IB：超大集群首选</td></tr><tr class=""><td>多租户隔离</td><td>完善（Partition/VF）</td><td>需额外网络策略</td><td>IB：多租户云平台</td></tr><tr class="alt-row"><td>建设成本</td><td>高（IB交换机比RoCE贵30–50%）</td><td>低（复用以太网生态）</td><td>RoCE：成本敏感场景</td></tr><tr class=""><td>供应商生态</td><td>英伟达（Mellanox）主导</td><td>华为/H3C/思科/Arista等</td><td>RoCE：供应链安全</td></tr><tr class="alt-row"><td>最新技术</td><td>NDR 400G（ ~ 全双工）</td><td>GSE/UEC演进</td><td>两者都在快速升级</td></tr></table>
+
+<div class="tip-box">💡  实战建议：追求极致性能+省心运维 → IB（适合大型云厂/顶级研究机构）；成本可控+供应链安全+国产化 → RoCEv2（适合政府/金融/中小型算力集群）。没有绝对优劣，结合预算和规模决策。</div>
+<h2 id="ch7-s4">5.4  组网拓扑结构详解</h2>
+<h3>5.4.1  CLOS 胖树（Fat-Tree）——通用主流方案</h3>
+<p>CLOS 胖树是目前应用最广泛的智算集群组网拓扑，由 Leaf 交换机、Spine 交换机、Core 交换机组成（中小规模使用 Spine-Leaf 两层）。特点是无阻塞（参数面 1:1 收敛比）、扩展性好（以 Pod 为单位扩展）、运维成熟度高。接入方式分为：</p>
+<ul class="custom-list">
+<li class="bullet">多轨接入（Rail-Optimized / Multi-Rail）：服务器 8 张网卡分别上连 8 台不同 Leaf 交换机。通信效率高（同机架内部分流量可在 Leaf 层消化，不经 Spine），是大模型训练集群的推荐方案。代价是每台服务器需要 8 张 400G 网卡，布线复杂。</li>
+<li class="bullet">单轨接入（Single-Rail）：服务器全部网卡接入同一台 Leaf 交换机。布线简单，但通信效率低，且单台 Leaf 故障影响全部服务器，适合中小规模或推理场景。</li>
+</ul>
+<p>典型案例：腾讯星脉集群（Block 1024卡/Pod 65536卡/Cluster 524288卡理论规模）；阿里 HPN 双平面架构（Segment 1024卡，可扩展至约 24.5 万 GPU）。</p>
+<div class="topo-figure">
+<img src="topology_images/fat_tree.png" alt="多轨 vs 单轨接入对比 / 两层与三层胖树">
+<figcaption><strong>图5-2</strong> CLOS 胖树拓扑——左：多轨接入（8网卡分连8台Leaf，同机架流量Leaf层消化）；右：单轨接入（全部网卡接同一Leaf）。中小规模用两层Spine-Leaf，万卡级用三层Core-Spine-Leaf</figcaption>
+</div>
+<h3>5.4.2  多平面胖树（MPFT）——2025 年新主流</h3>
+<p>多平面胖树（Multi-Plane Fat-Tree，MPFT）由 DeepSeek 在 2025 年 V3 训练论文中提出并验证，核心思路是用多个二层胖树平面取代一个三层胖树，在同等组网规模下实现架构扁平化。DeepSeek 实测验证：在 16384 GPU 的集群中，8 平面 MPFT：</p>
+<ul class="custom-list">
+<li class="bullet">建设成本比三层胖树降低约 40%（减少了大量 Spine 层交换机）</li>
+<li class="bullet">通信时延降低约 30%（减少了一层转发跳数，从 5 跳降到 3 跳）</li>
+<li class="bullet">All-to-All 通信性能与单平面多轨方案相当，特别适合 MoE 架构大模型</li>
+<li class="bullet">具备更好的故障隔离能力（某一平面故障不影响其他平面）</li>
+</ul>
+<div class="tip-box">💡  多平面方案的挑战：平面间路由切换需要端侧感知（NIC/RDMA 层需要支持跨平面切换），运维复杂度有所提升。但综合性价比已成为 2025 年以后大规模智算集群的主流选择。</div>
+<div class="topo-figure">
+<img src="topology_images/mpft.png" alt="MPFT 多平面胖树拓扑结构">
+<figcaption><strong>图5-3</strong> MPFT 多平面胖树——4个独立的二层胖树平面取代三层胖树，消除Core层，成本↓40%、时延↓30%，单平面故障不影响其他平面</figcaption>
+</div>
+<h3>5.4.3  Dragonfly+ 拓扑——超大规模最优成本</h3>
+<p>Dragonfly 及其改进版 Dragonfly+ 是 HPC 领域广泛使用的高性能网络拓扑。每个 Group 内设备通过二层胖树互联，Group 间两两直连（全互联），形成双层结构，显著减少网络跳数和交换机总量。优势：网络直径最小（2~3跳）、时延低、交换机节省约 20%、可支持超过 27 万 GPU（约为三层胖树的 4 倍规模）。劣势：扩展时需重新部署链路，可维护性相对差，HPC 背景较强适合算法工程师理解。</p>
+<div class="topo-figure">
+<img src="topology_images/dragonfly.png" alt="Dragonfly+ Group全互联架构">
+<figcaption><strong>图5-4</strong> Dragonfly+ 拓扑——组内二层胖树 + 组间全互联，网络直径仅2~3跳，十万卡级最优成本方案</figcaption>
+</div>
+
+
+<h1 id="ch8">第六章　成本分析与全周期 TCO 决策框架</h1>
+<p>智算方案的成本分析是售前最核心的&quot;临门一脚&quot;。能帮客户算清楚全周期 TCO、讲清楚自建 vs 租赁的盈亏平衡，是赢得信任和订单的关键差异点。</p>
+<h2 id="ch8-s1">6.1  硬件采购成本参考（2025 年数据）</h2>
+<p>以下价格为市场参考区间，实际需根据批量、渠道、汇率、政策变动调整。</p>
+<table class="data-table"><tr class="header-row"><td>硬件</td><td>规格</td><td>参考价格（人民币）</td><td>关键说明</td></tr><tr class=""><td>H100 SXM 单卡</td><td>80GB HBM3</td><td>约 ¥20–30 万/卡</td><td>出口管制，中国市场供货不稳</td></tr><tr class="alt-row"><td>H200 SXM 单卡</td><td>141GB HBM3e</td><td>约 ¥28–38 万/卡</td><td>H100 溢价约 15–20%</td></tr><tr class=""><td>B200 单卡</td><td>192GB Blackwell</td><td>约 ¥45 万+/卡</td><td>2025 旗舰，供需紧张</td></tr><tr class="alt-row"><td>H20 单卡（合规）</td><td>96GB HBM3</td><td>约 ¥15–18 万/卡</td><td>2025年4月被禁，库存有限</td></tr><tr class=""><td>L20 单卡</td><td>48GB GDDR6X</td><td>约 ¥5–8 万/卡</td><td>推理性价比机型</td></tr><tr class="alt-row"><td>H100 8卡服务器（整机）</td><td>8×H100+双路CPU+2TB内存</td><td>约 ¥210 万/台</td><td>不含网络存储</td></tr><tr class=""><td>单节点完整部署成本</td><td>服务器+网络+存储+IDC</td><td>约 ¥350–500 万/节点</td><td>真实入场成本</td></tr><tr class="alt-row"><td>400G IB/RoCE 交换机</td><td>128端口 51.2T 盒式</td><td>约 ¥30–80 万/台</td><td>IB 比 RoCE 贵约 30–50%</td></tr><tr class=""><td>400G DR4 光模块</td><td>单模光模块，100m</td><td>约 ¥1,000–2,500 元/个</td><td>超节点需数千~上万个</td></tr><tr class="alt-row"><td>高性能 NVMe 存储（万卡级）</td><td>全闪 NVMe 集群</td><td>约 ¥500 万–5000 万</td><td>取决于容量/带宽要求</td></tr><tr class=""><td>GB200 NVL72（整机机柜）</td><td>72×B200 GPU+36×Grace CPU</td><td>约 ¥3,000–5,000 万/柜</td><td>液冷机柜，不含网络存储</td></tr><tr class="alt-row"><td>GB300 NVL72（整机机柜）</td><td>72×B300 GPU+36×Grace CPU</td><td>约 ¥4,000–7,000 万/柜</td><td>2025 下半年出货，推理优化</td></tr></table>
+
+<h2 id="ch8-s2">6.2  算力租赁市场价格走势</h2>
+<p>算力租赁市场经历了&quot;2023年高峰→2025年价格雪崩→2026年价格反转&quot;的完整周期。理解这一周期，是帮助客户制定采购策略的重要依据。</p>
+<table class="data-table"><tr class="header-row"><td>GPU 型号</td><td>2023年高峰</td><td>2025年中低点</td><td>2026年初</td><td>趋势说明</td></tr><tr class=""><td>A800（8卡台月）</td><td>¥6万</td><td>¥2.8万</td><td>¥3.2万</td><td>降幅53%后小幅回升</td></tr><tr class="alt-row"><td>H800（8卡台月）</td><td>¥10万</td><td>¥6.6万</td><td>¥7.5万</td><td>训练主力，逐步回升</td></tr><tr class=""><td>H20（8卡台月）</td><td>¥3万</td><td>¥2.5万</td><td>¥3万</td><td>被禁后价格反弹</td></tr><tr class="alt-row"><td>H100（卡/月）</td><td>¥7–9万</td><td>¥3.5万</td><td>¥5.5–6万</td><td>2026年涨至历史高位</td></tr><tr class=""><td>H200（卡/月）</td><td>—</td><td>¥4.2万</td><td>¥6–6.6万</td><td>2026年涨幅最大型号</td></tr><tr class="alt-row"><td>H100（$/卡时，全球）</td><td>~$13</td><td>$2.4</td><td>$2.35（反弹）</td><td>SemiAnalysis，已从低点+38%</td></tr></table>
+
+<p>2026 年价格反转三大原因：①AI 推理需求爆发（日均 Token 调用超 140 万亿，3 个月翻倍）；②HBM3e 内存供应紧张，单颗 H200 芯片 HBM 成本上涨 20%+；③头部大厂长协锁定资源，现货市场流动性枯竭。</p>
+<h2 id="ch8-s3">6.3  全周期 TCO 要素分解</h2>
+<p>在向客户讲解 TCO 时，务必强调：GPU 采购成本在三年全周期中通常只占 40–50%，另外 50–60% 来自电力、网络、存储、软件许可和运维人力。</p>
+<table class="data-table"><tr class="header-row"><td>TCO 要素</td><td>占比参考</td><td>主要构成</td><td>降本要点</td></tr><tr class=""><td>硬件层（CAPEX）</td><td>40–50%</td><td>GPU服务器 / 网络 / 存储 / 电力设施 / 布线</td><td>批量采购折扣，选择性价比芯片</td></tr><tr class="alt-row"><td>电力层（OPEX）</td><td>15–25%</td><td>整机功耗×PUE×电价×小时数</td><td>PUE优化（液冷可低至1.1）；选能效比高的 GPU</td></tr><tr class=""><td>网络层（OPEX）</td><td>8–15%</td><td>交换机折旧 / 光模块更换 / 带宽费用</td><td>RoCE替代IB可节省25–35%网络成本</td></tr><tr class="alt-row"><td>运维层（OPEX）</td><td>12–20%</td><td>人力（~50–100人/万卡）/ 软件许可 / 维保合同 / 备件</td><td>自动化运维平台；国产替代降低软件授权成本</td></tr></table>
+
+<h2 id="ch8-s4">6.4  电费估算公式</h2>
+<p>年电费（万元）= 8卡服务器数量 × 整机功耗(kW) × PUE × 8760小时 × 电价(元/度) ÷ 10000</p>
+<p>示例：100台 H100 8卡服务器，整机功耗 10kW，PUE 1.2，电价 0.6 元/度：年电费 = 100 × 10 × 1.2 × 8760 × 0.6 ÷ 10000 ≈ 6307 万元/年。三年电费约 1.9 亿元，已超过 GPU 采购成本（约 2.1 亿元）的 90%！这说明电力成本是不可忽视的重大 TCO 项。</p>
+<h2 id="ch8-s5">6.5  自建 IDC vs 算力租赁：决策框架</h2>
+<table class="data-table"><tr class="header-row"><td>决策维度</td><td>算力租赁（OPEX）</td><td>自建 IDC（CAPEX）</td><td>混合架构（推荐）</td></tr><tr class=""><td>初期投入</td><td>低，省70%+前期成本</td><td>高（H100整机¥210万/台）</td><td>中，自建核心+弹性租赁</td></tr><tr class="alt-row"><td>交付速度</td><td>分钟级响应</td><td>6–18个月建设周期</td><td>自建先行，租赁补峰值</td></tr><tr class=""><td>资源利用率</td><td>按需付费，无闲置</td><td>自主优化，可达90%</td><td>敏感本地+弹性云端</td></tr><tr class="alt-row"><td>数据安全</td><td>依赖提供商合规</td><td>完全自主可控</td><td>敏感数据本地，推理上云</td></tr><tr class=""><td>管理复杂度</td><td>全托管，7×24</td><td>需50–100人运维</td><td>双平台，需统一调度层</td></tr><tr class="alt-row"><td>弹性扩展</td><td>即时弹性，无规模上限</td><td>6–12个月扩展周期</td><td>自建核心+云端弹性</td></tr><tr class=""><td>长期成本</td><td>持续较高，无残值</td><td>高利用率下单位成本最低</td><td>总成本介于二者之间</td></tr><tr class="alt-row"><td>适用客户</td><td>初创/利用率&lt;60%/快速试错</td><td>利用率&gt;70%/数据敏感/稳定负载</td><td>金融/医疗/政府</td></tr></table>
+
+<p>盈亏平衡线：持续利用率 &gt; 60–70% 时自购更划算；每天 &lt; 12 小时使用则租赁更经济</p>
+<div class="tip-box">💡  金融、医疗、政府等数据高度敏感行业，推荐&quot;本地核心算力池 + 云端弹性算力池&quot;混合架构：把日常微调和敏感数据推理放本地，大规模预训练和公开模型推理接云端。可将资源利用率从不足 60% 提升到 90% 以上。</div>
+
+
+<h1 id="ch9">附录 A　售前五步闭环方法论</h1>
+<p>把客户的业务语言翻译成可执行工程方案的标准化五步流程：</p>
+<p class="highlight">Step 01  需求诊断</p>
+<ul class="custom-list">
+<li class="bullet">① 明确场景：预训练 / 微调 / 推理 / 多模态？</li>
+<li class="bullet">② 模型规模：参数量（B级），推理时序列长度？</li>
+<li class="bullet">③ 并发量：峰值 QPS 和平均 QPS，TTFT 要求？</li>
+<li class="bullet">④ 信创需求：是否要求国产 CPU/GPU/OS/数据库？</li>
+<li class="bullet">⑤ 预算区间：是 CAPEX 采购还是 OPEX 租赁？</li>
+<li class="bullet">⑥ 时间节点：何时交付上线，是否允许分阶段？</li>
+</ul>
+<p class="highlight">Step 02  硬件选型</p>
+<ul class="custom-list">
+<li class="bullet">① 用显存估算公式确定&quot;能跑/需要几卡&quot;</li>
+<li class="bullet">② 对比主流卡型：H100/H200/B200/GB200/GB300/910B/910C</li>
+<li class="bullet">③ 训练优先算力互联，推理优先带宽能效</li>
+<li class="bullet">④ 确定英伟达路线还是国产路线（或混合）</li>
+<li class="bullet">⑤ 确定服务器形态：8卡机 / 超节点 / 集群</li>
+</ul>
+<p class="highlight">Step 03  组网设计</p>
+<ul class="custom-list">
+<li class="bullet">① 参数面：IB 还是 RoCEv2（规模/成本/稳定性）</li>
+<li class="bullet">② 拓扑：胖树 / 多平面 / Dragonfly+</li>
+<li class="bullet">③ 接入方式：多轨（高效）或单轨（简单）</li>
+<li class="bullet">④ 规划四张网络平面：参数/样本/业务/管理</li>
+<li class="bullet">⑤ 收敛比和带宽计算，关键路径无损设计</li>
+</ul>
+<p class="highlight">Step 04  成本测算</p>
+<ul class="custom-list">
+<li class="bullet">① GPU 采购或租赁单价 × 数量 = 硬件成本</li>
+<li class="bullet">② 叠加网络/存储/机房/电力配套估算</li>
+<li class="bullet">③ 电费：功耗×PUE×电价×8760小时/年</li>
+<li class="bullet">④ 运维：人力（5–10人/千卡）+软件许可</li>
+<li class="bullet">⑤ 输出3年全周期 TCO 表，对比自建vs租赁</li>
+</ul>
+<p>[13]  GB200 = Grace CPU + 2×B200 超芯片：864GB 统一内存（384GB HBM3e + 480GB LPDDR5X），是 NVL72 超节点的基础单元。NVL72 整机含 72 GPU，BF16 算力 360 PFLOPS，HBM 13.5TB，功耗约 145kW。</p>
+<p>[14]  GB300 vs GB200：GPU 显存 192→288GB/卡（+50%），FP4 稠密算力 +1.5×，注意力层 +2×，网络 400→800G。专为 AI 推理（test-time scaling）设计，2025 下半年出货。功耗 1400W/卡，必须全液冷。</p>
+<p class="highlight">Step 05  方案输出</p>
+<ul class="custom-list">
+<li class="bullet">① 集群线性加速比/MFU 预期数据</li>
+<li class="bullet">② 关键风险点：供货、政策、电力容量</li>
+<li class="bullet">③ 采购和建设交付周期评估</li>
+<li class="bullet">④ 竞品对比亮点（国产替代路径）</li>
+<li class="bullet">⑤ 长期扩容和芯片升级路径规划</li>
+</ul>
+
+<h1 id="ch10">附录 B　14 个售前核心记忆点</h1>
+<p>以下 12 条是现场随时可以调用、覆盖 80% 技术问题的核心知识点：</p>
+<p>[01]  带宽决定推理速度上限；显存决定能不能跑得下——这两句话是所有推理选型的底层逻辑。</p>
+<p>[02]  训练选型看：算力（FP16/BF16 TFLOPS）+ 互联带宽（NVLink/UB）+ 显存容量；推理选型看：显存带宽 + 能效比 + 单位 Token 成本。</p>
+<p>[03]  FP16 显存估算公式：推理显存(GB) ≈ 参数量(B) × 2；训练显存(GB) ≈ 参数量(B) × 16（含梯度+FP32权重副本+AdamW动量）。</p>
+<p>[04]  H200 vs H100：算力相同，但显存从 80GB→141GB（+76%），带宽从 3.35→4.8TB/s（+43%），推理 TPS 提升约 60%。价格溢价 15–20%。</p>
+<p>[05]  B200 vs H100：FP8 算力约 4.5× H100，显存带宽约 2.4×，NVLink 带宽 2×，训练实际加速约 2.5–4×。价格溢价约 40–60%。</p>
+<p>[06]  昇腾910C ≈ H100 的 80%（讯飞等企业实测），功耗约 250W vs H100 700W，能效比优势约 2.8×。是 CM384 的核心单元。</p>
+<p>[07]  CloudMatrix 384 系统算力 1.7× NVL72，但系统功耗 4.1× NVL72。商业客户选 NVL72，信创/电价低的场景选 CM384。</p>
+<p>[08]  IB 时延 2μs，原生无损，支持万卡级集群；RoCEv2 时延 5μs，需调参，千卡稳定万卡调优，成本低 25–35%。两者不是优劣而是取舍。</p>
+<p>[09]  多平面胖树（MPFT）比三层胖树成本低 40%、时延低 30%，DeepSeek V3 训练验证方案，2025 年成为业界主流。</p>
+<p>[10]  自购 vs 租赁盈亏平衡线：GPU 利用率持续 &gt; 60–70% 时自购更合算；每天 &lt; 12 小时使用则租赁更经济。</p>
+<p>[11]  GPU 采购只是 TCO 的 40–50%！另外 50–60% 来自电力（15–25%）+ 运维（12–20%）+ 网络（8–15%）。100台H100集群年电费约6000万元。</p>
+<p>[12]  2026年算力价格已反转上涨：H100月租涨至5.5–6万元/卡，H200涨至6–6.6万元，同比涨20–30%。提前锁定12个月长协是核心竞争壁垒。</p>
+</div>
+
+<!-- 页脚 -->
+<div class="footer">
+    <p>智算解决方案售前专业知识体系 · 2025–2026 版</p>
+    <p>配套 PPT《智算解决方案售前专业知识体系》深度展开版</p>
+</div>
+
+</div>
+
+<script>
+(function() {
+    var sidebar = document.getElementById('tocSidebar');
+    var toggle = document.getElementById('tocToggle');
+    var overlay = document.getElementById('tocOverlay');
+    var pageWrapper = document.getElementById('pageWrapper');
+    var isMobile = window.innerWidth <= 768;
+
+    // 切换侧栏
+    function toggleSidebar() {
+        if (isMobile) {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            if (sidebar.classList.contains('collapsed')) {
+                pageWrapper.classList.remove('with-sidebar');
+                toggle.classList.add('desktop-show');
+                toggle.innerHTML = '&#9776;';  // ☰ 展开
+            } else {
+                pageWrapper.classList.add('with-sidebar');
+                toggle.classList.remove('desktop-show');
+                toggle.innerHTML = '&times;';   // ✕ 收起
+            }
+        }
+    }
+
+    // 初始化桌面端按钮图标（侧栏默认展开，显示收起图标）
+    if (!isMobile) {
+        toggle.innerHTML = '&times;';
+    }
+
+    toggle.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', function() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+    });
+
+    // 平滑滚动 + 高亮当前章节
+    var navLinks = document.querySelectorAll('.toc-sidebar a[data-target]');
+    navLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var targetId = this.getAttribute('data-target');
+            var target = document.getElementById(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            // 移动端点击后关闭侧栏
+            if (isMobile) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('show');
+            }
+        });
+    });
+
+    // 滚动时高亮当前章节
+    var allHeadings = [];
+    document.querySelectorAll('h1[id], h2[id]').forEach(function(h) {
+        allHeadings.push(h);
+    });
+
+    function updateActive() {
+        var scrollY = window.scrollY + 100;
+        var current = null;
+        allHeadings.forEach(function(h) {
+            if (h.offsetTop <= scrollY) {
+                current = h;
+            }
+        });
+        // 先清除所有 active
+        navLinks.forEach(function(l) { l.classList.remove('active'); });
+        if (current) {
+            navLinks.forEach(function(l) {
+                if (l.getAttribute('data-target') === current.id) {
+                    l.classList.add('active');
+                    // 滚动侧栏到可见位置
+                    var linkTop = l.offsetTop;
+                    var sidebarScroll = sidebar.scrollTop;
+                    var sidebarHeight = sidebar.clientHeight;
+                    if (linkTop < sidebarScroll || linkTop > sidebarScroll + sidebarHeight - 40) {
+                        sidebar.scrollTop = linkTop - 20;
+                    }
+                }
+            });
+        }
+    }
+
+    // 节流滚动事件
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            requestAnimationFrame(function() {
+                updateActive();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // 窗口大小变化时重新判断
+    window.addEventListener('resize', function() {
+        var newIsMobile = window.innerWidth <= 768;
+        if (newIsMobile !== isMobile) {
+            isMobile = newIsMobile;
+            if (isMobile) {
+                pageWrapper.classList.remove('with-sidebar');
+                sidebar.classList.remove('collapsed');
+                toggle.classList.remove('desktop-show');
+                toggle.innerHTML = '&#9776;';  // ☰
+            } else {
+                pageWrapper.classList.add('with-sidebar');
+                sidebar.classList.remove('open');
+                overlay.classList.remove('show');
+                toggle.classList.remove('desktop-show');
+                toggle.innerHTML = '&times;';   // ✕
+            }
+        }
+    });
+
+    // 初始化高亮
+    updateActive();
+})();
+
+// ==================== 拓扑图 Lightbox 弹窗 ====================
+(function() {
+    // 创建弹窗 DOM
+    var overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    overlay.id = 'lightboxOverlay';
+    overlay.innerHTML =
+        '<span class="lightbox-close" id="lightboxClose">&times;</span>' +
+        '<img id="lightboxImg" src="" alt="">' +
+        '<div class="lightbox-caption" id="lightboxCaption"></div>' +
+        '<div class="lightbox-hint">滚轮缩放 · 拖拽平移 · 双击重置 · 点击空白处或按 Esc 键关闭</div>';
+    document.body.appendChild(overlay);
+
+    var lbImg = document.getElementById('lightboxImg');
+    var lbCaption = document.getElementById('lightboxCaption');
+    var lbClose = document.getElementById('lightboxClose');
+
+    // 缩放与平移状态
+    var scale = 1;
+    var offsetX = 0;
+    var offsetY = 0;
+    var isDragging = false;
+    var dragStartX = 0;
+    var dragStartY = 0;
+    var startOffsetX = 0;
+    var startOffsetY = 0;
+
+    function applyTransform() {
+        lbImg.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px) scale(' + scale + ')';
+        if (scale !== 1) {
+            lbImg.classList.add('zoomed');
+        } else {
+            lbImg.classList.remove('zoomed');
+        }
+    }
+
+    function resetZoom() {
+        scale = 1;
+        offsetX = 0;
+        offsetY = 0;
+        lbImg.style.transform = '';
+        lbImg.classList.remove('zoomed');
+    }
+
+    function openLightbox(src, caption) {
+        lbImg.src = src;
+        lbCaption.innerHTML = caption;
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        resetZoom();
+    }
+
+    function closeLightbox() {
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+        resetZoom();
+    }
+
+    // 为所有拓扑图绑定点击事件
+    document.querySelectorAll('.topo-figure img').forEach(function(img) {
+        img.addEventListener('click', function() {
+            var figure = this.closest('.topo-figure');
+            var caption = '';
+            if (figure) {
+                var figcaption = figure.querySelector('figcaption');
+                if (figcaption) caption = figcaption.innerHTML;
+            }
+            openLightbox(this.src, caption);
+        });
+    });
+
+    // 点击空白处 / 关闭按钮
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay || e.target === lbClose) {
+            closeLightbox();
+        }
+    });
+
+    // 阻止图片点击冒泡关闭
+    lbImg.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    // 滚轮缩放
+    overlay.addEventListener('wheel', function(e) {
+        if (!overlay.classList.contains('show')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var delta = e.deltaY < 0 ? 1 : -1;
+        // 缩放因子：每次滚动 20%
+        var factor = 1 + delta * 0.2;
+        var newScale = scale * factor;
+        // 限制缩放范围 0.5x ~ 5x
+        if (newScale < 0.5) newScale = 0.5;
+        if (newScale > 5) newScale = 5;
+        // 以鼠标位置为中心缩放
+        var rect = lbImg.getBoundingClientRect();
+        var centerX = rect.left + rect.width / 2;
+        var centerY = rect.top + rect.height / 2;
+        // 鼠标相对图片中心的偏移
+        var mouseOffsetX = e.clientX - centerX;
+        var mouseOffsetY = e.clientY - centerY;
+        // 缩放后调整偏移，使鼠标点保持在原图同一位置
+        var ratio = newScale / scale;
+        offsetX = mouseOffsetX - (mouseOffsetX - offsetX) * ratio;
+        offsetY = mouseOffsetY - (mouseOffsetY - offsetY) * ratio;
+        scale = newScale;
+        applyTransform();
+    }, { passive: false });
+
+    // 拖拽平移（仅在放大时生效）
+    lbImg.addEventListener('mousedown', function(e) {
+        if (scale === 1) return;
+        e.preventDefault();
+        isDragging = true;
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        startOffsetX = offsetX;
+        startOffsetY = offsetY;
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        offsetX = startOffsetX + (e.clientX - dragStartX);
+        offsetY = startOffsetY + (e.clientY - dragStartY);
+        applyTransform();
+    });
+
+    document.addEventListener('mouseup', function() {
+        isDragging = false;
+    });
+
+    // 双击重置缩放
+    lbImg.addEventListener('dblclick', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        resetZoom();
+    });
+
+    // Esc 键关闭
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.classList.contains('show')) {
+            closeLightbox();
+        }
+    });
+})();
+</script>
+
+</body>
+</html>
