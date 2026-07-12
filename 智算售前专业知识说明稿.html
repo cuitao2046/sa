@@ -647,10 +647,11 @@ p.highlight {
                 <li><a href="#ch4-s2" data-target="ch4-s2">2.2　H100（Hopper 架构 / 4nm）</a></li>
                 <li><a href="#ch4-s3" data-target="ch4-s3">2.3　H200——大显存旗舰</a></li>
                 <li><a href="#ch4-s4" data-target="ch4-s4">2.4　B200（Blackwell 架构）</a></li>
-                <li><a href="#ch4-s5" data-target="ch4-s5">2.5　GB200 超芯片</a></li>
-                <li><a href="#ch4-s6" data-target="ch4-s6">2.6　GB300 推理旗舰超芯片</a></li>
-                <li><a href="#ch4-s7" data-target="ch4-s7">2.7　面向中国市场的合规版本对比</a></li>
-                <li><a href="#ch4-s8" data-target="ch4-s8">2.8　GPU 服务器 CPU 配置规格（Intel / AMD）</a></li>
+                <li><a href="#ch4-s4b" data-target="ch4-s4b">2.5　B300（Blackwell Ultra）——推理旗舰 GPU</a></li>
+                <li><a href="#ch4-s5" data-target="ch4-s5">2.6　GB200 超芯片</a></li>
+                <li><a href="#ch4-s6" data-target="ch4-s6">2.7　GB300 推理旗舰超芯片</a></li>
+                <li><a href="#ch4-s7" data-target="ch4-s7">2.8　面向中国市场的合规版本对比</a></li>
+                <li><a href="#ch4-s8" data-target="ch4-s8">2.9　GPU 服务器 CPU 配置规格（Intel / AMD）</a></li>
             </ul>
         </li>
         <li>
@@ -659,6 +660,7 @@ p.highlight {
                 <li><a href="#ch5-s1" data-target="ch5-s1">3.1　华为昇腾系列——国产领军</a></li>
                 <li><a href="#ch5-s2" data-target="ch5-s2">3.2　华为 CloudMatrix 384 超节点</a></li>
                 <li><a href="#ch5-s3" data-target="ch5-s3">3.3　其他主流国产芯片</a></li>
+                <li><a href="#ch5-s4" data-target="ch5-s4">3.4　国产 GPU CUDA 兼容性与迁移路线选型</a></li>
             </ul>
         </li>
         <li>
@@ -817,12 +819,38 @@ p.highlight {
 <li class="bullet">192GB HBM3e 显存（8.0 TB/s 带宽）：相比 H100 提升 2.4×，相比 H200 提升 1.7×，单卡可装下更大模型，推理 TPS 的上限大幅抬高。</li>
 <li class="bullet">FP4 精度支持：Blackwell 引入第五代 Tensor Core，首次支持 FP4 精度，FP4 推理算力约 9 PFLOPS（是 FP8 的 2×），在可接受精度损失的推理场景下计算效率极高。</li>
 <li class="bullet">NVLink v5（1.8 TB/s）：机内卡间互联带宽从 v4 的 900GB/s 翻倍至 1.8TB/s，对 MoE 等需要高频卡间通信的模型架构提升显著。</li>
-<li class="bullet">GB200 = Grace CPU + B200×2：NVIDIA 推出了 Grace-Blackwell 超芯片 GB200，把一颗 Grace ARM CPU 和两颗 B200 GPU 通过 NVLink-C2C（900GB/s）集成在一个封装上，实现 864GB 统一内存空间，是 NVL72 机柜方案的基础单元（详见 2.5 节）。</li>
+<li class="bullet">GB200 = Grace CPU + B200×2：NVIDIA 推出了 Grace-Blackwell 超芯片 GB200，把一颗 Grace ARM CPU 和两颗 B200 GPU 通过 NVLink-C2C（900GB/s）集成在一个封装上，实现 864GB 统一内存空间，是 NVL72 机柜方案的基础单元（详见 2.6 节）。</li>
 </ul>
 <table class="data-table"><tr class="header-row"><td>规格项</td><td>B200（Blackwell GPU）</td><td>GB200（Grace+2×B200 超芯片）</td></tr><tr class=""><td>显存容量</td><td>192 GB HBM3e</td><td>192 GB（与B200相同）</td></tr><tr class="alt-row"><td>显存带宽</td><td>8.0 TB/s</td><td>8.0 TB/s</td></tr><tr class=""><td>FP8 算力（稠密）</td><td>~4.5 PFLOPS</td><td>~4.5 PFLOPS</td></tr><tr class="alt-row"><td>FP4 算力</td><td>~9 PFLOPS</td><td>~9 PFLOPS</td></tr><tr class=""><td>训练相比H100</td><td>约 +4×（实际2.5×）</td><td>同</td></tr><tr class="alt-row"><td>NVLink 版本</td><td>v5，1.8 TB/s（双向）</td><td>v5，1.8 TB/s</td></tr><tr class=""><td>TDP 功耗</td><td>~1000W（单GPU）</td><td>~2700W（GB200全系统）</td></tr><tr class="alt-row"><td>2025年采购价参考</td><td>¥45万+/卡</td><td>系统报价，面议</td></tr></table>
 
 <div class="warn-box">⚠  B200 价格高、供应量有限，早期优先分配给大型云厂和战略客户。中小客户在采购 B200 时需评估交付周期（2025年已普遍排队）。</div>
-<h2 id="ch4-s5">2.5  GB200（Grace Blackwell 超芯片）——机柜级超节点基础单元</h2>
+
+<h3>B200 的 CPU-GPU 配合效率问题</h3>
+<p>B200 在传统 8 卡服务器（DGX/HGX B200）形态下，存在显著的 CPU-GPU 带宽失配问题。GPU 侧 HBM3e 带宽高达 8.0 TB/s，但 CPU 与 GPU 之间仍通过 PCIe Gen5 连接，双向带宽仅 128 GB/s，带宽比约 62:1。这意味着在数据加载密集型训练场景中，CPU 无法以足够速率向 GPU 喂数据，导致 GPU 出现"数据饥饿"，实际 MFU 低于理论值。</p>
+<p>具体表现为：</p>
+<ul class="custom-list">
+<li class="bullet">DataLoader 瓶颈：训练阶段的样本读取、解码、增强等预处理在 CPU 侧执行，PCIe 带宽不足时 GPU 空等数据。B200 算力相比 H100 提升约 4×，但 PCIe Gen5 带宽与 H100 平台相同，失配更加严重。</li>
+<li class="bullet">KV Cache 换入换出：推理场景下当模型规模超过 GPU 显存时，需要在 GPU HBM 和 CPU DDR5 之间换页，PCIe 128 GB/s 成为严重瓶颈（HBM 带宽 8 TB/s 的 1/62）。</li>
+<li class="bullet">CPU 侧内存带宽不足：双路 Intel Xeon（8 通道 DDR5-5600）理论内存带宽约 358 GB/s，远低于 B200 的 8 TB/s HBM 带宽，数据预处理和调度存在结构性瓶颈。</li>
+</ul>
+<p>这正是 NVIDIA 推出 GB200 超芯片的核心动机——通过 Grace CPU + NVLink-C2C（900 GB/s）实现 CPU-GPU 内存一致性架构，将 CPU-GPU 互联带宽从 PCIe 的 128 GB/s 提升至 900 GB/s（7× 提升），并通过 864GB 统一寻址空间消除数据拷贝开销。<strong>售前建议：如果客户场景涉及大数据量预处理、KV Cache 换页或多模型推理，应优先推荐 GB200/GB300 超节点方案，而非传统 DGX B200 8 卡服务器。</strong></p>
+<div class="tip-box">💡  Intel Xeon 平台在 PCIe 延迟和 CXL 支持方面优于 AMD EPYC，在 B200 服务器中可略微缓解 CPU-GPU 带宽瓶颈。但根本解决方案是 GB200 的 NVLink-C2C 架构，而非 CPU 平台选型。</div>
+
+<h2 id="ch4-s4b">2.5  B300（Blackwell Ultra）——2025 推理旗舰 GPU</h2>
+<p>B300 是 NVIDIA 2025 年 GTC 发布的 Blackwell Ultra 架构 GPU，是 B200 的升级版。在 DGX B300 服务器中，B300 以 8 卡 SXM 形态部署，采用风冷设计（不同于 GB300 的液冷），是企业级智算中心的推理主力机型。相比 B200，B300 在显存容量、FP4 算力和注意力层性能三个维度显著提升，专为 AI 推理（尤其是测试时计算 / test-time scaling）场景优化。</p>
+<ul class="custom-list">
+<li class="bullet">288GB HBM3e 显存（8.0 TB/s 带宽）：相比 B200 的 192GB 提升 50%，单卡可装下更大模型，减少多卡分片通信开销，KV Cache 容量大幅增加</li>
+<li class="bullet">FP4 稠密算力约 13.5 PFLOPS/卡（B200 约 9 PFLOPS），提升 1.5×；DGX B300 整机 FP4 稠密算力 108 PFLOPS（推理性能 144 PFLOPS 稀疏）</li>
+<li class="bullet">注意力层（Attention）性能提升 2×：对推理（尤其长序列和 KV Cache 密集场景）性能提升显著，DeepSeek-R1 等推理模型响应时间大幅缩短</li>
+<li class="bullet">ConnectX-8 SuperNIC（800 Gb/s）：相比 B200 的 ConnectX-7（400 Gb/s）翻倍，且通过 PCIe Gen6 直连 GPU（B200 为 PCIe Gen5），网络与集群扩展能力更强</li>
+<li class="bullet">CPU 升级为 Intel Xeon 6776P（Granite Rapids）：相比 B200 搭载的第5代至强（8570/8580），B300 搭载 Xeon 6 系列处理器，PCIe 通道和内存带宽能力提升</li>
+</ul>
+<table class="data-table"><tr class="header-row"><td>规格项</td><td>B200（Blackwell）</td><td>B300（Blackwell Ultra）</td><td>提升幅度</td></tr><tr class=""><td>显存容量</td><td>192 GB HBM3e</td><td>288 GB HBM3e</td><td>+50%</td></tr><tr class="alt-row"><td>显存带宽</td><td>8.0 TB/s</td><td>8.0 TB/s</td><td>持平</td></tr><tr class=""><td>FP4 算力（稠密/卡）</td><td>~9 PFLOPS</td><td>~13.5 PFLOPS</td><td>+50%（1.5×）</td></tr><tr class="alt-row"><td>FP8 算力（稀疏/卡）</td><td>~9 PFLOPS</td><td>~9 PFLOPS</td><td>持平</td></tr><tr class=""><td>注意力层性能</td><td>基准</td><td>2× 提升</td><td>+100%</td></tr><tr class="alt-row"><td>NVLink 带宽</td><td>v5，1.8 TB/s</td><td>v5，1.8 TB/s</td><td>持平</td></tr><tr class=""><td>SuperNIC</td><td>ConnectX-7（400G）</td><td>ConnectX-8（800G）</td><td>2×</td></tr><tr class=""><td>CPU-GPU 互联</td><td>PCIe Gen5</td><td>PCIe Gen6</td><td>2× 带宽</td></tr><tr class="alt-row"><td>标配 CPU</td><td>Intel Xeon 8570/8580（第5代）</td><td>Intel Xeon 6776P（Xeon 6）</td><td>代际升级</td></tr><tr class=""><td>TDP 功耗</td><td>~1000W</td><td>~1400W</td><td>+40%</td></tr><tr class="alt-row"><td>散热方式</td><td>风冷（DGX B200）</td><td>风冷（DGX B300，10U 机箱）</td><td>风冷兼容</td></tr><tr class=""><td>整机功耗（8卡）</td><td>~10 kW</td><td>~14 kW</td><td>+40%</td></tr><tr class="alt-row"><td>DGX 整机显存</td><td>1.5 TB（8×192GB）</td><td>2.3 TB（8×288GB）</td><td>+53%</td></tr><tr class=""><td>2025年采购价参考</td><td>¥45万+/卡</td><td>¥60万+/卡（预估）</td><td>溢价约 30%</td></tr></table>
+
+<div class="tip-box">💡  B300 的核心定位是 AI 推理——288GB 大显存 + 2× 注意力加速 + FP4 高算力，使其在 DeepSeek-R1 等推理模型场景下性价比突出。相比 GB300 NVL72（液冷机柜级方案），DGX B300 采用风冷 10U 设计，部署门槛更低，适合不具备液冷基础设施的企业机房。</div>
+<div class="warn-box">⚠  B300 功耗达 1400W/卡，整机约 14kW，虽为风冷设计但仍需确认机房供电和散热能力。B300 早期产能有限，优先供应头部客户，中小客户需评估交付周期。B300 是否对中国市场供货尚不确定，售前需实时跟踪出口管制政策。</div>
+
+<h2 id="ch4-s5">2.6  GB200（Grace Blackwell 超芯片）——机柜级超节点基础单元</h2>
 <p>GB200 是 NVIDIA 2024 年发布的 Grace Blackwell 超芯片（Superchip），将 1 颗 Grace ARM CPU（72 核 Neoverse V2）与 2 颗 B200 GPU 通过 NVLink-C2C（900 GB/s）互联封装在一起。GB200 不是独立 GPU 卡，而是超节点机柜的基础构建模块——36 颗 GB200 组成一个 NVL72 机柜。其核心价值在于 CPU-GPU 内存一致性架构，消除传统 PCIe 瓶颈，实现 864GB 统一寻址空间（384GB HBM3e + 480GB LPDDR5X），让 GPU 可以直接访问 CPU 侧大容量内存，无需数据拷贝。</p>
 <ul class="custom-list">
 <li class="bullet">超芯片架构：1 颗 Grace CPU（72 核 Arm Neoverse V2）+ 2 颗 B200 GPU，通过 NVLink-C2C（900 GB/s）实现 CPU-GPU 内存一致性</li>
@@ -847,7 +875,7 @@ p.highlight {
 
 <div class="warn-box">⚠  GB300 功耗达 1400W/卡，必须采用全液冷方案，传统风冷机房无法部署。售前需提前确认客户机房的液冷基础设施和供电能力。GB300 早期产能有限，优先供应头部云厂，中小客户需评估交付周期。</div>
 
-<h2 id="ch4-s7">2.7  面向中国市场的合规版本对比</h2>
+<h2 id="ch4-s7">2.8  面向中国市场的合规版本对比</h2>
 <p>由于美国对华 AI 芯片出口管制政策持续收紧，英伟达为中国市场推出了一系列阉割版本：</p>
 <table class="data-table"><tr class="header-row"><td>型号</td><td>对标原版</td><td>主要阉割项</td><td>适用场景</td><td>备注</td></tr><tr class=""><td>A800</td><td>A100</td><td>NVLink带宽：600→400GB/s</td><td>训练（有降级）</td><td>存量大</td></tr><tr class="alt-row"><td>H800</td><td>H100</td><td>NVLink带宽：900→400GB/s</td><td>训练（有降级）</td><td>供货减少</td></tr><tr class=""><td>H20</td><td>H100</td><td>算力降低，但96GB大显存</td><td>推理主力</td><td>2025年被禁，影响大</td></tr><tr class="alt-row"><td>L20</td><td>L40S</td><td>PCIe卡，48GB，推理优化</td><td>推理性价比</td><td>仍可供货</td></tr></table>
 
@@ -856,7 +884,7 @@ p.highlight {
 <h2 id="ch4-s8">2.8  GPU 服务器 CPU 配置规格（Intel / AMD）</h2>
 <p>在智算售前方案中，客户常把全部注意力放在 GPU 选型上，而忽视了 CPU 的搭配。实际上，GPU 服务器中 CPU 虽然不直接参与大模型的核心矩阵运算，但承担着数据加载与预处理、推理请求调度、KV Cache 管理、框架运行时调度、以及 PCIe 数据搬运等关键任务。CPU 核心数不足或内存带宽不够，会导致 GPU 在等待数据时出现"数据饥饿"，实际 MFU 大幅下降。因此，针对不同代际的英伟达专业卡，选配正确的 CPU 平台是售前方案的必要环节。</p>
 
-<h3>2.8.1  CPU 在 GPU 服务器中的核心职责</h3>
+<h3>2.9.1  CPU 在 GPU 服务器中的核心职责</h3>
 <ul class="custom-list">
 <li class="bullet">数据加载与预处理：训练阶段从存储读取数据样本（图像解码、文本分词、数据增强），CPU 核心数直接决定 DataLoader 的并行能力。经验法则——每个 GPU 至少分配 4~8 个 CPU 物理核用于数据加载，否则 GPU 利用率受限。</li>
 <li class="bullet">推理请求调度与批处理：推理服务（如 vLLM、TGI）的请求队列管理、动态 Batching、Token 分发均由 CPU 完成。高并发场景下 CPU 核心不足会成为吞吐瓶颈。</li>
@@ -864,17 +892,17 @@ p.highlight {
 <li class="bullet">内存容量管理：CPU 侧 DDR 内存用于存放操作系统、框架、数据缓存。训练场景下建议 CPU 内存 ≥ GPU 总显存的 1.5~2 倍；推理场景下建议 CPU 内存 ≥ GPU 总显存的 1~1.5 倍。</li>
 </ul>
 
-<h3>2.8.2  各代际 GPU 服务器的标准 CPU 配置</h3>
+<h3>2.9.2  各代际 GPU 服务器的标准 CPU 配置</h3>
 <p>下表汇总了英伟达各代际专业卡在主流 OEM 服务器（DGX/HGX 参考设计及浪潮、联想、新华三等国产 OEM）中的标准 CPU 配置，涵盖 Intel 和 AMD 两大平台，并补充 CPU 基础频率与整机参考报价（2025 年国内市场价，含税）：</p>
 <table class="data-table"><tr class="header-row"><td>GPU 型号</td><td>服务器形态</td><td>标准 CPU 配置</td><td>CPU 平台</td><td>核心数×路数</td><td>基础频率</td><td>典型内存配置</td><td>整机参考报价</td></tr><tr class=""><td>A100（SXM4）</td><td>DGX/HGX A100 8卡</td><td>Intel Xeon Platinum 8358 / 8380</td><td>Intel Ice Lake (ICX)</td><td>32C~40C ×2</td><td>2.6 GHz / 2.3 GHz</td><td>1~2TB DDR4-3200</td><td>¥90~130万/台</td></tr><tr class="alt-row"><td>A100（SXM4）</td><td>DGX A100 原厂</td><td>AMD EPYC 7742 / 7V13</td><td>AMD Rome (Zen 2)</td><td>64C ×2</td><td>2.25 GHz / 2.2 GHz</td><td>1~2TB DDR4-3200</td><td>¥100~140万/台</td></tr><tr class=""><td>A100（PCIe）</td><td>PCIe 4.0 服务器</td><td>Intel Xeon Gold 6338 / Platinum 8352V</td><td>Intel Ice Lake (ICX)</td><td>24C~32C ×2</td><td>2.0 GHz / 2.1 GHz</td><td>512GB~1TB DDR4</td><td>¥50~80万/台</td></tr><tr class="alt-row"><td>H100（SXM5）</td><td>DGX/HGX H100 8卡</td><td>Intel Xeon Platinum 8480C / 8480+</td><td>Intel Sapphire Rapids (SPR)</td><td>48C~56C ×2</td><td>2.0 GHz / 2.1 GHz</td><td>2TB DDR5-4800</td><td>¥220~280万/台</td></tr><tr class=""><td>H100（SXM5）</td><td>HGX H100（AMD 版）</td><td>AMD EPYC 9654 / 9474F</td><td>AMD Genoa (Zen 4)</td><td>48C~96C ×2</td><td>2.4 GHz / 3.65 GHz</td><td>2TB DDR5-4800</td><td>¥230~290万/台</td></tr><tr class="alt-row"><td>H100（PCIe）</td><td>PCIe 5.0 服务器</td><td>Intel Xeon Gold 6448Y / Platinum 8454H</td><td>Intel Sapphire Rapids (SPR)</td><td>24C~32C ×2</td><td>2.1 GHz / 2.9 GHz</td><td>1~2TB DDR5</td><td>¥80~150万/台</td></tr><tr class=""><td>H200（SXM5）</td><td>HGX H200 8卡</td><td>Intel Xeon Platinum 8480C / 8568Y+</td><td>Intel SPR / Emerald Rapids</td><td>48C~56C ×2</td><td>2.0 GHz / 2.7 GHz</td><td>2~4TB DDR5-5600</td><td>¥280~360万/台</td></tr><tr class="alt-row"><td>H200（SXM5）</td><td>HGX H200（AMD 版）</td><td>AMD EPYC 9684X / 9754</td><td>AMD Genoa-X / Bergamo</td><td>64C~96C ×2</td><td>2.55 GHz / 2.25 GHz</td><td>2~4TB DDR5-4800</td><td>¥290~370万/台</td></tr><tr class=""><td>B200（SXM7）</td><td>HGX B200 8卡</td><td>Intel Xeon Platinum 8570 / 8580</td><td>Intel Emerald Rapids (EMR)</td><td>56C~64C ×2</td><td>2.1 GHz / 2.3 GHz</td><td>4~6TB DDR5-5600</td><td>¥480~600万/台</td></tr><tr class="alt-row"><td>B200（SXM7）</td><td>HGX B200（AMD 版）</td><td>AMD EPYC 9755 / 9754S</td><td>AMD Turin (Zen 5)</td><td>64C~128C ×2</td><td>2.1 GHz / 2.4 GHz</td><td>4~6TB DDR5-6400</td><td>¥490~620万/台</td></tr><tr class=""><td>GB200</td><td>NVL72 机柜</td><td>NVIDIA Grace CPU（72核 ARM）</td><td>ARM Neoverse V2</td><td>72C ×36（每模块1颗）</td><td>~3.0 GHz（ARM）</td><td>480GB LPDDR5X（每模块）</td><td>¥2500~3500万/柜</td></tr><tr class="alt-row"><td>L40S</td><td>PCIe 5.0 推理服务器</td><td>Intel Xeon Gold 6448Y / Platinum 8458C</td><td>Intel Sapphire Rapids (SPR)</td><td>24C~40C ×1~2</td><td>2.1 GHz / 2.8 GHz</td><td>512GB~1TB DDR5</td><td>¥30~60万/台</td></tr><tr class=""><td>L20</td><td>PCIe 5.0 推理服务器</td><td>Intel Xeon Gold 6448Y / Platinum 8458C</td><td>Intel Sapphire Rapids (SPR)</td><td>24C~32C ×1~2</td><td>2.1 GHz / 2.8 GHz</td><td>512GB~1TB DDR5</td><td>¥25~50万/台</td></tr><tr class="alt-row"><td>RTX 4090 / 6000 Ada</td><td>PCIe 4.0/5.0 工作站</td><td>Intel Xeon W-2400/3400 或 Core i9</td><td>Intel Sapphire Rapids-WS</td><td>12C~24C ×1~2</td><td>2.2~3.2 GHz</td><td>128~512GB DDR5</td><td>¥6~15万/台</td></tr></table>
 
-<h3>2.8.3  Intel 与 AMD 平台对比与选型</h3>
+<h3>2.9.3  Intel 与 AMD 平台对比与选型</h3>
 <p>GPU 服务器中 Intel 和 AMD 两大 CPU 平台各有优势，选型时需结合客户已有 IT 资产、软件兼容性、性价比综合判断：</p>
 <table class="data-table"><tr class="header-row"><td>对比维度</td><td>Intel Xeon（Sapphire Rapids / Emerald Rapids）</td><td>AMD EPYC（Genoa / Turin）</td></tr><tr class=""><td>核心数上限</td><td>最多 64C（Emerald Rapids）</td><td>最多 128C（Turin / Bergamo），核心数领先</td></tr><tr class="alt-row"><td>单核性能</td><td>较强，指令集丰富（AVX-512 等）</td><td>稍弱于同代 Intel，但多核总吞吐领先</td></tr><tr class=""><td>内存通道</td><td>8 通道 DDR5-5600（SPR/EMR）</td><td>12 通道 DDR5-4800/6400（Genoa/Turin），内存带宽优势明显</td></tr><tr class="alt-row"><td>PCIe 通道</td><td>80 条 PCIe 5.0（SPR/EMR）</td><td>128 条 PCIe 5.0（Genoa/Turin），多卡 PCIe 服务器优势大</td></tr><tr class=""><td>软件生态兼容性</td><td>最佳，AI 框架与库默认适配 Intel</td><td>兼容性良好，极少数库需重新编译验证</td></tr><tr class="alt-row"><td>GPU 互联影响</td><td>SXM 形态下 CPU 仅控制平面，对 GPU 训练性能无实质影响</td><td>同左，SXM 形态下 Intel/AMD 差异可忽略</td></tr><tr class=""><td>PCIe 形态影响</td><td>PCIe 通道数较少，4 卡以上可能需 PLX 桥接</td><td>PCIe 通道充足，更适合多卡 PCIe 服务器</td></tr><tr class="alt-row"><td>功耗（双路 TDP）</td><td>约 700W（2×350W）</td><td>约 720W~800W（2×360~400W），略高</td></tr><tr class=""><td>采购成本</td><td>偏高，品牌溢价</td><td>同核心数下性价比更优，约低 15~25%</td></tr><tr class="alt-row"><td>推荐场景</td><td>客户已有 Intel 生态、对兼容性要求高</td><td>多卡 PCIe 服务器、追求核心数和内存带宽性价比</td></tr></table>
 
 <div class="tip-box">💡  实战提示：在 SXM 形态的 8 卡训练服务器中（如 HGX H100/H200/B200），GPU 之间通过 NVLink/NVSwitch 全互联，CPU 选 Intel 还是 AMD 对训练性能影响极小，可按客户偏好和成本决定。但在 PCIe 形态的多卡推理服务器中（如 4~8 张 L40S/L20），AMD EPYC 凭借 128 条 PCIe 5.0 通道的优势，可以提供更充足的 GPU-CPU 直连带宽，避免 PLX 桥接带来的带宽分摊，是更优选择。</div>
 
-<h3>2.8.4  Intel 至强 CPU 型号详解（符合智算服务器规格的选型推荐）</h3>
+<h3>2.9.4  Intel 至强 CPU 型号详解（符合智算服务器规格的选型推荐）</h3>
 <p>售前方案中，客户常对 CPU 选型提出明确的硬性指标——如双路配置、第 4 代或更先进架构、单颗核心数 ≥ 48 核、基频 ≥ 2.1 GHz。以下涵盖第4代（Sapphire Rapids）和第5代（Emerald Rapids）符合上述要求的型号，是当前主流智算服务器（HGX H100/H200/B200 等）的标准 CPU 选型：</p>
 <table class="data-table"><tr class="header-row"><td>处理器系列</td><td>具体型号</td><td>核心/线程数</td><td>基础频率</td><td>最大睿频</td><td>L3 缓存</td><td>TDP 功耗</td><td>架构代际</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8480C</td><td>48C / 96T</td><td>2.0 GHz</td><td>3.8 GHz</td><td>105 MB</td><td>350W</td><td>第4代 Sapphire Rapids</td></tr><tr class="alt-row"><td>至强铂金 Platinum</td><td>Xeon 8480+</td><td>56C / 112T</td><td>2.0 GHz</td><td>3.8 GHz</td><td>105 MB</td><td>350W</td><td>第4代 Sapphire Rapids</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8470</td><td>52C / 104T</td><td>2.1 GHz</td><td>3.6 GHz</td><td>105 MB</td><td>350W</td><td>第4代 Sapphire Rapids</td></tr><tr class="alt-row"><td>至强金牌 Gold</td><td>Xeon 6448Y</td><td>32C / 64T</td><td>2.1 GHz</td><td>3.7 GHz</td><td>60 MB</td><td>270W</td><td>第4代 Sapphire Rapids</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8580</td><td>60C / 120T</td><td>2.0 GHz *</td><td>4.0 GHz</td><td>300 MB</td><td>350W</td><td>第5代 Emerald Rapids</td></tr><tr class="alt-row"><td>至强铂金 Platinum</td><td>Xeon 8570</td><td>56C / 112T</td><td>2.1 GHz</td><td>4.0 GHz</td><td>262.5 MB</td><td>350W</td><td>第5代 Emerald Rapids</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8568Y+</td><td>48C / 96T</td><td>2.3 GHz</td><td>4.0 GHz</td><td>300 MB</td><td>330W</td><td>第5代 Emerald Rapids</td></tr><tr class="alt-row"><td>至强金牌 Gold</td><td>Xeon 6548Y+</td><td>48C / 96T</td><td>2.5 GHz</td><td>4.1 GHz</td><td>60 MB</td><td>330W</td><td>第5代 Emerald Rapids</td></tr></table>
 <p>* 注：Xeon 8480C/8480+/8580 基频为 2.0 GHz，略低于 2.1 GHz 要求，但在实际智算方案中常作为高性能备选。若严格执行 2.1 GHz 标准，第4代应选 8470（52C/2.1GHz），第5代应选 8570 或 8568Y+。</p>
@@ -911,7 +939,7 @@ p.highlight {
 <li class="bullet">选型优先级：核心数优先选 8570（56C）或 8480+（56C），主频优先选 8568Y+（2.3GHz），预算有限选 8480C（第4代性价比）或 6548Y+（第5代性价比）。</li>
 </ul>
 
-<h3>2.8.5  AMD EPYC CPU 型号详解（对标 Intel 的选型推荐）</h3>
+<h3>2.9.5  AMD EPYC CPU 型号详解（对标 Intel 的选型推荐）</h3>
 <p>针对同样的硬性指标（双路配置、当代先进架构、单颗核心数 ≥ 48 核、基频 ≥ 2.1 GHz），AMD EPYC 9004/9005 系列有更丰富的型号可选，且在核心数、内存通道、PCIe 通道数上具备结构性优势：</p>
 <table class="data-table"><tr class="header-row"><td>处理器系列</td><td>具体型号</td><td>核心/线程数</td><td>基础频率</td><td>最大加速频率</td><td>L3 缓存</td><td>TDP 功耗</td><td>架构代际</td></tr><tr class=""><td>EPYC 9004X（Genoa-X）</td><td>EPYC 9684X</td><td>96C / 192T</td><td>2.55 GHz</td><td>3.7 GHz</td><td>1152 MB（3D V-Cache）</td><td>400W</td><td>第4代 Zen 4</td></tr><tr class="alt-row"><td>EPYC 9004（Genoa）</td><td>EPYC 9654</td><td>96C / 192T</td><td>2.4 GHz</td><td>3.7 GHz</td><td>384 MB</td><td>360W</td><td>第4代 Zen 4</td></tr><tr class=""><td>EPYC 9004F（Genoa-F）</td><td>EPYC 9474F</td><td>48C / 96T</td><td>3.65 GHz</td><td>4.8 GHz</td><td>192 MB</td><td>400W</td><td>第4代 Zen 4</td></tr><tr class="alt-row"><td>EPYC 9005（Turin）</td><td>EPYC 9755</td><td>128C / 256T</td><td>2.1 GHz</td><td>3.7 GHz</td><td>512 MB</td><td>400W</td><td>第5代 Zen 5</td></tr><tr class=""><td>EPYC 9005（Turin）</td><td>EPYC 9754</td><td>128C / 256T</td><td>2.25 GHz</td><td>3.1 GHz</td><td>512 MB</td><td>400W</td><td>第5代 Zen 5</td></tr><tr class="alt-row"><td>EPYC 9005（Turin）</td><td>EPYC 9575F</td><td>64C / 128T</td><td>3.3 GHz</td><td>5.0 GHz</td><td>256 MB</td><td>400W</td><td>第5代 Zen 5</td></tr></table>
 
@@ -942,7 +970,7 @@ p.highlight {
 
 <div class="tip-box">💡  实战对比：Intel Xeon 8568Y+ vs AMD EPYC 9474F——两者均为 48 核、面向推理主频敏感场景。Intel 基频 2.3GHz、L3 缓存 300MB、TDP 330W；AMD 基频 3.65GHz、L3 缓存 192MB、TDP 400W。AMD 基频领先 59% 但功耗高 21%、缓存少 36%。选型取决于客户更看重主频（选 AMD）还是缓存和功耗（选 Intel）。若客户已有 Intel 生态且兼容性要求高，优先 Intel；若追求极致主频和 PCIe 通道数，优先 AMD。</div>
 
-<h3>2.8.6  Intel 与 AMD CPU 价格范围对比</h3>
+<h3>2.9.6  Intel 与 AMD CPU 价格范围对比</h3>
 <p>CPU 采购成本是智算服务器整机报价的重要组成部分（双路 CPU 通常占整机成本的 8%~15%）。以下为 2025 年国内市场主流 Intel 至强与 AMD EPYC 型号的散件价格范围对比，便于售前快速估算 BOM 成本：</p>
 <table class="data-table"><tr class="header-row"><td>厂商</td><td>系列</td><td>代表型号</td><td>核心数</td><td>基础频率</td><td>散件参考价（单颗）</td><td>双路成本</td><td>性价比定位</td></tr><tr class=""><td>Intel</td><td>至强金牌 Gold 6400（第4代）</td><td>6448Y</td><td>32C</td><td>2.1 GHz</td><td>¥1.5~2.2万</td><td>¥3.0~4.4万</td><td>第4代入门，推理服务器可用</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8400（第4代）</td><td>8470</td><td>52C</td><td>2.1 GHz</td><td>¥3.8~4.8万</td><td>¥7.6~9.6万</td><td>第4代基频达标，H100 高配</td></tr><tr class=""><td>Intel</td><td>至强铂金 Platinum 8400（第4代）</td><td>8480C</td><td>48C</td><td>2.0 GHz</td><td>¥4.0~5.0万</td><td>¥8.0~10.0万</td><td>第4代主力，H100 原厂标配，存量最大</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8400（第4代）</td><td>8480+</td><td>56C</td><td>2.0 GHz</td><td>¥4.5~5.8万</td><td>¥9.0~11.6万</td><td>第4代高核心数，数据加载密集型</td></tr><tr class=""><td>Intel</td><td>至强金牌 Gold 6500（第5代）</td><td>6548Y+</td><td>48C</td><td>2.5 GHz</td><td>¥2.8~3.5万</td><td>¥5.6~7.0万</td><td>第5代性价比首选，主频高缓存少</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8500（第5代）</td><td>8568Y+</td><td>48C</td><td>2.3 GHz</td><td>¥4.5~5.5万</td><td>¥9.0~11.0万</td><td>第5代主频与缓存均衡，H200/B200 主力</td></tr><tr class=""><td>Intel</td><td>至强铂金 Platinum 8500（第5代）</td><td>8570</td><td>56C</td><td>2.1 GHz</td><td>¥5.5~7.0万</td><td>¥11.0~14.0万</td><td>第5代核心数优先，大缓存</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8500（第5代）</td><td>8580</td><td>60C</td><td>2.0 GHz</td><td>¥7.0~9.0万</td><td>¥14.0~18.0万</td><td>第5代旗舰，核心数最大</td></tr><tr class=""><td>Intel</td><td>至强6（Granite Rapids）</td><td>6972P（72C）</td><td>72C</td><td>~2.4 GHz</td><td>¥8.0~12.0万</td><td>¥16.0~24.0万</td><td>下一代，价格偏高供应有限</td></tr><tr class="alt-row"><td>AMD</td><td>EPYC 9004F（Genoa-F）</td><td>9474F</td><td>48C</td><td>3.65 GHz</td><td>¥3.8~4.8万</td><td>¥7.6~9.6万</td><td>高频版，对标 Intel 8568Y+，主频领先</td></tr><tr class=""><td>AMD</td><td>EPYC 9004（Genoa）</td><td>9654</td><td>96C</td><td>2.4 GHz</td><td>¥5.0~6.5万</td><td>¥10.0~13.0万</td><td>核心数翻倍，训练数据加载优势</td></tr><tr class="alt-row"><td>AMD</td><td>EPYC 9004X（Genoa-X）</td><td>9684X</td><td>96C</td><td>2.55 GHz</td><td>¥7.5~9.5万</td><td>¥15.0~19.0万</td><td>3D V-Cache 1152MB，推理缓存优势</td></tr><tr class=""><td>AMD</td><td>EPYC 9005（Turin）</td><td>9755</td><td>128C</td><td>2.1 GHz</td><td>¥6.5~8.5万</td><td>¥13.0~17.0万</td><td>Zen 5 旗舰，核心数最大</td></tr><tr class="alt-row"><td>AMD</td><td>EPYC 9005（Turin）</td><td>9575F</td><td>64C</td><td>3.3 GHz</td><td>¥4.5~6.0万</td><td>¥9.0~12.0万</td><td>Turin 高频版，加速 5.0GHz 业界最高</td></tr></table>
 
@@ -958,11 +986,11 @@ p.highlight {
 
 <div class="warn-box">⚠  以上价格为 2025 年国内散件参考价（含税），实际采购价受配额、交期、渠道、批量折扣影响波动较大。OEM 整机（如浪潮、联想）的 CPU 成本通常低于散件价 10~20%。售前报价时应以供应商最新正式报价为准，此处仅用于快速估算和方案对比。</div>
 
-<h3>2.8.7  GB200 的特殊架构：Grace CPU 替代 x86</h3>
+<h3>2.9.7  GB200 的特殊架构：Grace CPU 替代 x86</h3>
 <p>与 A100/H100/H200/B200 服务器采用 Intel 或 AMD x86 CPU 不同，GB200 超芯片集成了 NVIDIA 自研的 Grace CPU（72 核 ARM Neoverse V2），不再使用 x86 平台。Grace CPU 通过 NVLink-C2C（900 GB/s）与 B200 GPU 实现内存一致性互联，CPU 与 GPU 共享统一地址空间，数据传输无需经过 PCIe，从根本上消除了传统 x86 架构中 CPU-GPU 间的 PCIe 瓶颈。</p>
 <p>Grace CPU 的关键规格：72 核 ARM Neoverse V2、480GB LPDDR5X（带宽 512 GB/s）、与 2×B200 共享 864GB 统一寻址空间。这一架构使 GB200 在大模型推理（尤其需要 CPU 参与调度的多并发场景）中相比传统 x86 + GPU 方案有结构性优势，但也意味着软件生态需要适配 ARM 架构。</p>
 
-<h3>2.8.8  CPU 配置快速估算口诀</h3>
+<h3>2.9.8  CPU 配置快速估算口诀</h3>
 <p>售前现场快速估算 GPU 服务器的 CPU 核心数需求，可使用以下公式：</p>
 <p class="highlight">训练服务器：CPU 总核心数 ≥ GPU 数 × 6~8（每个 GPU 分配 6~8 核用于数据加载与预处理）<br>推理服务器：CPU 总核心数 ≥ GPU 数 × 4~6（推理请求调度和 Token 分发开销较低）<br>CPU 内存 ≥ GPU 总显存 × 1.5（训练）或 × 1.0~1.5（推理）</p>
 <div class="warn-box">⚠  注意：以上为经验估算值，实际需求与框架（PyTorch/vLLM/TensorRT-LLM）、数据格式、并发模型强相关。大模型推理（如 70B+ 参数）在多并发下 CPU 消耗会显著上升，建议留 30% 余量。</div>
@@ -993,6 +1021,104 @@ p.highlight {
 
 <p>GB300 NVL72 是 GB200 NVL72 的升级版，采用 72 颗 Blackwell Ultra GPU（B300）+ 36 颗 Grace CPU。相比 GB200 NVL72，GPU 显存从 13.5TB 提升至 20TB（+48%），FP4 稠密算力提升 1.5×，注意力层性能提升 2×，整机推理吞吐显著提升。GB300 NVL72 面向 AI 推理时代，特别适合 DeepSeek-R1 等推理模型和测试时计算（test-time scaling）场景，处理 DeepSeek-R1 模型响应时间从约 1.5 分钟缩短至约 10 秒。网络方面升级为 ConnectX-8 SuperNIC（800 Gb/s），是 GB200 NVL72 的 2 倍。NVL72 整机 FP4 稠密算力 1,080 PFLOPS，总快速内存 37TB，是目前单一系统最高推理算力密度的商用方案。</p>
 <p>整体来看，国内 AI 芯片大模型集群训练性能大多数仍不到英伟达 A100/A800 的 50%（北京智源等机构研究）。但推理侧的差距已明显缩小，且国产芯片在政策推动下将持续快速迭代。</p>
+
+<h2 id="ch5-s4">3.4  国产 GPU CUDA 兼容性与迁移路线选型</h2>
+<p>如果目标是降低现有 CUDA 项目的迁移成本，国内厂商中，<strong>沐曦、摩尔线程、海光 DCU、天数智芯更偏"兼容迁移路线"</strong>；壁仞也提供 CUDA 生态迁移能力。<strong>华为昇腾、寒武纪、燧原更偏"自有软件栈＋框架适配路线"</strong>，不能按 CUDA 直接兼容理解。任何一家都不应默认等同于 CUDA 二进制兼容或无损性能迁移。</p>
+<p>截至 2026 年 7 月，国内厂商所谓"兼容 CUDA"，主要是通过相似编程模型、API 映射、源码转换、框架插件和对应算子库降低迁移成本，而不是让已经为特定 GPU 编译好的 CUDA 二进制直接运行。公开资料也将国内路线概括为两类：以天数智芯、沐曦、海光等为代表的 GPGPU 兼容迁移路线，以及以华为昇腾为代表的自主生态路线。</p>
+
+<h3>主流厂商 CUDA 兼容度对比</h3>
+<p>下表是面向售前选型的相对判断，不是绝对性能排名。这里的"兼容度"主要指<strong>既有 CUDA 源码和应用生态的迁移便利程度</strong>。</p>
+<table class="data-table"><tr class="header-row"><td>厂商/平台</td><td>CUDA 兼容路线</td><td>相对迁移便利度</td><td>主要边界</td></tr><tr class=""><td>沐曦 MXMACA</td><td>高度兼容、源码迁移、对应算子库与框架适配</td><td>高</td><td>非 CUDA 原生运行；复杂 Kernel 仍需验证和调优</td></tr><tr class="alt-row"><td>摩尔线程 MUSA</td><td>CUDA 风格编程体系、迁移工具、对应计算库</td><td>高</td><td>通常需转换、重新编译；第三方扩展覆盖需核查</td></tr><tr class=""><td>海光 DCU/DTK</td><td>基于 ROCm/HIP 式生态承接 CUDA/HPC 迁移</td><td>高</td><td>更接近 HIP 源码迁移，不是 CUDA 二进制兼容</td></tr><tr class="alt-row"><td>天数智芯软件栈</td><td>GPGPU 兼容路线，适配主流框架与应用生态</td><td>中高</td><td>公开迁移工具、库覆盖和复杂负载实测需逐项确认</td></tr><tr class=""><td>壁仞 BIRENSUPA</td><td>自研 GPGPU 软件栈，提供框架、算子、通信与迁移能力</td><td>中高</td><td>CUDA 长尾 API、自定义 Kernel 和工具链成熟度需验证</td></tr><tr class="alt-row"><td>华为昇腾 CANN</td><td>自主生态，依靠框架插件、迁移工具及算子开发</td><td>中等</td><td>不是 CUDA 兼容平台；自定义 CUDA/Triton 通常要改写</td></tr><tr class=""><td>寒武纪 NeuWare</td><td>自主软件栈，主流框架和模型适配</td><td>中等</td><td>CUDA 底层代码通常需要迁移到自有接口</td></tr><tr class="alt-row"><td>燧原软件栈</td><td>AI 专用架构、自有工具链、重点场景联合适配</td><td>中等</td><td>更依赖模型和业务级适配，不以 CUDA 源码兼容为核心</td></tr><tr class=""><td>昆仑芯等 AI 加速器</td><td>自主软件栈及框架适配</td><td>中等或项目相关</td><td>更适合已完成适配的模型，CUDA 资产复用需专项评估</td></tr></table>
+<p>公开资料显示，沐曦 MXMACA 采用自主软件体系，同时强调对 CUDA 项目的高度兼容；其公开技术材料曾用大量代码仓库进行迁移测试，但这类厂商测试口径不能直接等同于客户生产应用的成功率。摩尔线程则通过 MUSA、MUSIFY 及相应计算库承接 CUDA 源码迁移。海光 DCU 通过 DTK 对接 ROCm/HIP 生态，尤其适合同时存在 AI 和 HPC 代码资产的环境。</p>
+<p>壁仞的 BIRENSUPA 覆盖编译器、算子库和通信库，并兼容主流 AI 框架；天数智芯强调主流 AI 生态和深度学习框架兼容。两者都具备降低迁移成本的路线，但面对自定义 CUDA 代码时，仍要以实际产品代际、软件版本和客户负载做验证。</p>
+
+<h3>四个兼容层级的理解</h3>
+<h4>一级：框架层兼容</h4>
+<p>原程序主要使用 PyTorch、TensorFlow 等标准接口，只需更换设备插件、设备字符串和软件包。这是最容易实现的层次。例如原代码使用 <code>device = "cuda"</code>，迁移后改为厂商设备后端。模型结构和大部分 Python 代码可以保留，但底层执行的已经不是 CUDA。</p>
+<p>这一层很多国产平台都能做得较好，关键不是接口名称，而是：</p>
+<ul class="custom-list">
+<li class="bullet">模型所需算子是否齐全；</li>
+<li class="bullet">是否发生 CPU 回退；</li>
+<li class="bullet">混合精度是否稳定；</li>
+<li class="bullet">分布式能力是否完整；</li>
+<li class="bullet">端到端性能是否达标。</li>
+</ul>
+
+<h4>二级：CUDA 源码兼容或迁移</h4>
+<p>原项目有 CUDA C/C++ 源码，厂商通过自动转换工具、相似编程模型和对应库将它迁移到自有平台，然后重新编译。沐曦、摩尔线程、海光 DCU 等路线在这一层更有优势。它们的目标是尽量保留原代码结构和开发人员习惯，但仍可能需要修改：</p>
+<ul class="custom-list">
+<li class="bullet">头文件和库名称；</li>
+<li class="bullet">编译脚本；</li>
+<li class="bullet">设备管理及内存接口；</li>
+<li class="bullet">特定 CUDA 特性；</li>
+<li class="bullet">线程块与内存访问优化；</li>
+<li class="bullet">通信库调用。</li>
+</ul>
+
+<h4>三级：CUDA 二进制兼容</h4>
+<p>这是指原来已经编译好的 CUDA 程序，不提供源码、不重新编译，就能直接在另一款芯片上运行。<strong>目前不应把任何国内主流平台默认描述为具备完整 CUDA 二进制兼容。</strong>底层指令集、驱动、运行时和硬件结构不同，厂商通常实现的是源码或接口层迁移，而不是直接执行面向特定 GPU 生成的二进制代码。</p>
+<div class="warn-box">⚠️ 闭源软件尤其需要注意：如果供应商只提供 CUDA 二进制，没有源码，也没有国产后端版本，即使硬件厂商宣传"高度兼容 CUDA"，项目仍可能无法迁移。</div>
+
+<h4>四级：性能兼容</h4>
+<p>代码能够运行并不等于性能相当。原 CUDA Kernel 可能针对特定硬件的线程组织、共享内存、矩阵单元和显存结构深度优化。迁移到另一架构后，即使结果正确，也可能需要重写关键 Kernel。因此最难达到的是：</p>
+<div class="script-box">
+<span class="script-label">性能兼容目标</span>
+<p>代码少改、结果一致、性能接近、多卡扩展稳定、长期运维成熟。这不能靠"兼容 CUDA"一句话证明。</p>
+</div>
+
+<h3>各路线的具体特点</h3>
+<h4>沐曦：强调高度兼容与低迁移成本</h4>
+<p>沐曦 MXMACA 同时提供自主编程体系、编译工具、计算库、深度学习库、通信库和框架适配。其优势是对现有 CUDA 源码资产比较友好，适合客户拥有较多 CUDA 应用、又希望降低改造工作量的项目。需要重点验证：自定义 CUDA Kernel 转换成功率、特定第三方库是否已适配、转换后的性能损失、FlashAttention/量化/Triton/HPC 库支持、多机通信及集群稳定性。</p>
+<p>不能将厂商公开的代码仓库适配比例直接当作本项目承诺，因为代码仓库的"成功运行"和生产系统的"性能达标"不是同一标准。</p>
+
+<h4>摩尔线程：MUSA 与 CUDA 开发体验接近</h4>
+<p>MUSA 的软件结构与 CUDA 体系有较明显的对应关系，通过迁移工具把 CUDA 源码转换到 MUSA，再调用自己的计算库和设备后端。对于习惯 CUDA 的开发团队，这种路线在概念和开发体验上比较容易接受。但仍需确认：MUSIFY 对项目所用 API 的覆盖、<code>torch_musa</code> 与目标 PyTorch 版本是否匹配、自定义扩展是否能够重新编译、原依赖的 cuDNN/cuBLAS/NCCL 能力是否有完整对应、新模型发布后的适配时效。</p>
+
+<h4>海光 DCU：ROCm/HIP 路线，适合 AI 与 HPC 混合负载</h4>
+<p>海光 DCU 的主要特点是借助 DTK 及 ROCm/HIP 式软件生态承接原 GPU 应用。CUDA C/C++ 项目可以通过类似 HIP 转换的方式迁移，对科学计算、工程仿真、MPI、Fortran 及 AI 混合场景较有吸引力。它的"兼容"应理解为：CUDA 源码转换到 HIP 式接口后，在 DCU 上重新编译运行。优势是能利用较成熟的开放生态；限制是原来严重依赖 CUDA 专用库、特定架构汇编或高度定制 Kernel 的项目，仍需人工改造。</p>
+
+<h4>天数智芯：通用 GPU 与主流生态适配</h4>
+<p>天数智芯走通用 GPU 路线，强调自主指令集、软件栈和主流 AI 框架兼容，适合标准训练、推理及已有模型迁移。项目评估时应要求厂商给出明确的软件版本矩阵、CUDA API 迁移清单、已适配框架及模型清单、自定义算子的开发方式、对应产品上的实测数据。"全面兼容主流生态"不等于每个 CUDA 项目无需修改。</p>
+
+<h4>壁仞：完整自有软件栈与数据中心集群路线</h4>
+<p>壁仞的 BIRENSUPA 提供编译器、运行时、算子库、通信库和框架适配，重点面向数据中心、大模型训推及集群场景。相较单纯评估 CUDA 语法兼容，壁仞项目更应关注：大模型训练及推理框架覆盖、多卡集合通信、MoE 的 All-to-All 效率、集群调度及故障恢复、关键融合算子性能。</p>
+
+<h4>昇腾：生态最完整之一，但不是 CUDA 兼容路线</h4>
+<p>昇腾依靠 CANN、框架后端、算子库、通信体系和模型适配工具形成自主生态。对已经适配的主流模型，高层代码迁移可以比较顺畅；对 CUDA C++、Triton、特定量化扩展和自定义 Kernel，则通常需要改写或替换。因此，昇腾的优势是全栈体系和工程交付能力，而不是"原 CUDA 代码直接运行"。CM384 这类超节点更应从模型适配、集群通信、并行策略和系统效率评价，不能仅按 CUDA 兼容率评价。</p>
+
+<h4>寒武纪、燧原及其他 AI 加速器：侧重模型与框架适配</h4>
+<p>这类厂商通常更强调自有软件栈、框架插件、算子库和重点模型优化。对于已进入官方支持矩阵的模型，迁移可能较快；但客户若拥有大量底层 CUDA 资产，自定义 Kernel 的改造量一般会高于高度兼容型 GPGPU 路线。其优势可能体现在特定推理、训练或行业负载的软硬件协同优化，而不是 CUDA 接口复刻。</p>
+
+<h3>按照客户代码类型选择路线</h3>
+<table class="data-table"><tr class="header-row"><td>客户现有资产</td><td>优先考察路线</td><td>核心验证</td></tr><tr class=""><td>纯 PyTorch 标准模型</td><td>各主流平台均可进入 PoC</td><td>算子覆盖、精度、吞吐</td></tr><tr class="alt-row"><td>大量 CUDA C/C++ 源码</td><td>沐曦、摩尔线程、海光、天数、壁仞</td><td>自动转换率、人工修改量</td></tr><tr class=""><td>大量 Triton/自定义 Kernel</td><td>兼容型 GPGPU 优先，但必须实测</td><td>Kernel 重写量与性能</td></tr><tr class="alt-row"><td>只有闭源 CUDA 二进制</td><td>风险最高</td><td>是否有厂商原生版本或源码</td></tr><tr class=""><td>HPC＋AI 混合应用</td><td>海光及通用 GPGPU 路线重点考察</td><td>FP64、MPI、Fortran、库覆盖</td></tr><tr class="alt-row"><td>主流大模型、少量自定义代码</td><td>昇腾等完整 AI 生态也有竞争力</td><td>模型版本、推理引擎、集群能力</td></tr><tr class=""><td>数百卡以上训练</td><td>不宜只看 CUDA 兼容</td><td>通信效率、稳定性、故障恢复</td></tr></table>
+
+<h3>六项实测评分框架</h3>
+<p>对同一个客户项目，建议采用以下评分框架，而不是做口号排名：</p>
+<div class="script-box">
+<span class="script-label">评分公式</span>
+<p>S = 0.20F + 0.20O + 0.20P + 0.15D + 0.15T + 0.10M</p>
+<p>其中：F = 框架和版本兼容度；O = 算子及第三方扩展覆盖度；P = 端到端性能；D = 分布式扩展和通信效率；T = 迁移工时；M = 运维、升级和厂商支持能力。</p>
+</div>
+<p>PoC 应固定模型、数据集、精度、Batch、输入输出长度、服务器数量及验收指标，至少输出：</p>
+<ul class="custom-list">
+<li class="number">无修改即可运行的代码比例；</li>
+<li class="number">自动转换后可运行的比例；</li>
+<li class="number">必须人工重写的文件和 Kernel 数量；</li>
+<li class="number">是否存在 CPU 回退；</li>
+<li class="number">与原平台相比的吞吐、时延及显存占用；</li>
+<li class="number">8 卡及跨节点扩展效率；</li>
+<li class="number">连续运行稳定性；</li>
+<li class="number">后续升级所需维护工作。</li>
+</ul>
+
+<h3>售前表达建议</h3>
+<p>面对客户，不建议说"某厂商 100% 兼容 CUDA"，更稳妥的说法是：</p>
+<div class="script-box">
+<span class="script-label">售前话术</span>
+<p>国内 GPU 厂商大致分为两条路线：一类通过 CUDA 风格接口、源码转换和对应计算库，尽量复用客户既有代码；另一类建立自主软件栈，通过 PyTorch 等框架和模型适配承接业务。前者通常更适合拥有大量 CUDA 源码的客户，后者在已适配模型和整套集群交付方面可能更有优势。</p>
+<p>我们不会仅依据厂商宣称的兼容比例选型，而会用客户真实模型确认三件事：需要修改多少代码、能达到多少端到端性能、后续升级是否可持续。最终选择迁移总成本最低的平台，而不是宣传口径最接近 CUDA 的平台。</p>
+</div>
+<p class="highlight">销售选型简化一句话：看重 CUDA 代码复用，优先评估沐曦、摩尔线程、海光、天数和壁仞；看重成熟的自主 AI 全栈与超节点交付，可重点评估昇腾；但最终必须通过真实业务 PoC 决定。</p>
 
 
 <h1 id="ch6">第四章　服务器形态与超节点架构对比</h1>
