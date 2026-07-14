@@ -651,7 +651,8 @@ p.highlight {
                 <li><a href="#ch4-s5" data-target="ch4-s5">2.6　GB200 超芯片</a></li>
                 <li><a href="#ch4-s6" data-target="ch4-s6">2.7　GB300 推理旗舰超芯片</a></li>
                 <li><a href="#ch4-s7" data-target="ch4-s7">2.8　面向中国市场的合规版本对比</a></li>
-                <li><a href="#ch4-s8" data-target="ch4-s8">2.9　GPU 服务器 CPU 配置规格（Intel / AMD）</a></li>
+                <li><a href="#ch4-s7b" data-target="ch4-s7b">2.9　推理场景英伟达 GPU 经济效益对比</a></li>
+                <li><a href="#ch4-s8" data-target="ch4-s8">2.10　GPU 服务器 CPU 配置规格（Intel / AMD）</a></li>
             </ul>
         </li>
         <li>
@@ -881,7 +882,69 @@ p.highlight {
 
 <div class="warn-box">⚠  2025年4月，美国无限期禁止英伟达 H20 对华出口，对中国推理市场造成重大影响，国产昇腾推理适配需求因此加速。售前需实时跟踪出口管制动态，这直接影响方案可行性。</div>
 
-<h2 id="ch4-s8">2.8  GPU 服务器 CPU 配置规格（Intel / AMD）</h2>
+<h2 id="ch4-s7b">2.9  推理场景英伟达 GPU 经济效益对比</h2>
+<p>在智算售前方案中，推理场景的 GPU 选型不能简单追求"最强算力"，而要从采购成本、显存容量、带宽、功耗、能效比和 TCO 多个维度综合评估。不同模型规模（7B/13B/70B/175B+）和不同精度（FP16/INT8/FP4）下，各型号 GPU 的经济效益排名会发生显著变化。本节针对推理场景，对英伟达主流型号进行系统性的经济效益对比分析，帮助售前快速给出"推理选哪张卡最划算"的方案建议。</p>
+
+<h3>2.9.1  推理侧核心经济指标说明</h3>
+<ul class="custom-list">
+<li class="bullet">每 GB 显存成本（¥/GB）：衡量单位显存容量的采购成本。推理场景下显存容量决定"能跑多大的模型"和"能支持多长的上下文"，是选型的第一门槛。每 GB 显存成本越低，大规模部署时硬件投入越省。</li>
+<li class="bullet">显存带宽功耗比（GB/s/W）：显存带宽除以 TDP 功耗，衡量每瓦特功耗能提供多少显存带宽。推理（尤其自回归生成）是带宽密集型任务，该指标直接反映推理场景的能效比。值越高，长期运行电费和散热成本越低。</li>
+<li class="bullet">单卡可部署最大模型规模：决定是否需要多卡张量并行（TP）。单卡能跑的模型越大，越能避免多卡通信开销，推理延迟更低、吞吐更高。</li>
+<li class="bullet">70B 模型推理集群总成本：以 70B FP16 推理为基准场景，计算所需 GPU 数量 × 单卡价格，反映"跑同一个模型"的硬件总投入。这是售前最常用的横向对比口径。</li>
+<li class="bullet">3 年 TCO（总持有成本）：硬件采购成本 + 3 年电费 + 散热成本，是大规模推理集群选型的最终决策依据。</li>
+</ul>
+
+<h3>2.9.2  主流推理 GPU 经济效益横向对比</h3>
+<p>下表以 2025 年国内市场为基准，对英伟达主流推理型号进行经济效益横向对比。价格均为国内参考采购价（含税），实际成交价受供货周期、采购量和渠道影响波动较大：</p>
+<table class="data-table"><tr class="header-row"><td>对比维度</td><td>L20</td><td>H20</td><td>H100</td><td>H200</td><td>B200</td><td>B300</td></tr><tr class=""><td>单卡采购价（参考）</td><td>¥10~15万</td><td>¥12~18万（已禁）</td><td>¥20~30万</td><td>¥28~38万</td><td>¥45万+</td><td>¥60万+</td></tr><tr class="alt-row"><td>显存容量</td><td>48 GB GDDR6</td><td>96 GB HBM3</td><td>80 GB HBM3</td><td>141 GB HBM3e</td><td>192 GB HBM3e</td><td>288 GB HBM3e</td></tr><tr class=""><td>显存带宽</td><td>0.864 TB/s</td><td>4.0 TB/s</td><td>3.35 TB/s</td><td>4.8 TB/s</td><td>8.0 TB/s</td><td>8.0 TB/s</td></tr><tr class="alt-row"><td>推理算力</td><td>FP16 ~119 TFLOPS</td><td>FP16 ~148 TFLOPS</td><td>FP8 ~2.0 PFLOPS</td><td>FP8 ~2.0 PFLOPS</td><td>FP8 ~4.5 / FP4 ~9.0 PFLOPS</td><td>FP8 ~6.75 / FP4 ~13.5 PFLOPS</td></tr><tr class=""><td>TDP 功耗</td><td>300W</td><td>400W</td><td>700W</td><td>700W</td><td>~1000W</td><td>~1400W</td></tr><tr class="alt-row"><td>接口形态</td><td>PCIe Gen5</td><td>PCIe Gen5</td><td>SXM5</td><td>SXM5</td><td>SXM7</td><td>SXM（风冷10U）</td></tr><tr class=""><td>每GB显存成本</td><td>¥2,083~3,125</td><td>¥1,250~1,875</td><td>¥2,500~3,750</td><td>¥1,986~2,695</td><td>¥2,344+</td><td>¥2,083+</td></tr><tr class="alt-row"><td>带宽功耗比（GB/s/W）</td><td>2.88</td><td>10.0</td><td>4.79</td><td>6.86</td><td>8.0</td><td>5.71</td></tr><tr class=""><td>单卡可跑最大模型(FP16)</td><td>~20B</td><td>~40B</td><td>~33B</td><td>~58B</td><td>~80B</td><td>~120B</td></tr><tr class="alt-row"><td>70B FP16推理所需卡数</td><td>4张（192GB）</td><td>2张（192GB）</td><td>3张（240GB）</td><td>2张（282GB）</td><td>1张（192GB）</td><td>1张（288GB）</td></tr><tr class=""><td>70B FP16推理集群硬件成本</td><td>¥40~60万</td><td>¥24~36万</td><td>¥60~90万</td><td>¥56~76万</td><td>¥45万+</td><td>¥60万+</td></tr><tr class="alt-row"><td>70B INT8推理所需卡数</td><td>2张（96GB）</td><td>1张（96GB）</td><td>2张（160GB）</td><td>1张（141GB）</td><td>1张（192GB）</td><td>1张（288GB）</td></tr><tr class=""><td>中国市场供货状态</td><td>可供货</td><td>2025.4起禁止出口</td><td>受限（H800替代）</td><td>受限</td><td>受限/未定</td><td>受限/未定</td></tr></table>
+
+<div class="warn-box">⚠  以上价格为 2025 年国内市场参考价，实际成交价受出口管制政策、供货周期、采购量等因素影响波动极大。H20 已于 2025 年 4 月被禁止对华出口，现存货价格为存量交易。B200/B300 对华供货尚不确定，售前需实时跟踪政策动态。</div>
+
+<h3>2.9.3  分模型规模场景经济效益分析</h3>
+
+<h4>（1）7B~13B 模型推理：L20 性价比最优</h4>
+<p>7B~13B 模型推理显存需求较小（7B FP16 约 16.8GB，13B FP16 约 31.2GB），单张 L20（48GB）即可流畅运行，且有充裕空间存放 KV Cache 支持高并发。此场景下：</p>
+<ul class="custom-list">
+<li class="bullet">L20 单卡（¥10~15万）即可跑 13B FP16 推理，是成本最低的方案。PCIe 形态部署简单，无需 SXM 服务器平台，整机投入可控制在 ¥25~30 万（含服务器平台）。</li>
+<li class="bullet">H20 单卡虽也能跑，但单卡价格是 L20 的 1.2~1.8 倍，7B~13B 场景下带宽优势无法转化为成本优势。</li>
+<li class="bullet">H100/H200 在此场景属于"大炮打蚊子"，算力和带宽利用率低下，单卡成本是 L20 的 2~3 倍，经济效益最差。</li>
+</ul>
+<div class="tip-box">💡  售前建议：7B~13B 推理场景，L20 是性价比最优解。若客户预算极低且场景允许，RTX 4090（24GB，¥1.5万）也可跑 7B INT8 量化推理，但缺乏 ECC 显存和全天候运行可靠性保障，不推荐生产环境使用。</div>
+
+<h4>（2）30B~70B 模型推理：B200 经济拐点</h4>
+<p>70B FP16 推理需要约 168GB 显存（含安全系数），是推理选型的分水岭。此场景下 GPU 选型的经济效益出现显著分化：</p>
+<table class="data-table"><tr class="header-row"><td>方案</td><td>所需卡数</td><td>集群硬件成本</td><td>带宽功耗比</td><td>多卡通信开销</td><td>综合评价</td></tr><tr class=""><td>L20×4</td><td>4张</td><td>¥40~60万</td><td>2.88</td><td>高（4卡TP，PCIe带宽瓶颈）</td><td>成本低但带宽仅0.864TB/s，吞吐差</td></tr><tr class="alt-row"><td>H20×2</td><td>2张</td><td>¥24~36万</td><td>10.0</td><td>中（2卡TP）</td><td>成本最低且能效最优，但已禁</td></tr><tr class=""><td>H100×3</td><td>3张</td><td>¥60~90万</td><td>4.79</td><td>较高（3卡TP非2的幂次，效率差）</td><td>成本高，3卡TP效率差，不推荐</td></tr><tr class="alt-row"><td>H200×2</td><td>2张</td><td>¥56~76万</td><td>6.86</td><td>中（2卡TP）</td><td>均衡方案，中国可供货场景推荐</td></tr><tr class=""><td>B200×1</td><td>1张</td><td>¥45万+</td><td>8.0</td><td>无（单卡运行）</td><td>单卡跑满70B，TCO最优</td></tr><tr class="alt-row"><td>B300×1</td><td>1张</td><td>¥60万+</td><td>5.71</td><td>无（单卡运行）</td><td>余量大，长上下文高并发最优</td></tr></table>
+<ul class="custom-list">
+<li class="bullet">H20（已禁）曾是 70B 推理的性价比之王：2 张 H20（96GB×2=192GB）即可跑 70B FP16，总成本仅 ¥24~36 万，且带宽功耗比高达 10.0 GB/s/W，是所有英伟达卡中最高的。其被禁对中国推理市场冲击巨大。</li>
+<li class="bullet">B200 单卡跑 70B FP16 是当前最优方案：192GB 显存装下 168GB 模型权重后仍有 24GB 用于 KV Cache，无需多卡通信，延迟最低。总成本 ¥45 万+ 低于 H200×2（¥56~76 万），且能效比（8.0 GB/s/W）优于 H200（6.86）。</li>
+<li class="bullet">B300 适合 70B + 超长上下文场景：288GB 显存装下 70B 模型后剩余 120GB 可用于 KV Cache，支持数百路并发的 128K 长上下文推理。虽然单卡成本高于 B200，但在高并发长上下文场景下，单卡吞吐远超 B200，每 Token 成本反而更低。</li>
+<li class="bullet">H200×2 是中国可供货场景下的较优方案：在 B200/B300 供货受限的情况下，H200 是能跑 70B 的高端卡中最优选择——2 卡 282GB 总显存足够，带宽 4.8 TB/s 优于 H100 的 3.35 TB/s，且功耗与 H100 相同（700W）。</li>
+<li class="bullet">H100×3 是 70B 推理的最差选择：3 卡张量并行通信开销大（TP=3 非 2 的幂次，效率差），总成本 ¥60~90 万为各方案中最高，且带宽功耗比仅 4.79，TCO 最差。</li>
+</ul>
+
+<h4>（3）175B+ 超大模型推理：B300/GB300 必选</h4>
+<p>175B FP16 推理需要约 420GB 显存，已超出任何单卡能力，必须多卡并行。此场景下大显存卡的卡数优势转化为显著的成本和性能优势：</p>
+<table class="data-table"><tr class="header-row"><td>方案</td><td>所需卡数</td><td>总显存</td><td>集群硬件成本</td><td>通信开销</td></tr><tr class=""><td>H100</td><td>6张</td><td>480GB</td><td>¥120~180万</td><td>6卡TP，极高</td></tr><tr class="alt-row"><td>H200</td><td>3张</td><td>423GB</td><td>¥84~114万</td><td>3卡TP，较高</td></tr><tr class=""><td>B200</td><td>3张</td><td>576GB</td><td>¥135万+</td><td>3卡TP，较高</td></tr><tr class="alt-row"><td>B300</td><td>2张</td><td>576GB</td><td>¥120万+</td><td>2卡TP，中</td></tr></table>
+<p>175B+ 推理场景下，B300×2 仅需 2 卡即可提供 576GB 显存，通信开销远低于 H100×6 和 H200×3。GB300 NVL72 超节点则可单机柜部署 671B MoE 模型（如 DeepSeek-R1），是万亿参数级推理的唯一商用方案。</p>
+
+<h3>2.9.4  3 年 TCO 总持有成本对比（70B FP16 推理）</h3>
+<p>以下以 70B FP16 推理为基准，按 3 年运营周期计算 TCO。假设条件：工业电价 ¥0.8/kWh，GPU 利用率 70%，PUE 1.5（每瓦 IT 功耗需 1.5W 总设施功耗），不含机房折旧和人力运维成本：</p>
+<table class="data-table"><tr class="header-row"><td>方案</td><td>硬件成本</td><td>3年电费+散热</td><td>3年TCO</td><td>TCO对比（以H200×2为基准）</td></tr><tr class=""><td>L20×4</td><td>¥40~60万</td><td>~¥2.6万</td><td>¥42.6~62.6万</td><td>—（带宽低，吞吐不达标）</td></tr><tr class="alt-row"><td>H20×2</td><td>¥24~36万</td><td>~¥1.8万</td><td>¥25.8~37.8万</td><td>已禁，仅存量参考</td></tr><tr class=""><td>H100×3</td><td>¥60~90万</td><td>~¥4.6万</td><td>¥64.6~94.6万</td><td>+5~20%</td></tr><tr class="alt-row"><td>H200×2</td><td>¥56~76万</td><td>~¥3.1万</td><td>¥59.1~79.1万</td><td>基准</td></tr><tr class=""><td>B200×1</td><td>¥45万+</td><td>~¥2.2万</td><td>¥47.2万+</td><td>-20~40%（最优）</td></tr><tr class="alt-row"><td>B300×1</td><td>¥60万+</td><td>~¥3.1万</td><td>¥63.1万+</td><td>+0~7%（长上下文优势大）</td></tr></table>
+
+<div class="tip-box">💡  TCO 分析结论：① B200 单卡方案 3 年 TCO 最低（¥47.2 万+），比 H200×2 低 20~40%，是 70B 推理的经济最优解；② H20（若可供货）TCO 最低但已被禁；③ H100×3 因需要 3 卡 TP，通信开销大且 TCO 最高，是 70B 推理的最差选择；④ B300 虽 TCO 略高于 B200，但在长上下文、高并发场景下单卡吞吐远超 B200，实际每 Token TCO 更优。</div>
+
+<h3>2.9.5  推理 GPU 选型决策建议</h3>
+<ul class="custom-list">
+<li class="bullet">7B~13B 模型：首选 L20（¥10~15万/卡），单卡 48GB 足够。成本最低，PCIe 部署简单。若需更高吞吐可选 H20（若存量可购）。</li>
+<li class="bullet">30B~70B 模型（供货不受限时）：首选 B200 单卡（¥45万+），无需多卡通信，TCO 最优。次选 H200×2（¥56~76万），在 B200 供货受限时是中国市场可供货的最优方案。避免使用 H100×3（3卡 TP 效率差，TCO 最高）。</li>
+<li class="bullet">70B + 长上下文（128K+）：首选 B300 单卡（¥60万+），288GB 显存可容纳超大 KV Cache。次选 B200 + 外部 KV Cache 卸载（有性能损失）。</li>
+<li class="bullet">175B~671B 超大模型：首选 B300×2~4 或 GB300 NVL72 超节点。大显存 + 少卡数是降低 TP 通信开销的关键。</li>
+<li class="bullet">中国市场受限场景：在 B200/B300 供货受限时，L20（小模型）和 H200（大模型）是可供货型号中的最优选择。H20 存量用完后的空缺，需要国产昇腾 910B/910C 补位。</li>
+</ul>
+
+<div class="warn-box">⚠  经济效益对比的结论基于 2025 年国内市场参考价格。出口管制政策变化、汇率波动、产能供需关系都可能显著改变各型号的实际采购价和供货状态，售前报价时应以供应商最新正式报价为准，本节仅用于方案选型的快速对比参考。</div>
+
+<h2 id="ch4-s8">2.10  GPU 服务器 CPU 配置规格（Intel / AMD）</h2>
 <p>在智算售前方案中，客户常把全部注意力放在 GPU 选型上，而忽视了 CPU 的搭配。实际上，GPU 服务器中 CPU 虽然不直接参与大模型的核心矩阵运算，但承担着数据加载与预处理、推理请求调度、KV Cache 管理、框架运行时调度、以及 PCIe 数据搬运等关键任务。CPU 核心数不足或内存带宽不够，会导致 GPU 在等待数据时出现"数据饥饿"，实际 MFU 大幅下降。因此，针对不同代际的英伟达专业卡，选配正确的 CPU 平台是售前方案的必要环节。</p>
 
 <h3>2.9.1  CPU 在 GPU 服务器中的核心职责</h3>
@@ -902,7 +965,7 @@ p.highlight {
 
 <div class="tip-box">💡  实战提示：在 SXM 形态的 8 卡训练服务器中（如 HGX H100/H200/B200），GPU 之间通过 NVLink/NVSwitch 全互联，CPU 选 Intel 还是 AMD 对训练性能影响极小，可按客户偏好和成本决定。但在 PCIe 形态的多卡推理服务器中（如 4~8 张 L40S/L20），AMD EPYC 凭借 128 条 PCIe 5.0 通道的优势，可以提供更充足的 GPU-CPU 直连带宽，避免 PLX 桥接带来的带宽分摊，是更优选择。</div>
 
-<h3>2.9.4  Intel 至强 CPU 型号详解（符合智算服务器规格的选型推荐）</h3>
+<h3>2.10.4  Intel 至强 CPU 型号详解（符合智算服务器规格的选型推荐）</h3>
 <p>售前方案中，客户常对 CPU 选型提出明确的硬性指标——如双路配置、第 4 代或更先进架构、单颗核心数 ≥ 48 核、基频 ≥ 2.1 GHz。以下涵盖第4代（Sapphire Rapids）和第5代（Emerald Rapids）符合上述要求的型号，是当前主流智算服务器（HGX H100/H200/B200 等）的标准 CPU 选型：</p>
 <table class="data-table"><tr class="header-row"><td>处理器系列</td><td>具体型号</td><td>核心/线程数</td><td>基础频率</td><td>最大睿频</td><td>L3 缓存</td><td>TDP 功耗</td><td>架构代际</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8480C</td><td>48C / 96T</td><td>2.0 GHz</td><td>3.8 GHz</td><td>105 MB</td><td>350W</td><td>第4代 Sapphire Rapids</td></tr><tr class="alt-row"><td>至强铂金 Platinum</td><td>Xeon 8480+</td><td>56C / 112T</td><td>2.0 GHz</td><td>3.8 GHz</td><td>105 MB</td><td>350W</td><td>第4代 Sapphire Rapids</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8470</td><td>52C / 104T</td><td>2.1 GHz</td><td>3.6 GHz</td><td>105 MB</td><td>350W</td><td>第4代 Sapphire Rapids</td></tr><tr class="alt-row"><td>至强金牌 Gold</td><td>Xeon 6448Y</td><td>32C / 64T</td><td>2.1 GHz</td><td>3.7 GHz</td><td>60 MB</td><td>270W</td><td>第4代 Sapphire Rapids</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8580</td><td>60C / 120T</td><td>2.0 GHz *</td><td>4.0 GHz</td><td>300 MB</td><td>350W</td><td>第5代 Emerald Rapids</td></tr><tr class="alt-row"><td>至强铂金 Platinum</td><td>Xeon 8570</td><td>56C / 112T</td><td>2.1 GHz</td><td>4.0 GHz</td><td>262.5 MB</td><td>350W</td><td>第5代 Emerald Rapids</td></tr><tr class=""><td>至强铂金 Platinum</td><td>Xeon 8568Y+</td><td>48C / 96T</td><td>2.3 GHz</td><td>4.0 GHz</td><td>300 MB</td><td>330W</td><td>第5代 Emerald Rapids</td></tr><tr class="alt-row"><td>至强金牌 Gold</td><td>Xeon 6548Y+</td><td>48C / 96T</td><td>2.5 GHz</td><td>4.1 GHz</td><td>60 MB</td><td>330W</td><td>第5代 Emerald Rapids</td></tr></table>
 <p>* 注：Xeon 8480C/8480+/8580 基频为 2.0 GHz，略低于 2.1 GHz 要求，但在实际智算方案中常作为高性能备选。若严格执行 2.1 GHz 标准，第4代应选 8470（52C/2.1GHz），第5代应选 8570 或 8568Y+。</p>
@@ -970,7 +1033,7 @@ p.highlight {
 
 <div class="tip-box">💡  实战对比：Intel Xeon 8568Y+ vs AMD EPYC 9474F——两者均为 48 核、面向推理主频敏感场景。Intel 基频 2.3GHz、L3 缓存 300MB、TDP 330W；AMD 基频 3.65GHz、L3 缓存 192MB、TDP 400W。AMD 基频领先 59% 但功耗高 21%、缓存少 36%。选型取决于客户更看重主频（选 AMD）还是缓存和功耗（选 Intel）。若客户已有 Intel 生态且兼容性要求高，优先 Intel；若追求极致主频和 PCIe 通道数，优先 AMD。</div>
 
-<h3>2.9.6  Intel 与 AMD CPU 价格范围对比</h3>
+<h3>2.10.6  Intel 与 AMD CPU 价格范围对比</h3>
 <p>CPU 采购成本是智算服务器整机报价的重要组成部分（双路 CPU 通常占整机成本的 8%~15%）。以下为 2025 年国内市场主流 Intel 至强与 AMD EPYC 型号的散件价格范围对比，便于售前快速估算 BOM 成本：</p>
 <table class="data-table"><tr class="header-row"><td>厂商</td><td>系列</td><td>代表型号</td><td>核心数</td><td>基础频率</td><td>散件参考价（单颗）</td><td>双路成本</td><td>性价比定位</td></tr><tr class=""><td>Intel</td><td>至强金牌 Gold 6400（第4代）</td><td>6448Y</td><td>32C</td><td>2.1 GHz</td><td>¥1.5~2.2万</td><td>¥3.0~4.4万</td><td>第4代入门，推理服务器可用</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8400（第4代）</td><td>8470</td><td>52C</td><td>2.1 GHz</td><td>¥3.8~4.8万</td><td>¥7.6~9.6万</td><td>第4代基频达标，H100 高配</td></tr><tr class=""><td>Intel</td><td>至强铂金 Platinum 8400（第4代）</td><td>8480C</td><td>48C</td><td>2.0 GHz</td><td>¥4.0~5.0万</td><td>¥8.0~10.0万</td><td>第4代主力，H100 原厂标配，存量最大</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8400（第4代）</td><td>8480+</td><td>56C</td><td>2.0 GHz</td><td>¥4.5~5.8万</td><td>¥9.0~11.6万</td><td>第4代高核心数，数据加载密集型</td></tr><tr class=""><td>Intel</td><td>至强金牌 Gold 6500（第5代）</td><td>6548Y+</td><td>48C</td><td>2.5 GHz</td><td>¥2.8~3.5万</td><td>¥5.6~7.0万</td><td>第5代性价比首选，主频高缓存少</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8500（第5代）</td><td>8568Y+</td><td>48C</td><td>2.3 GHz</td><td>¥4.5~5.5万</td><td>¥9.0~11.0万</td><td>第5代主频与缓存均衡，H200/B200 主力</td></tr><tr class=""><td>Intel</td><td>至强铂金 Platinum 8500（第5代）</td><td>8570</td><td>56C</td><td>2.1 GHz</td><td>¥5.5~7.0万</td><td>¥11.0~14.0万</td><td>第5代核心数优先，大缓存</td></tr><tr class="alt-row"><td>Intel</td><td>至强铂金 Platinum 8500（第5代）</td><td>8580</td><td>60C</td><td>2.0 GHz</td><td>¥7.0~9.0万</td><td>¥14.0~18.0万</td><td>第5代旗舰，核心数最大</td></tr><tr class=""><td>Intel</td><td>至强6（Granite Rapids）</td><td>6972P（72C）</td><td>72C</td><td>~2.4 GHz</td><td>¥8.0~12.0万</td><td>¥16.0~24.0万</td><td>下一代，价格偏高供应有限</td></tr><tr class="alt-row"><td>AMD</td><td>EPYC 9004F（Genoa-F）</td><td>9474F</td><td>48C</td><td>3.65 GHz</td><td>¥3.8~4.8万</td><td>¥7.6~9.6万</td><td>高频版，对标 Intel 8568Y+，主频领先</td></tr><tr class=""><td>AMD</td><td>EPYC 9004（Genoa）</td><td>9654</td><td>96C</td><td>2.4 GHz</td><td>¥5.0~6.5万</td><td>¥10.0~13.0万</td><td>核心数翻倍，训练数据加载优势</td></tr><tr class="alt-row"><td>AMD</td><td>EPYC 9004X（Genoa-X）</td><td>9684X</td><td>96C</td><td>2.55 GHz</td><td>¥7.5~9.5万</td><td>¥15.0~19.0万</td><td>3D V-Cache 1152MB，推理缓存优势</td></tr><tr class=""><td>AMD</td><td>EPYC 9005（Turin）</td><td>9755</td><td>128C</td><td>2.1 GHz</td><td>¥6.5~8.5万</td><td>¥13.0~17.0万</td><td>Zen 5 旗舰，核心数最大</td></tr><tr class="alt-row"><td>AMD</td><td>EPYC 9005（Turin）</td><td>9575F</td><td>64C</td><td>3.3 GHz</td><td>¥4.5~6.0万</td><td>¥9.0~12.0万</td><td>Turin 高频版，加速 5.0GHz 业界最高</td></tr></table>
 
@@ -990,7 +1053,7 @@ p.highlight {
 <p>与 A100/H100/H200/B200 服务器采用 Intel 或 AMD x86 CPU 不同，GB200 超芯片集成了 NVIDIA 自研的 Grace CPU（72 核 ARM Neoverse V2），不再使用 x86 平台。Grace CPU 通过 NVLink-C2C（900 GB/s）与 B200 GPU 实现内存一致性互联，CPU 与 GPU 共享统一地址空间，数据传输无需经过 PCIe，从根本上消除了传统 x86 架构中 CPU-GPU 间的 PCIe 瓶颈。</p>
 <p>Grace CPU 的关键规格：72 核 ARM Neoverse V2、480GB LPDDR5X（带宽 512 GB/s）、与 2×B200 共享 864GB 统一寻址空间。这一架构使 GB200 在大模型推理（尤其需要 CPU 参与调度的多并发场景）中相比传统 x86 + GPU 方案有结构性优势，但也意味着软件生态需要适配 ARM 架构。</p>
 
-<h3>2.9.8  CPU 配置快速估算口诀</h3>
+<h3>2.10.8  CPU 配置快速估算口诀</h3>
 <p>售前现场快速估算 GPU 服务器的 CPU 核心数需求，可使用以下公式：</p>
 <p class="highlight">训练服务器：CPU 总核心数 ≥ GPU 数 × 6~8（每个 GPU 分配 6~8 核用于数据加载与预处理）<br>推理服务器：CPU 总核心数 ≥ GPU 数 × 4~6（推理请求调度和 Token 分发开销较低）<br>CPU 内存 ≥ GPU 总显存 × 1.5（训练）或 × 1.0~1.5（推理）</p>
 <div class="warn-box">⚠  注意：以上为经验估算值，实际需求与框架（PyTorch/vLLM/TensorRT-LLM）、数据格式、并发模型强相关。大模型推理（如 70B+ 参数）在多并发下 CPU 消耗会显著上升，建议留 30% 余量。</div>
