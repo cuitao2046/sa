@@ -277,6 +277,92 @@ p.highlight {
     transition: background 0.2s;
 }
 
+/* ==================== 拓扑容量计算工具 ==================== */
+.topology-calculator {
+    background: #f8fbfd;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin: 20px 0 26px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.calc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    gap: 14px 16px;
+    margin: 14px 0 18px;
+}
+.calc-field label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.calc-field input,
+.calc-field select {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--text);
+    background: white;
+}
+.calc-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+.calc-actions button {
+    border: none;
+    border-radius: 6px;
+    padding: 9px 16px;
+    background: var(--primary-light);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.calc-actions button.secondary {
+    background: #7f8c8d;
+}
+.calc-results {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+}
+.calc-result-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+}
+.calc-result-card .label {
+    color: var(--text-light);
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+.calc-result-card .value {
+    color: var(--primary);
+    font-size: 20px;
+    font-weight: bold;
+}
+.calc-note {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.7;
+}
+@media (max-width: 900px) {
+    .calc-grid { grid-template-columns: repeat(2, minmax(160px, 1fr)); }
+    .calc-results { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+}
+@media (max-width: 600px) {
+    .calc-grid,
+    .calc-results { grid-template-columns: 1fr; }
+}
+
 /* ==================== 页脚 ==================== */
 .footer {
     text-align: center;
@@ -679,6 +765,8 @@ p.highlight {
                 <li><a href="#ch7-s2" data-target="ch7-s2">5.2　Scale-Up 与 Scale-Out</a></li>
                 <li><a href="#ch7-s3" data-target="ch7-s3">5.3　InfiniBand vs RoCEv2 选型</a></li>
                 <li><a href="#ch7-s4" data-target="ch7-s4">5.4　组网拓扑结构详解</a></li>
+                <li><a href="#ch7-s5" data-target="ch7-s5">5.5　典型网络设备型号参考</a></li>
+                <li><a href="#ch7-s6" data-target="ch7-s6">5.6　拓扑设备容量计算工具</a></li>
             </ul>
         </li>
         <li>
@@ -1211,10 +1299,10 @@ p.highlight {
 
 
 <h1 id="ch7">第五章　组网方案全景</h1>
-<p>组网是智算售前中最能体现技术深度的环节，也是客户技术团队最愿意深入探讨的议题。核心认知：AI 集群算力不随 GPU 数量线性增长，存在&quot;加速比&quot;瓶颈（通常 &lt;1），而降低这个瓶颈的核心技术就是 RDMA + 高性能无损网络。理解了这一点，再去推荐 IB 或 RoCEv2，就有了充分的技术底气。</p>
+<p>组网是智算售前中最能体现技术深度的环节，也是客户技术团队最愿意深入探讨的议题。核心认知：AI 集群算力不随 GPU 数量线性增长，存在&quot;加速比&quot;瓶颈（通常 &lt;1），而降低这个瓶颈的核心技术就是 RDMA + 高性能无损网络。理解了这一点，再结合典型设备型号（如 NVIDIA Quantum-2/Quantum-X、Spectrum-X，华为 CloudEngine、H3C S9827、锐捷 RG-S6510 等）去推荐 IB 或 RoCEv2，就有了充分的技术底气。</p>
 <h2 id="ch7-s1">5.1  四张网络平面规划</h2>
 <p>一个完整的智算中心通常需要规划四张逻辑网络，它们各自承载不同的流量，对性能的要求也截然不同：</p>
-<table class="data-table"><tr class="header-row"><td>网络平面</td><td>承载流量</td><td>性能要求</td><td>推荐技术</td><td>优先级</td></tr><tr class=""><td>参数面（AI计算网）</td><td>GPU间梯度/参数同步<br>All-Reduce / All-to-All</td><td>大带宽·零丢包·低延迟<br>万卡1:1无收敛</td><td>InfiniBand NDR<br>或 RoCEv2</td><td>最高</td></tr><tr class="alt-row"><td>样本面（数据/存储网）</td><td>读取训练样本<br>写入/读取 Checkpoint</td><td>高带宽·无损<br>高并发读写</td><td>RoCEv2<br>或 IB</td><td>高</td></tr><tr class=""><td>业务面（对外服务网）</td><td>AI推理 API 请求<br>负载均衡</td><td>普通以太带宽<br>低延迟出口</td><td>10/25/100G 以太网</td><td>中</td></tr><tr class="alt-row"><td>管理面（带外管理）</td><td>SSH运维·IPMI/BMC<br>监控·告警</td><td>低带宽·安全隔离</td><td>普通千兆以太网</td><td>低</td></tr></table>
+<table class="data-table"><tr class="header-row"><td>网络平面</td><td>承载流量</td><td>性能要求</td><td>推荐技术</td><td>典型设备型号</td><td>优先级</td></tr><tr class=""><td>参数面（AI计算网）</td><td>GPU间梯度/参数同步<br>All-Reduce / All-to-All</td><td>大带宽·零丢包·低延迟<br>万卡1:1无收敛</td><td>InfiniBand NDR<br>或 RoCEv2</td><td>IB：NVIDIA Quantum-2 QM9700/QM8790、Quantum-X800<br>RoCE：NVIDIA Spectrum-X SN5600/SN5400、华为 CloudEngine 8850/16800、H3C S9827</td><td>最高</td></tr><tr class="alt-row"><td>样本面（数据/存储网）</td><td>读取训练样本<br>写入/读取 Checkpoint</td><td>高带宽·无损<br>高并发读写</td><td>RoCEv2<br>或 IB</td><td>华为 CloudEngine 8850/16800、H3C S9827、锐捷 RG-S6510、NVIDIA Spectrum-X SN5600</td><td>高</td></tr><tr class=""><td>业务面（对外服务网）</td><td>AI推理 API 请求<br>负载均衡</td><td>普通以太带宽<br>低延迟出口</td><td>10/25/100G 以太网</td><td>华为 CloudEngine S6730/S8700、H3C S6520X/S7500X、锐捷 RG-S6510、Cisco Nexus 9300</td><td>中</td></tr><tr class="alt-row"><td>管理面（带外管理）</td><td>SSH运维·IPMI/BMC<br>监控·告警</td><td>低带宽·安全隔离</td><td>普通千兆以太网</td><td>华为 S5735、H3C S5130S、锐捷 RG-S2910、Cisco Catalyst 9200</td><td>低</td></tr></table>
 
 <div class="topo-figure">
 <img src="topology_images/four_planes.png" alt="智算中心四网平面架构总览">
@@ -1240,7 +1328,7 @@ p.highlight {
 </ul>
 <h2 id="ch7-s3">5.3  InfiniBand vs RoCEv2：详细选型指南</h2>
 <p>这是项目方案中几乎每次都会被问到的技术选择，需要能从多个维度精准回答。</p>
-<table class="data-table"><tr class="header-row"><td>对比维度</td><td>InfiniBand（IB）</td><td>RoCEv2</td><td>推荐场景</td></tr><tr class=""><td>端到端时延</td><td>~2μs（更低）</td><td>~5μs</td><td>IB：超大规模/极致延迟</td></tr><tr class="alt-row"><td>无损传输机制</td><td>Credit信令原生无损</td><td>PFC+ECN+DCQCN</td><td>IB：无需调参，可靠</td></tr><tr class=""><td>负载均衡</td><td>逐包自适应路由（AR）</td><td>ECMP五元组哈希</td><td>IB：大象流均衡效果好</td></tr><tr class="alt-row"><td>单集群规模</td><td>万卡级，性能不衰减</td><td>千卡稳定/万卡需调优</td><td>IB：超大集群首选</td></tr><tr class=""><td>多租户隔离</td><td>完善（Partition/VF）</td><td>需额外网络策略</td><td>IB：多租户云平台</td></tr><tr class="alt-row"><td>建设成本</td><td>高（IB交换机比RoCE贵30–50%）</td><td>低（复用以太网生态）</td><td>RoCE：成本敏感场景</td></tr><tr class=""><td>供应商生态</td><td>英伟达（Mellanox）主导</td><td>华为/H3C/思科/Arista等</td><td>RoCE：供应链安全</td></tr><tr class="alt-row"><td>最新技术</td><td>NDR 400G（ ~ 全双工）</td><td>GSE/UEC演进</td><td>两者都在快速升级</td></tr></table>
+<table class="data-table"><tr class="header-row"><td>对比维度</td><td>InfiniBand（IB）</td><td>RoCEv2</td><td>推荐场景</td></tr><tr class=""><td>典型设备</td><td>NVIDIA Quantum-2 QM9700/QM8790、Quantum-X800；网卡常配 ConnectX-7/ConnectX-8 SuperNIC</td><td>NVIDIA Spectrum-X SN5600/SN5400、华为 CloudEngine 8850/16800、H3C S9827、锐捷 RG-S6510、Arista 7800R3/7060X5、Cisco Nexus 9364C</td><td>先按生态和国产化要求筛选</td></tr><tr class="alt-row"><td>端到端时延</td><td>~2μs（更低）</td><td>~5μs</td><td>IB：超大规模/极致延迟</td></tr><tr class=""><td>无损传输机制</td><td>Credit信令原生无损</td><td>PFC+ECN+DCQCN</td><td>IB：无需调参，可靠</td></tr><tr class="alt-row"><td>负载均衡</td><td>逐包自适应路由（AR）</td><td>ECMP五元组哈希</td><td>IB：大象流均衡效果好</td></tr><tr class=""><td>单集群规模</td><td>万卡级，性能不衰减</td><td>千卡稳定/万卡需调优</td><td>IB：超大集群首选</td></tr><tr class="alt-row"><td>多租户隔离</td><td>完善（Partition/VF）</td><td>需额外网络策略</td><td>IB：多租户云平台</td></tr><tr class=""><td>建设成本</td><td>高（IB交换机比RoCE贵30–50%）</td><td>低（复用以太网生态）</td><td>RoCE：成本敏感场景</td></tr><tr class="alt-row"><td>供应商生态</td><td>英伟达（Mellanox）主导</td><td>华为/H3C/锐捷/思科/Arista/英伟达 Spectrum-X 等</td><td>RoCE：供应链安全</td></tr><tr class=""><td>最新技术</td><td>NDR 400G、XDR 800G 演进</td><td>Spectrum-X、GSE/UEC演进</td><td>两者都在快速升级</td></tr></table>
 
 <div class="tip-box">💡  实战建议：追求极致性能+省心运维 → IB（适合大型云厂/顶级研究机构）；成本可控+供应链安全+国产化 → RoCEv2（适合政府/金融/中小型算力集群）。没有绝对优劣，结合预算和规模决策。</div>
 <h2 id="ch7-s4">5.4  组网拓扑结构详解</h2>
@@ -1250,7 +1338,7 @@ p.highlight {
 <li class="bullet">多轨接入（Rail-Optimized / Multi-Rail）：服务器 8 张网卡分别上连 8 台不同 Leaf 交换机。通信效率高（同机架内部分流量可在 Leaf 层消化，不经 Spine），是大模型训练集群的推荐方案。代价是每台服务器需要 8 张 400G 网卡，布线复杂。</li>
 <li class="bullet">单轨接入（Single-Rail）：服务器全部网卡接入同一台 Leaf 交换机。布线简单，但通信效率低，且单台 Leaf 故障影响全部服务器，适合中小规模或推理场景。</li>
 </ul>
-<p>典型案例：腾讯星脉集群（Block 1024卡/Pod 65536卡/Cluster 524288卡理论规模）；阿里 HPN 双平面架构（Segment 1024卡，可扩展至约 24.5 万 GPU）。</p>
+<p>典型案例：腾讯星脉集群（Block 1024卡/Pod 65536卡/Cluster 524288卡理论规模）；阿里 HPN 双平面架构（Segment 1024卡，可扩展至约 24.5 万 GPU）。典型设备选型上，IB 参数面通常采用 NVIDIA Quantum-2 QM9700/QM8790 或 Quantum-X800；RoCE 参数面可采用 NVIDIA Spectrum-X SN5600/SN5400、华为 CloudEngine 8850/16800、H3C S9827、锐捷 RG-S6510 等 400G/800G 数据中心交换机。</p>
 <div class="topo-figure">
 <img src="topology_images/fat_tree.png" alt="多轨 vs 单轨接入对比 / 两层与三层胖树">
 <figcaption><strong>图5-2</strong> CLOS 胖树拓扑——左：多轨接入（8网卡分连8台Leaf，同机架流量Leaf层消化）；右：单轨接入（全部网卡接同一Leaf）。中小规模用两层Spine-Leaf，万卡级用三层Core-Spine-Leaf</figcaption>
@@ -1273,6 +1361,91 @@ p.highlight {
 <div class="topo-figure">
 <img src="topology_images/dragonfly.png" alt="Dragonfly+ Group全互联架构">
 <figcaption><strong>图5-4</strong> Dragonfly+ 拓扑——组内二层胖树 + 组间全互联，网络直径仅2~3跳，十万卡级最优成本方案</figcaption>
+</div>
+
+<h2 id="ch7-s5">5.5  典型网络设备型号参考</h2>
+<p>售前沟通时，不建议只讲“400G 交换机”或“IB/RoCE 网络”，而应能落到具体设备代际和适用边界。以下型号用于方案交流和初步选型，最终配置需以厂商最新规格、端口形态、软件授权、供货周期和客户兼容性测试为准。</p>
+<table class="data-table"><tr class="header-row"><td>设备类别</td><td>典型型号</td><td>关键规格/定位</td><td>适用场景</td></tr><tr class=""><td>InfiniBand 400G 交换机</td><td>NVIDIA Quantum-2 QM9700、QM8790</td><td>NDR 400G，常见 64 端口 400G 或 128 端口 200G 形态，原生 IB 无损与自适应路由</td><td>H100/H200 训练集群、千卡到万卡级高性能参数面</td></tr><tr class="alt-row"><td>InfiniBand 800G 交换机</td><td>NVIDIA Quantum-X800</td><td>XDR 800G 代际，面向 Blackwell/GB200/GB300 后续大规模集群</td><td>新建高端训练集群、800G 网络前瞻规划</td></tr><tr class=""><td>RoCE/Spectrum-X 交换机</td><td>NVIDIA Spectrum-X SN5600、SN5400</td><td>400G 以太网，配合 ConnectX-7/8、BlueField DPU 和自适应路由能力优化 AI 负载</td><td>英伟达 GPU + 以太网生态，兼顾性能和运维统一</td></tr><tr class="alt-row"><td>国产 RoCE 数据中心交换机</td><td>华为 CloudEngine 8850/16800、H3C S9827、锐捷 RG-S6510</td><td>400G/800G 高密端口，支持 PFC、ECN、RoCEv2、Telemetry 等无损以太能力</td><td>国产化、信创、金融/政企智算中心参数面和存储面</td></tr><tr class=""><td>国际以太网数据中心交换机</td><td>Arista 7060X5/7800R3、Cisco Nexus 9364C/9500</td><td>成熟数据中心以太网生态，适合 Spine-Leaf、EVPN/VXLAN 和 RoCE 调优</td><td>跨国企业、海外 IDC、已有 Cisco/Arista 运维体系客户</td></tr><tr class="alt-row"><td>RDMA 网卡 / SuperNIC</td><td>NVIDIA ConnectX-7 400G、ConnectX-8 800G、BlueField-3 DPU</td><td>GPU 服务器侧 RDMA 接入，支持 IB 或 RoCE；DPU 可承载存储、虚拟化和安全卸载</td><td>8 卡 AI 服务器多轨接入、存储网络、云化智算平台</td></tr><tr class=""><td>业务/管理交换机</td><td>华为 S5735/S6730/S8700、H3C S5130S/S6520X、锐捷 RG-S2910/RG-S5760、Cisco Catalyst 9200</td><td>1G/10G/25G/100G 以太网，强调稳定性、ACL、堆叠、运维管理</td><td>管理面、业务面、带外网络、普通出口网络</td></tr></table>
+<div class="tip-box">💡  选型口诀：极致训练性能优先 Quantum IB；英伟达 GPU 但希望统一以太网运维，可看 Spectrum-X；国产化和供应链安全优先华为/H3C/锐捷 RoCE；业务面和管理面不要堆高端 AI 交换机，按稳定性、端口密度和运维体系选型。</div>
+
+<h2 id="ch7-s6">5.6  拓扑设备容量计算工具</h2>
+<p>该工具用于在售前阶段快速估算不同网络拓扑的理论服务器容量、GPU 容量、交换机数量和端口占用。正确口径不是在“参数面”和“存储面”之间二选一，而是两张物理隔离网络同时满足：参数面按高带宽、低时延、1:1 无阻塞计算；存储面按样本读取和 Checkpoint 读写需求计算，可采用不同单端口速率和收敛比。最终整集群容量取两个平面中较小的服务器容量，交换机数量则按两个平面分别计算后汇总。</p>
+<div class="topology-calculator" id="topologyCalculator">
+    <div class="calc-grid">
+        <div class="calc-field">
+            <label for="calcTopo">网络拓扑结构</label>
+            <select id="calcTopo">
+                <option value="two-tier">两层 Spine-Leaf</option>
+                <option value="three-tier">三层 Core-Spine-Leaf</option>
+                <option value="mpft">多平面胖树（MPFT）</option>
+                <option value="dragonfly">Dragonfly+</option>
+            </select>
+        </div>
+        <div class="calc-field">
+            <label for="calcPorts">单台交换机端口数 P</label>
+            <input id="calcPorts" type="number" min="2" step="1" value="128">
+        </div>
+        <div class="calc-field">
+            <label for="calcLayers">拓扑层数 L</label>
+            <select id="calcLayers">
+                <option value="2">2 层</option>
+                <option value="3">3 层</option>
+            </select>
+        </div>
+        <div class="calc-field">
+            <label for="calcGpu">每台服务器 GPU 数 G</label>
+            <input id="calcGpu" type="number" min="1" step="1" value="8">
+        </div>
+        <div class="calc-field">
+            <label for="calcPlanes">平面 / Pod / Group 数</label>
+            <input id="calcPlanes" type="number" min="1" step="1" value="8">
+        </div>
+        <div class="calc-field">
+            <label for="calcLeafs">每平面 Leaf 数（可选）</label>
+            <input id="calcLeafs" type="number" min="1" step="1" placeholder="默认按满配估算">
+        </div>
+        <div class="calc-field">
+            <label for="calcSpines">每平面 Spine 数（可选）</label>
+            <input id="calcSpines" type="number" min="1" step="1" placeholder="默认按满配估算">
+        </div>
+        <div class="calc-field">
+            <label for="calcParamRate">参数面端口速率（Gbps）</label>
+            <input id="calcParamRate" type="number" min="1" step="1" value="400">
+        </div>
+        <div class="calc-field">
+            <label for="calcParamNics">参数面每服务器网卡数</label>
+            <input id="calcParamNics" type="number" min="1" step="1" value="8">
+        </div>
+        <div class="calc-field">
+            <label for="calcParamRatio">参数面收敛比（下行:上行）</label>
+            <input id="calcParamRatio" type="number" min="1" step="0.1" value="1">
+        </div>
+        <div class="calc-field">
+            <label for="calcStorageRate">存储面端口速率（Gbps）</label>
+            <input id="calcStorageRate" type="number" min="1" step="1" value="200">
+        </div>
+        <div class="calc-field">
+            <label for="calcStorageNics">存储面每服务器网卡数</label>
+            <input id="calcStorageNics" type="number" min="1" step="1" value="1">
+        </div>
+        <div class="calc-field">
+            <label for="calcStorageRatio">存储面收敛比（下行:上行）</label>
+            <input id="calcStorageRatio" type="number" min="1" step="0.1" value="2">
+        </div>
+    </div>
+    <div class="calc-actions">
+        <button type="button" id="calcTopologyBtn">计算容量</button>
+        <button type="button" class="secondary" id="calcPresetTypicalBtn">典型双平面配置</button>
+        <button type="button" class="secondary" id="calcPresetAll400Btn">全 400G 双平面</button>
+    </div>
+    <div class="calc-results">
+        <div class="calc-result-card"><div class="label">整体服务器容量</div><div class="value" id="calcServers">-</div></div>
+        <div class="calc-result-card"><div class="label">整体 GPU 容量</div><div class="value" id="calcGpus">-</div></div>
+        <div class="calc-result-card"><div class="label">双平面交换机总数</div><div class="value" id="calcSwitches">-</div></div>
+        <div class="calc-result-card"><div class="label">参数面 / 存储面接入带宽</div><div class="value" id="calcBandwidth">-</div></div>
+    </div>
+    <table class="data-table" id="calcDetailTable"><tr class="header-row"><td>计算项</td><td>结果</td><td>说明</td></tr></table>
+    <div class="calc-note" id="calcFormula">计算口径：参数面和存储面物理隔离，分别按本平面的端口速率、网卡数和收敛比计算容量；整体可部署服务器数取两个平面的较小值，交换机数量为两个平面设备数量之和。</div>
 </div>
 
 
@@ -1831,6 +2004,174 @@ D. 近期必须到货。</p>
 </div>
 
 <script>
+// ==================== 拓扑设备容量计算工具 ====================
+(function() {
+    function $(id) { return document.getElementById(id); }
+    function num(id, fallback) {
+        var el = $(id);
+        var value = el ? parseFloat(el.value) : NaN;
+        return isNaN(value) || value <= 0 ? fallback : value;
+    }
+    function intNum(id, fallback) { return Math.max(1, Math.floor(num(id, fallback))); }
+    function fmt(n) { return Math.round(n).toLocaleString('zh-CN'); }
+    function bandwidthText(gbps) {
+        if (gbps >= 1000000) return (gbps / 1000000).toFixed(2) + ' Pbps';
+        if (gbps >= 1000) return (gbps / 1000).toFixed(2) + ' Tbps';
+        return fmt(gbps) + ' Gbps';
+    }
+    function addRow(rows, name, value, note) {
+        rows.push('<tr><td>' + name + '</td><td>' + value + '</td><td>' + note + '</td></tr>');
+    }
+    function calculatePlane(opts) {
+        var P = opts.P;
+        var C = opts.ratio;
+        var N = opts.nics;
+        var topo = opts.topo;
+        var units = opts.units;
+        var leafInput = opts.leafInput;
+        var spineInput = opts.spineInput;
+        var downPorts = Math.max(1, Math.floor(P * C / (1 + C)));
+        var upPorts = Math.max(1, P - downPorts);
+        var serversPerLeaf = Math.max(1, Math.floor(downPorts / N));
+        var leafs = leafInput || P;
+        var spines = spineInput || Math.max(1, Math.ceil(leafs * upPorts / P));
+        var servers = 0;
+        var switches = 0;
+        var coreSwitches = 0;
+        var note = '';
+
+        if (topo === 'two-tier') {
+            servers = leafs * serversPerLeaf;
+            switches = leafs + spines;
+            note = '两层：Leaf 下联服务器、上联 Spine。默认 Leaf=P，Spine=ceil(Leaf×上行端口/P)。';
+        } else if (topo === 'three-tier') {
+            var pods = units;
+            var podServers = leafs * serversPerLeaf;
+            coreSwitches = Math.max(1, Math.ceil(pods * spines * upPorts / P));
+            servers = pods * podServers;
+            switches = pods * (leafs + spines) + coreSwitches;
+            note = '三层：按 Pod 扩展，平面/Pod/Group 数作为 Pod 数；Core 交换机承接各 Pod Spine 上行。';
+        } else if (topo === 'mpft') {
+            var baseServers = leafs * serversPerLeaf;
+            servers = units * baseServers;
+            switches = units * (leafs + spines);
+            note = 'MPFT：按参考公式 K×二层胖树容量计算，K 为平面数。';
+        } else {
+            var groups = units;
+            var reservedPorts = Math.min(P - 1, Math.max(0, groups - 1));
+            var usableSpinePorts = Math.max(1, P - reservedPorts);
+            var effectiveLeafs = Math.min(leafs, Math.max(1, Math.floor(spines * usableSpinePorts / upPorts)));
+            servers = groups * effectiveLeafs * serversPerLeaf;
+            switches = groups * (effectiveLeafs + spines);
+            leafs = effectiveLeafs;
+            note = 'Dragonfly+：Group 内二层胖树，Group 间全互联预留端口后计算组内容量。';
+        }
+
+        return {
+            name: opts.name,
+            rate: opts.rate,
+            nics: N,
+            ratio: C,
+            downPorts: downPorts,
+            upPorts: upPorts,
+            serversPerLeaf: serversPerLeaf,
+            leafs: leafs,
+            spines: spines,
+            coreSwitches: coreSwitches,
+            servers: servers,
+            switches: switches,
+            accessGbps: servers * N * opts.rate,
+            note: note
+        };
+    }
+    function calculateTopology() {
+        if (!$('topologyCalculator')) return;
+        var topoEl = $('calcTopo');
+        var layerEl = $('calcLayers');
+        var topo = topoEl.value;
+        var L = intNum('calcLayers', topo === 'three-tier' ? 3 : 2);
+        if (document.activeElement === layerEl) {
+            if (L === 3) topo = 'three-tier';
+            if (L === 2 && topo === 'three-tier') topo = 'two-tier';
+            topoEl.value = topo;
+        } else {
+            L = topo === 'three-tier' ? 3 : 2;
+            layerEl.value = L;
+        }
+
+        var P = intNum('calcPorts', 128);
+        var G = intNum('calcGpu', 8);
+        var units = intNum('calcPlanes', 8);
+        var leafInput = $('calcLeafs').value ? intNum('calcLeafs', 1) : null;
+        var spineInput = $('calcSpines').value ? intNum('calcSpines', 1) : null;
+        var common = { P: P, topo: topo, units: units, leafInput: leafInput, spineInput: spineInput };
+        var param = calculatePlane(Object.assign({}, common, {
+            name: '参数面',
+            rate: num('calcParamRate', 400),
+            nics: intNum('calcParamNics', 8),
+            ratio: num('calcParamRatio', 1)
+        }));
+        var storage = calculatePlane(Object.assign({}, common, {
+            name: '存储面',
+            rate: num('calcStorageRate', 200),
+            nics: intNum('calcStorageNics', 1),
+            ratio: num('calcStorageRatio', 2)
+        }));
+        var servers = Math.min(param.servers, storage.servers);
+        var bottleneck = param.servers <= storage.servers ? '参数面' : '存储面';
+        var gpus = servers * G;
+        var totalSwitches = param.switches + storage.switches;
+        var rows = ['<tr class="header-row"><td>计算项</td><td>结果</td><td>说明</td></tr>'];
+
+        addRow(rows, '整体容量瓶颈', bottleneck, '参数面容量 ' + fmt(param.servers) + ' 台服务器；存储面容量 ' + fmt(storage.servers) + ' 台服务器，整体取较小值。');
+        addRow(rows, '整体服务器 / GPU 容量', fmt(servers) + ' 台 / ' + fmt(gpus) + ' 卡', 'GPU 容量 = 整体服务器容量 × 每服务器 GPU 数 G=' + G + '。');
+        addRow(rows, '双平面交换机总数', fmt(totalSwitches) + ' 台', '参数面 ' + fmt(param.switches) + ' 台 + 存储面 ' + fmt(storage.switches) + ' 台。');
+        addRow(rows, '参数面端口分配', '下行 ' + param.downPorts + ' / 上行 ' + param.upPorts, 'R=' + param.rate + 'G，N=' + param.nics + '，C=' + param.ratio + ':1，单 Leaf 可接 ' + fmt(param.serversPerLeaf) + ' 台服务器。');
+        addRow(rows, '存储面端口分配', '下行 ' + storage.downPorts + ' / 上行 ' + storage.upPorts, 'R=' + storage.rate + 'G，N=' + storage.nics + '，C=' + storage.ratio + ':1，单 Leaf 可接 ' + fmt(storage.serversPerLeaf) + ' 台服务器。');
+        addRow(rows, '参数面设备规模', 'Leaf ' + fmt(param.leafs) + ' / Spine ' + fmt(param.spines) + (param.coreSwitches ? ' / Core ' + fmt(param.coreSwitches) : ''), param.note); 
+        addRow(rows, '存储面设备规模', 'Leaf ' + fmt(storage.leafs) + ' / Spine ' + fmt(storage.spines) + (storage.coreSwitches ? ' / Core ' + fmt(storage.coreSwitches) : ''), storage.note);
+        addRow(rows, '参数面理论接入带宽', bandwidthText(servers * param.nics * param.rate), '按整体服务器容量计算：服务器数 × 参数面网卡数 × 参数面端口速率。');
+        addRow(rows, '存储面理论接入带宽', bandwidthText(servers * storage.nics * storage.rate), '按整体服务器容量计算：服务器数 × 存储面网卡数 × 存储面端口速率。');
+
+        $('calcServers').textContent = fmt(servers);
+        $('calcGpus').textContent = fmt(gpus);
+        $('calcSwitches').textContent = fmt(totalSwitches);
+        $('calcBandwidth').textContent = bandwidthText(servers * param.nics * param.rate) + ' / ' + bandwidthText(servers * storage.nics * storage.rate);
+        $('calcDetailTable').innerHTML = rows.join('');
+        $('calcFormula').textContent = '采用双平面计算：参数面和存储面分别按 P、R、N、C 与拓扑结构推导容量；四网物理隔离时，存储网交换机不占用参数面端口，但会增加独立设备数量。整体容量由较小平面决定，设备数量按两个平面汇总。';
+    }
+    function setPresetTypical() {
+        $('calcParamRate').value = 400;
+        $('calcParamNics').value = 8;
+        $('calcParamRatio').value = 1;
+        $('calcStorageRate').value = 200;
+        $('calcStorageNics').value = 1;
+        $('calcStorageRatio').value = 2;
+        calculateTopology();
+    }
+    function setPresetAll400() {
+        $('calcParamRate').value = 400;
+        $('calcParamNics').value = 8;
+        $('calcParamRatio').value = 1;
+        $('calcStorageRate').value = 400;
+        $('calcStorageNics').value = 2;
+        $('calcStorageRatio').value = 1;
+        calculateTopology();
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!$('topologyCalculator')) return;
+        ['calcTopo','calcPorts','calcLayers','calcGpu','calcPlanes','calcLeafs','calcSpines','calcParamRate','calcParamNics','calcParamRatio','calcStorageRate','calcStorageNics','calcStorageRatio'].forEach(function(id) {
+            var el = $(id);
+            if (el) el.addEventListener('input', calculateTopology);
+            if (el) el.addEventListener('change', calculateTopology);
+        });
+        $('calcTopologyBtn').addEventListener('click', calculateTopology);
+        $('calcPresetTypicalBtn').addEventListener('click', setPresetTypical);
+        $('calcPresetAll400Btn').addEventListener('click', setPresetAll400);
+        calculateTopology();
+    });
+})();
+
 (function() {
     var sidebar = document.getElementById('tocSidebar');
     var toggle = document.getElementById('tocToggle');
@@ -2103,4 +2444,5 @@ D. 近期必须到货。</p>
 </script>
 
 </body>
+</html>
 </html>
