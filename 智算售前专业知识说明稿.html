@@ -701,6 +701,13 @@ p.highlight {
     p.highlight { padding: 6px 10px; font-size: 13px; }
 }
 </style>
+<script>
+window.MathJax = {
+    tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 </head>
 <body>
 <!-- 浮动导航目录 -->
@@ -777,6 +784,15 @@ p.highlight {
                 <li><a href="#ch8-s3" data-target="ch8-s3">6.3　全周期 TCO 要素分解</a></li>
                 <li><a href="#ch8-s4" data-target="ch8-s4">6.4　电费估算公式</a></li>
                 <li><a href="#ch8-s5" data-target="ch8-s5">6.5　自建 IDC vs 算力租赁</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#ch12" data-target="ch12"><span class="ch-badge">7</span>核心计算公式速查（显存/算力/拓扑/TCO）</a>
+            <ul class="toc-sub">
+                <li><a href="#ch12-s1" data-target="ch12-s1">7.1　显存需求估算</a></li>
+                <li><a href="#ch12-s2" data-target="ch12-s2">7.2　算力与训练时间估算</a></li>
+                <li><a href="#ch12-s3" data-target="ch12-s3">7.3　网络拓扑容量计算</a></li>
+                <li><a href="#ch12-s4" data-target="ch12-s4">7.4　TCO 与电费估算</a></li>
             </ul>
         </li>
         <li>
@@ -1448,6 +1464,16 @@ p.highlight {
     <div class="calc-note" id="calcFormula">计算口径：参数面和存储面物理隔离，分别按本平面的端口速率、网卡数和收敛比计算容量；整体可部署服务器数取两个平面的较小值，交换机数量为两个平面设备数量之和。</div>
 </div>
 
+<div class="script-box">
+<span class="script-label">计算逻辑说明</span>
+<p><strong>1）先分别计算参数面和存储面。</strong>智算中心的参数面（AI 计算网）和存储面（样本 / Checkpoint 网络）通常物理隔离，因此不能只用一组端口速率和收敛比。参数面通常按 400G、8 张网卡、1:1 无阻塞计算；存储面可按 200G 或 400G、1~2 张网卡、2:1 或 1:1 收敛计算。</p>
+<p><strong>2）按收敛比分配 Leaf 端口。</strong>若单台交换机端口数为 P，收敛比 C 表示“下行:上行”，则 Leaf 下行端口约为 <strong>P × C ÷ (1 + C)</strong>，Leaf 上行端口约为 <strong>P ÷ (1 + C)</strong>。例如 P=128、C=1 时，下行 64、上行 64；C=2 时，下行约 85、上行约 43。</p>
+<p><strong>3）计算每台 Leaf 可接服务器数。</strong>每台服务器在某个网络平面占用 N 个端口，因此：<strong>每 Leaf 可接服务器数 = floor(Leaf 下行端口数 ÷ N)</strong>。例如参数面 N=8 时，64 个下行端口只能接 8 台服务器；存储面 N=1 时，85 个下行端口可接 85 台服务器。</p>
+<p><strong>4）按拓扑结构扩展容量。</strong>两层 Spine-Leaf 按 Leaf 数直接汇总；三层 Core-Spine-Leaf 按 Pod 数扩展并增加 Core 层；MPFT 按多个二层平面叠加；Dragonfly+ 按 Group 内二层胖树、Group 间互联预留端口估算。</p>
+<p><strong>5）整体服务器容量取瓶颈平面。</strong>同一批服务器必须同时接入参数面和存储面，所以最终可部署服务器数 = <strong>min(参数面服务器容量, 存储面服务器容量)</strong>；GPU 容量 = 整体服务器容量 × 每服务器 GPU 数 G。</p>
+<p><strong>6）交换机数量按双平面汇总。</strong>参数面交换机和存储面交换机是两套独立设备，因此总交换机数 = <strong>参数面交换机数 + 存储面交换机数</strong>。存储网不占用参数面端口，但会增加独立交换机、光模块、线缆和运维成本。</p>
+</div>
+
 
 <h1 id="ch8">第六章　成本分析与全周期 TCO 决策框架</h1>
 <p>智算方案的成本分析是售前最核心的&quot;临门一脚&quot;。能帮客户算清楚全周期 TCO、讲清楚自建 vs 租赁的盈亏平衡，是赢得信任和订单的关键差异点。</p>
@@ -1472,6 +1498,114 @@ p.highlight {
 
 <p>盈亏平衡线：持续利用率 &gt; 60–70% 时自购更划算；每天 &lt; 12 小时使用则租赁更经济</p>
 <div class="tip-box">💡  金融、医疗、政府等数据高度敏感行业，推荐&quot;本地核心算力池 + 云端弹性算力池&quot;混合架构：把日常微调和敏感数据推理放本地，大规模预训练和公开模型推理接云端。可将资源利用率从不足 60% 提升到 90% 以上。</div>
+
+
+<h1 id="ch12">第七章　核心计算公式速查（显存/算力/拓扑/TCO）</h1>
+<p>本章汇总智算售前方案设计中涉及的核心计算公式，涵盖显存、算力与训练时间、网络拓扑容量和 TCO 四大模块。所有公式均来自前文方法论，并以 Kimi K3（2.8T 参数）为示例进行数值演算，便于售前阶段快速估算。</p>
+
+<h2 id="ch12-s1">7.1  显存需求估算</h2>
+<h3>7.1.1  推理显存</h3>
+<p>推理显存主要由模型参数占用决定，并预留框架开销安全系数：</p>
+$$
+V_{\text{infer}} \approx P \times B_{\text{prec}} \times 1.2
+$$
+<p>其中 $P$ 为参数量（B），$B_{\text{prec}}$ 为精度字节（FP32=4，FP16/BF16=2，INT8=1，INT4=0.5），1.2 为覆盖框架开销的安全系数。若需支持长上下文，还需叠加 KV Cache：</p>
+$$
+V_{\text{kv}} = 2 \times L \times H \times D \times B_{\text{batch}} \times S \times B_{\text{prec}}
+$$
+<p>其中 $L$ 为层数，$H$ 为头数，$D$ 为头维度，$S$ 为序列长度。</p>
+<div class="tip-box">💡 <strong>示例</strong>（70B FP16 推理）：$V \approx 70 \times 2 \times 1.2 = 168$ GB，需 H100×3 或 H200×2。</div>
+
+<h3>7.1.2  训练显存（AdamW 混合精度）</h3>
+<p>训练显存远大于推理显存，AdamW 优化器混合精度训练下每参数约需 16 字节：</p>
+$$
+V_{\text{train}} \approx P \times (2+2+4+4+4) + V_{\text{act}} = P \times 16 + V_{\text{act}}
+$$
+<p>16 字节/参数的构成：权重 FP16（2B）+ 梯度 FP16（2B）+ FP32 权重副本（4B）+ AdamW 一阶动量（4B）+ 二阶动量（4B）。$V_{\text{act}}$ 为激活值，通常预留 20\~30% 冗余。</p>
+<div class="tip-box">💡 <strong>示例</strong>（Kimi K3，$P=2800$B）：$V_{\text{train}} \approx 2800 \times 16 = 44{,}800 \text{ GB} \approx 44.8 \text{ TB}$（不含激活值）。叠加激活值与安全系数（1.5\~2×）后，实际需求约 <strong>67\~90 TB</strong>。</div>
+
+<h2 id="ch12-s2">7.2  算力与训练时间估算</h2>
+<h3>7.2.1  训练总计算量（FLOPs）</h3>
+$$
+F_{\text{total}} \approx 6 \times P_{\text{active}} \times T_{\text{tokens}}
+$$
+<p>其中 $P_{\text{active}}$ 为每次前向传播激活的参数量，$T_{\text{tokens}}$ 为训练总 Token 数。系数 6 来源于前向（2×）+反向（4×）。</p>
+<p>对于 MoE 模型，$P_{\text{active}}$ 远小于总参数量。Kimi K3 有 896 个专家中激活 16 个，加上共享层，估算 $P_{\text{active}} \approx 80\sim100$B。</p>
+<div class="tip-box">💡 <strong>示例</strong>（Kimi K3，假设 $P_{\text{active}}=100$B，$T=20$T tokens）：$F_{\text{total}} \approx 6 \times 100 \times 20 \times 10^{12} = 1.2 \times 10^{25} \text{ FLOPs}$。</div>
+
+<h3>7.2.2  训练时长</h3>
+$$
+T_{\text{train}} = \frac{F_{\text{total}}}{N_{\text{gpu}} \times \text{Perf}_{\text{gpu}} \times \text{MFU}}
+$$
+<p>其中 $N_{\text{gpu}}$ 为 GPU 数量，$\text{Perf}_{\text{gpu}}$ 为单卡峰值算力（FLOPS），MFU 为模型算力利用率（通常 30\~50%）。</p>
+<div class="tip-box">💡 <strong>示例 1</strong>（5,000 张 H100，BF16 ≈ 990 TFLOPS，MFU=40%）：$T = \frac{1.2 \times 10^{25}}{5000 \times 990 \times 10^{12} \times 0.4} \approx 6.06 \times 10^{6} \text{ 秒} \approx 70 \text{ 天}$。</div>
+<div class="tip-box">💡 <strong>示例 2</strong>（2,000 张 B200，BF16 等效 ≈ 2 PFLOPS，MFU=40%）：$T = \frac{1.2 \times 10^{25}}{2000 \times 2 \times 10^{15} \times 0.4} \approx 7.5 \times 10^{6} \text{ 秒} \approx 87 \text{ 天}$。</div>
+
+<h3>7.2.3  MoE 专家并行 GPU 下界估算</h3>
+$$
+N_{\text{ep}} = \frac{E_{\text{total}}}{E_{\text{per\_gpu}}}
+$$
+<p>其中 $E_{\text{total}}$ 为总专家数，$E_{\text{per\_gpu}}$ 为每卡容纳的专家数。再乘以数据并行副本数 $D_{\text{rep}}$：</p>
+$$
+N_{\text{gpu}} \geq N_{\text{ep}} \times D_{\text{rep}}
+$$
+<div class="tip-box">💡 <strong>示例</strong>（Kimi K3，896 专家，每卡 2\~4 个专家，DP 副本 8\~64）：$N_{\text{ep}} = \frac{896}{2\sim4} = 224\sim448$，$N_{\text{gpu}} \geq 224\sim448 \times 8\sim64 \approx 2{,}000\sim5{,}000$。</div>
+
+<h2 id="ch12-s3">7.3  网络拓扑容量计算</h2>
+<h3>7.3.1  两层胖树（Spine-Leaf）最大 GPU 数</h3>
+$$
+N_{\text{gpu}} = \frac{\text{Port}^2}{2 \times N_{\text{nic}}} \times G_{\text{per\_server}}
+$$
+<p>其中 $\text{Port}$ 为交换机端口数，$N_{\text{nic}}$ 为单服务器网卡数（多轨接入通常为 8），$G_{\text{per\_server}}$ 为单服务器 GPU 数（通常为 8）。</p>
+<div class="tip-box">💡 <strong>示例</strong>（128 端口，8 网卡，8 卡服务器）：$N = \frac{128^2}{2 \times 8} \times 8 = \frac{16384}{16} \times 8 = 8{,}192$。</div>
+
+<h3>7.3.2  三层胖树（Core-Spine-Leaf）最大 GPU 数</h3>
+$$
+N_{\text{gpu}} = \frac{\text{Port}^3}{4 \times N_{\text{nic}}} \times G_{\text{per\_server}}
+$$
+<div class="tip-box">💡 <strong>示例</strong>（128 端口，8 网卡，8 卡服务器）：$N = \frac{128^3}{4 \times 8} \times 8 = \frac{2{,}097{,}152}{32} \times 8 = 524{,}288$。</div>
+
+<h3>7.3.3  收敛比</h3>
+$$
+C = \frac{\text{下行端口总带宽}}{\text{上行端口总带宽}}
+$$
+<p>计算面要求 $C=1$（1:1 无阻塞），存储网可 $C=2$（2:1 收敛）。</p>
+
+<h3>7.3.4  集群总交换容量</h3>
+$$
+B_{\text{total}} = N_{\text{gpu}} \times B_{\text{per\_gpu}}
+$$
+<div class="tip-box">💡 <strong>示例</strong>（1024 卡，每卡 400Gbps 接入）：$B = 1024 \times 400 = 409{,}600 \text{ Gbps} = 512 \text{ TB/s}$。</div>
+
+<h3>7.3.5  交换机数量估算</h3>
+<p>Leaf 层：</p>
+$$
+L_{\text{count}} = \max\left(\frac{2 \times N_{\text{server}} \times N_{\text{nic}}}{\text{Port}},\ N_{\text{nic}}\right)
+$$
+<p>Spine 层（1:1 无阻塞）：</p>
+$$
+S_{\text{count}} = \frac{L_{\text{count}}}{2}
+$$
+<div class="tip-box">💡 以上公式与第五章 5.6 节的拓扑设备容量计算工具口径一致，售前可先用公式速算，再用工具做双平面精细化估算。</div>
+
+<h2 id="ch12-s4">7.4  TCO 与电费估算</h2>
+<h3>7.4.1  集群总功耗</h3>
+$$
+P_{\text{total}} = N_{\text{gpu}} \times P_{\text{gpu}} + P_{\text{server}} + P_{\text{network}} + P_{\text{storage}}
+$$
+
+<h3>7.4.2  年电费</h3>
+$$
+\text{Cost}_{\text{power}} = P_{\text{total}} \times \text{PUE} \times \text{Price}_{\text{kwh}} \times 8760
+$$
+<p>其中 PUE 为数据中心能效比（液冷 1.1\~1.2，风冷 1.4\~1.6），$\text{Price}_{\text{kwh}}$ 为电价（元/kWh），8760 为全年小时数。</p>
+<div class="tip-box">💡 <strong>示例</strong>（5000 张 B200，单卡 1000W，PUE=1.2，电价 0.7 元/kWh）：$P_{\text{gpu}} = 5000 \times 1 = 5000 \text{ kW}$，$\text{Cost} = 5000 \times 1.2 \times 0.7 \times 8760 \approx 36{,}792{,}000 \text{ 元} \approx 3{,}679 \text{ 万元/年}$。</div>
+
+<h3>7.4.3  自建 vs 租赁盈亏平衡</h3>
+$$
+U_{\text{break-even}} = \frac{\text{Cost}_{\text{lease\_annual}}}{\text{Cost}_{\text{build\_annual}}}
+$$
+<p>经验值为：持续利用率 &gt; 60\~70% 时自购更划算，每天 &lt; 12 小时使用则租赁更经济。</p>
 
 
 <h1 id="ch9">附录 A　售前五步闭环方法论</h1>
